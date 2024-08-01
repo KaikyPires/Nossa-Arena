@@ -1,26 +1,45 @@
 package br.com.criandoapi.projeto.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpServletRequest;
+import br.com.criandoapi.projeto.service.AutenticacaoService;
 
-@Controller
+@RestController
+@RequestMapping("/login")
 public class LoginController {
 
-    @PostMapping("/login")
-    public String login(@RequestParam String cpf, @RequestParam String senha, HttpServletRequest request) {
-        // Lógica para verificar a senha
-        if (verificarSenha(cpf, senha)) {
-            return "redirect:/pag"; // Redireciona para a página desejada após login bem-sucedido
+    @Autowired
+    private AutenticacaoService autenticacaoService;
+
+    @PostMapping
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        boolean autenticado = autenticacaoService.autenticar(loginRequest.getCpf(), loginRequest.getSenha());
+        if (autenticado) {
+            return ResponseEntity.ok("Login bem-sucedido");
         } else {
-            return "login"; // Retorna para a página de login em caso de falha
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("CPF ou senha incorretos");
         }
     }
+}
 
-    private boolean verificarSenha(String cpf, String senha) {
-        // Implemente a lógica para verificar o usuário e a senha
-        return true; // Supondo que a verificação foi bem-sucedida
+class LoginRequest {
+    private String cpf;
+    public String getCpf() {
+        return cpf;
     }
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+    private String senha;
+    public String getSenha() {
+        return senha;
+    }
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    
 }
