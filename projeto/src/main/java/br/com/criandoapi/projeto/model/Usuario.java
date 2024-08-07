@@ -18,8 +18,17 @@ public class Usuario {
     @Column(name = "telefone", length = 15, nullable = true) 
     private String telefone;
     
-    @Column(name = "senha", columnDefinition = "TEXT", nullable = true)  
-    private String senha;
+    @Column(name = "nascimento", columnDefinition = "DATE", nullable = false)
+    private String nascimento;
+
+   
+    public String getNascimento() {
+        return nascimento;
+    }
+
+    public void setNascimento(String nascimento) {
+        this.nascimento = nascimento;
+    }
 
     public String getCpf() {
         return cpf;
@@ -45,13 +54,6 @@ public class Usuario {
         this.telefone = telefone;
     }
 
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
 
     
 }

@@ -262,3 +262,29 @@ main form input, main form select {
     margin-bottom: 1.2rem;
     
 }
+
+
+table {
+    width: 500px;
+    border-collapse: collapse;
+    margin: 1em 0; 
+    margin-top: 50px; 
+}
+
+th, td {
+   
+    border: 1px solid #ddd;
+    padding: 0.8rem;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+tb{
+    padding: 0.8rem;
+}
+tbody tr:nth-child(even) {
+    
+    background-color: #f9f9f9;
+}

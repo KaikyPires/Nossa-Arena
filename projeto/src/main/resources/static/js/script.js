@@ -3,14 +3,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const Icpf = document.querySelector("#cpf");
     const Inome = document.querySelector("#nome");
     const Itelefone = document.querySelector("#telefone");
-    const Isenha = document.querySelector("#senha");
+    const Inascimento = document.querySelector("#nascimento");
 
     function cadastrar() {
         const userData = {
             cpf: Icpf.value,
             nome: Inome.value,
             telefone: Itelefone.value,
-            senha: Isenha.value
+            nascimento: Inascimento.value
         };
 
         console.log("Dados a serem enviados:", userData);
@@ -23,25 +23,25 @@ document.addEventListener('DOMContentLoaded', function () {
             method: "POST",
             body: JSON.stringify(userData)
         })
-            .then(function (res) {
-                if (!res.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return res.json();
-            })
-            .then(function (data) {
-                console.log("Resposta do servidor:", data);
-            })
-            .catch(function (error) {
-                console.log('Fetch error:', error);
-            });
+        .then(function (res) {
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return res.json();
+        })
+        .then(function (data) {
+            console.log("Resposta do servidor:", data);
+        })
+        .catch(function (error) {
+            console.log('Fetch error:', error);
+        });
     }
 
     function limpar() {
         Icpf.value = "";
         Inome.value = "";
         Itelefone.value = "";
-        Isenha.value = "";
+        Inascimento.value = "";
     }
 
     formulario.addEventListener('submit', function (event) {
@@ -49,9 +49,8 @@ document.addEventListener('DOMContentLoaded', function () {
         cadastrar(); // Chama a função de cadastro
         limpar(); // Limpa o formulário após enviar
     });
-
-
 });
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const formulario = document.querySelector("form");
@@ -76,12 +75,12 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.ok) {
                 window.location.href = 'calendar.html';
             } else {
-                return response.text(); // Lê a mensagem de erro
+                return response.text(text => { throw new Error(text); }); // Lê a mensagem de erro
             }
         })
             .then(function (res) {
                 if (!res.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('CPF ou senha incorretos');
                 }
                 return res.text(); // Altera para .text() para obter a resposta como texto
             })
@@ -89,7 +88,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert(data); // Exibe a resposta do servidor
             })
             .catch(function (error) {
-                console.error('Fetch error:', error);
+                const errorMessage = document.getElementById('error-message');
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = error.message;
             });
     }
     function limparLogin() {
@@ -104,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
         limparLogin();
     });
 });
+
 
 function togglePasswordVisibility() {
     var senhaField = document.getElementById("senha");
