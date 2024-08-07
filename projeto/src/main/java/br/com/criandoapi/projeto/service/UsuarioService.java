@@ -1,13 +1,22 @@
 package br.com.criandoapi.projeto.service;
 
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import br.com.criandoapi.projeto.model.Usuario;
 import br.com.criandoapi.projeto.repository.InterfaceUsuario;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UsuarioService {
+
+    @Autowired
+    private InterfaceUsuario usuarioRepository;
+
+    @Autowired
     
     private InterfaceUsuario repository;
 
@@ -26,4 +35,9 @@ public class UsuarioService {
         Usuario editUsuario = repository.save(usuario);
         return editUsuario;
     }
-}
+    public boolean autenticar(String cpf, String senha) {
+        // Checa CPF e senha diretamente, sem acessar o banco de dados
+        return "123456".equals(cpf) && "admin".equals(senha);
+    }
+    }
+

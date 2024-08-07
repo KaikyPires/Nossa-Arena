@@ -62,7 +62,7 @@ span {
 
 main {
     width: 60rem;
-    height: 52rem;
+    height: 40rem;
     padding-top: 4.4rem;
     padding: 4rem;
     border-radius: 3rem;
@@ -84,7 +84,7 @@ main .action {
 
 main .action a {
     background-color: #65B307;
-    height: 5.5rem;
+    height:6.5rem;
     font-size: 2.4rem;
     border-radius: 2rem;
     color: white;
@@ -92,7 +92,7 @@ main .action a {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 2rem;
+    margin-top: 4rem;
 }
 
 main .action a + a {
@@ -167,4 +167,5 @@ main footer a {
 .logo {
     width: 50px; /* Ajuste o valor conforme necessário */
     height: auto; /* Mantém a proporção da imagem */
+   
 }

@@ -49,19 +49,15 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
     }
-     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        Optional<Usuario> optionalUsuario = dao.findById(loginRequest.getCpf());
+    private static final String CPF_CORRETO = "123456";
+    private static final String SENHA_CORRETA = "admin";
 
-        if (optionalUsuario.isPresent()) {
-            Usuario usuarioExistente = optionalUsuario.get();
-            if (usuarioExistente.getSenha().equals(loginRequest.getSenha())) {
-                return ResponseEntity.ok("Login bem-sucedido");
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha incorreta");
-            }
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        if (CPF_CORRETO.equals(loginRequest.getCpf()) && SENHA_CORRETA.equals(loginRequest.getSenha())) {
+            return ResponseEntity.ok("Login bem-sucedido");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("CPF ou senha incorretos");
         }
     }
 }

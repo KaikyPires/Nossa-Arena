@@ -25,6 +25,9 @@ body {
 .logo-img {
     width: 300px; /* Ajuste o valor conforme necessário */
     height: auto; /* Mantém a proporção da imagem */
+    position: relative;
+    z-index: 3; /* Garante que a logo esteja acima do slider */
+    margin-top: 15vh; /* Ajusta a posição vertical conforme necessário */
 }
 
 .logo {
@@ -43,18 +46,18 @@ body {
     position: relative;
     z-index: 2; /* Garantir que o conteúdo fique acima do slider */
 }
-
-main {
+main{
+    position: relative;
     grid-area: form;
     width: 60rem;
-    height: 52rem;
-    
+    height: 40rem;
     padding-top: 4.4rem;
     padding: 4rem;
     border-radius: 3rem;
     background-color: white;
-    position: relative; /* Adiciona posicionamento relativo */
-    z-index: 3; /* Garante que o conteúdo esteja acima do slider */
+    z-index: 10; /* Garante que o conteúdo esteja acima do slider */
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6); /* Adiciona a sombra */
+    transform: translateY(-9%);
 }
 
 aside {
@@ -79,18 +82,7 @@ main h2 {
     font-weight: 500;
 }
 
-main .action a {
-    background-color: #00690A;
-    height: 5.5rem;
-    font-size: 2.4rem;
-    border-radius: var(--default-border-radius);
-    color: white;
-    text-decoration: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 0.5rem;
-}
+
 
 main .action {
     display: flex;
@@ -98,7 +90,7 @@ main .action {
 }
 
 main form input, main form select {
-    width: 51.2rem;
+    width: 31.2rem;
     height: 4.2rem;
     background-color: white;
     border: var(--default-border);
@@ -111,7 +103,7 @@ main form label {
     font-size: 1.8rem;
     font-weight: 400;
     margin-bottom: 0.4rem;
-    display: block;
+ 
 }
 
 main header {
@@ -129,7 +121,6 @@ main form {
     margin-top: 1.6rem;
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-weight:bolder;
-   
 }
 
 main button {
@@ -173,8 +164,8 @@ p {
 }
 
 .button {
-    background-color: #00690A;
-    height: 5.5rem;
+    background-color: #65B307;
+    height: 6.5rem;
     font-size: 2.4rem;
     border-radius: 2rem;
     color: white;
@@ -243,11 +234,14 @@ p {
     position: relative;
     z-index: 3; /* Garante que a logo esteja acima do slider */
     margin-top: 15vh; /* Ajusta a posição vertical conforme necessário */
+    transform: translateY(-12%);
+
 }
 
 .logo {
     width: 50px; /* Ajuste o valor conforme necessário */
     height: auto; /* Mantém a proporção da imagem */
+   
 }
 
 
@@ -308,4 +302,11 @@ p {
     font-size: 1.4rem;
 }
 
-
+.input-container i.fa-eye, 
+    .input-container i.fa-eye-slash {
+        position: absolute;
+        right: 10px;
+        top: 26%;
+        transform: translateX(96%);
+        cursor: pointer;
+    }

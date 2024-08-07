@@ -49,4 +49,72 @@ document.addEventListener('DOMContentLoaded', function () {
         cadastrar(); // Chama a função de cadastro
         limpar(); // Limpa o formulário após enviar
     });
+
+
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const formulario = document.querySelector("form");
+    const Icpf = document.querySelector("#cpf");
+    const Isenha = document.querySelector("#senha");
+
+    function login() {
+        const loginData = {
+            cpf: Icpf.value,
+            senha: Isenha.value
+        };
+
+        fetch("http://localhost:8080/usuarios/login", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(loginData)
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = 'calendar.html';
+            } else {
+                return response.text(); // Lê a mensagem de erro
+            }
+        })
+            .then(function (res) {
+                if (!res.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return res.text(); // Altera para .text() para obter a resposta como texto
+            })
+            .then(function (data) {
+                alert(data); // Exibe a resposta do servidor
+            })
+            .catch(function (error) {
+                console.error('Fetch error:', error);
+            });
+    }
+    function limparLogin() {
+ 
+        Isenha.value = "";
+    }
+    
+
+    formulario.addEventListener('submit', function (event) {
+        event.preventDefault(); // Impede o envio do formulário padrão
+        login(); // Chama a função de login
+        limparLogin();
+    });
+});
+
+function togglePasswordVisibility() {
+    var senhaField = document.getElementById("senha");
+    var toggleIcon = document.getElementById("togglePassword");
+    if (senhaField.type === "password") {
+        senhaField.type = "text";
+        toggleIcon.classList.remove("fa-eye");
+        toggleIcon.classList.add("fa-eye-slash");
+    } else {
+        senhaField.type = "password";
+        toggleIcon.classList.remove("fa-eye-slash");
+        toggleIcon.classList.add("fa-eye");
+    }
+}

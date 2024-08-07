@@ -102,11 +102,18 @@ main {
     width: 20px;
     height: 20px;
 }
-
+.side-item i {
+    font-size: 1.4rem;
+}
 #logout {
     border-top: 1px solid #e3e9f7;
     padding: 12px;
+    text-decoration: none;
 }
+#logout a{
+color: #0a0a0a;
+}
+
 
 #logout_btn {
     border: none;
@@ -119,6 +126,7 @@ main {
     text-align: start;
     cursor: pointer;
     background-color: transparent;
+    text-decoration: none;
 }
 
 #open_btn {
@@ -164,4 +172,93 @@ main {
 #sidebar.open-sidebar .side-item a {
     justify-content: flex-start;
     gap: 14px;
+}
+
+
+#calendar-container {
+    position: absolute;
+    left: 100px; /* Posição à esquerda da tela */
+    top: 30px; /* Posição em relação ao topo */
+    width: 1390px;
+    padding-top: 50px;
+}
+
+/* Ajuste conforme necessário */
+@media screen and (max-width: 768px) {
+    #calendar-container {
+       right: 5px;/* Ajusta a posição em telas pequenas */
+        top: 10px;
+        right: 100px;
+        width: calc(100% - 10px); /* Ajusta a largura para telas pequenas */
+    }
+}
+:root {
+    font-size: 62.5%;
+    --default-border: 0.1rem solid rgba(0, 0, 0, 15);
+    --default-border-radius: 1.2rem;
+}
+main form {
+    margin-top: 1.6rem;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight:bolder;
+}
+
+main form input, main form select {
+    width: 31.2rem;
+    height: 4.2rem;
+    background-color: white;
+    border: var(--default-border);
+    border-radius: var(--default-border-radius);
+    margin-bottom: 1.6rem;
+    padding: 0.5rem;
+}
+
+.button {
+    background-color: #65B307;
+    height: 4.2rem;
+    font-size: 2.4rem;
+    border-radius: 2rem;
+    color: white;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    border: none; /* Remove a borda padrão do botão */
+    transition: background-color 0.3s ease;
+    width: 31.2rem;
+    margin-bottom: 2.6rem;
+    padding: 0.5rem;
+}
+.input-container i {
+    position: absolute;
+    left: 1rem; /* Espaçamento da borda esquerda */
+    top: 50%; /* Centraliza verticalmente */
+    transform: translateY(-100%); /* Ajusta para centralização vertical */
+    font-size: 1.6rem; /* Tamanho do ícone */
+    color: #00690A; /* Cor do ícone */
+}
+
+.input-container i {
+    position: absolute;
+    left: 1rem; /* Espaçamento da borda esquerda */
+    top: 50%; /* Centraliza verticalmente */
+    transform: translateY(-100%); /* Ajusta para centralização vertical */
+    font-size: 1.6rem; /* Tamanho do ícone */
+    color: #00690A; /* Cor do ícone */
+}
+.input-container input   {
+    width: 100%; /* Ocupa toda a largura do container */
+    height: 3.8rem; /* Altura do campo de entrada */
+    padding-left: 3.5rem; /* Espaçamento para o ícone */
+    background-color: white;
+    border: 0.1rem solid rgba(0, 0, 0, 0.15);
+    border-radius: 1.2rem;
+    font-size: 1.4rem;
+}
+.input-container {
+    position: relative;
+    margin-bottom: 1.2rem;
+    
 }
