@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import br.com.criandoapi.projeto.dto.UsuarioDTO;
 import br.com.criandoapi.projeto.model.LoginRequest;
 import br.com.criandoapi.projeto.model.Usuario;
 import br.com.criandoapi.projeto.repository.InterfaceUsuario;
@@ -60,4 +61,5 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("CPF ou senha incorretos");
         }
     }
+
 }

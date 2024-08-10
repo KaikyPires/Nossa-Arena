@@ -4,22 +4,49 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Michroma", sans-serif;
+        
 }
 
 body {
     display: flex;
     min-height: 100vh;
     background-color: #e3e9f7;
+    width: 100%;
 }
 
 main {
-    padding: 20px;
+    margin-top: auto;
     position: fixed;
     z-index: 1;
-    padding-left: calc(82px + 20px);
+    transition: margin-left .5s;
+    flex: 1;
+    font-family: "Michroma", sans-serif;
+    
+}
+.main-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Animação suave para opacidade e transformação */
+    opacity: 0; /* Começa invisível */
+    transform: translateX(10px); /* Levemente deslocado */
 }
 
+/* Estilo para o conteúdo ativo */
+.main-content.active {
+    opacity: 1; /* Torna o conteúdo visível */
+    transform: translateX(0); /* Remove o deslocamento */
+}
+
+/* Adiciona uma leve transição ao conteúdo da main */
+.main-content.hidden {
+    opacity: 0; /* Torna o conteúdo invisível */
+    transform: translateX(-10px); /* Desloca ligeiramente para a esquerda */
+}
+#sidebar.open-sidebar + main {
+    margin-left: 10%; /* Ajusta o espaço ao abrir a sidebar */
+}
 #sidebar {
     display: flex;
     flex-direction: column;
@@ -30,7 +57,10 @@ main {
     position: relative;
     transition: all .5s;
     min-width: 82px;
-    z-index: 2;
+    z-index: 3; /* Aumenta o z-index para garantir que a sidebar esteja acima de outros elementos */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adiciona sombra para profundidade */
+    border: 1px solid #ddd; /* Adiciona uma borda leve */
+    transition: width 0.3s ease;
 }
 
 #sidebar_content {
@@ -68,14 +98,19 @@ main {
     list-style: none;
 }
 
+
+
 .side-item {
     border-radius: 8px;
     padding: 14px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease; 
 }
+
 
 .side-item.active {
     background-color: #00690A;
+    transform: scale(1.05); 
 }
 
 .side-item:hover:not(.active),
@@ -140,6 +175,7 @@ color: #0a0a0a;
     height: 20px;
     border: none;
     cursor: pointer;
+    transition: right 0.3s ease;
 }
 
 #open_btn_icon {
@@ -159,6 +195,28 @@ color: #0a0a0a;
     transition: width .6s;
     height: 0px;
 }
+header {
+    width: 100vw;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1; /* Fica acima da sidebar e do conteúdo principal */
+    height: 65px;
+    
+}
+
+header h1 {
+    padding-left: 12rem;
+    margin: 0;
+}
+
+header img {
+    max-width: 100px; /* Ajuste o tamanho conforme necessário */
+   
+}
+
+
 
 #sidebar.open-sidebar {
     min-width: 15%;
@@ -167,6 +225,12 @@ color: #0a0a0a;
 #sidebar.open-sidebar .item-description {
     width: 150px;
     height: auto;
+    
+    color: black;
+}
+.item-description span {
+    color: #fff;
+
 }
 
 #sidebar.open-sidebar .side-item a {
@@ -197,14 +261,25 @@ color: #0a0a0a;
     --default-border: 0.1rem solid rgba(0, 0, 0, 15);
     --default-border-radius: 1.2rem;
 }
-main form {
-    margin-top: 1.6rem;
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-weight:bolder;
+span {
+    color: #00690A;
+}
+.page-title {
+    padding-left: 120px;    
+    font-size: 3.6rem;
+    font-weight: 500;
+    padding-left: 42%;
+    margin-bottom: 1.6rem; /* Espaço entre o título e o formulário */
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
 }
 
+/* Estilo do formulário */
+
+
+/* Ajuste dos campos do formulário */
 main form input, main form select {
-    width: 31.2rem;
+    width: calc(100% - 2rem); /* Ajuste para considerar o padding do formulário */
     height: 4.2rem;
     background-color: white;
     border: var(--default-border);
@@ -213,6 +288,7 @@ main form input, main form select {
     padding: 0.5rem;
 }
 
+/* Ajuste do botão */
 .button {
     background-color: #65B307;
     height: 4.2rem;
@@ -227,9 +303,50 @@ main form input, main form select {
     cursor: pointer;
     border: none; /* Remove a borda padrão do botão */
     transition: background-color 0.3s ease;
-    width: 31.2rem;
+    width: calc(100% - 2rem); /* Ajusta a largura do botão */
     margin-bottom: 2.6rem;
     padding: 0.5rem;
+}
+
+
+
+
+/* Ajustes de responsividade */
+@media screen and (max-width: 768px) {
+    main {
+        padding: 1rem; /* Ajusta o padding para telas menores */
+    }
+
+    main form {
+        max-width: 100%; /* Garante que o formulário não exceda a largura da tela */
+    }
+
+    main form input, main form select, .button {
+        width: calc(100% - 1rem); /* Ajusta a largura para telas menores */
+    }
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza horizontalmente */
+    justify-content: center; /* Centraliza verticalmente */
+    background: #ffffff; /* Cor de fundo branca */
+    border-radius: 20px; /* Bordas arredondadas */
+    box-shadow: 0 40px 50px rgba(0, 0, 0, 0.6);/* Sombra leve */
+    padding: 20px; /* Espaçamento interno */
+    width: 100%; /* Largura total do contêiner */
+    max-width: 600px; /* Largura máxima */
+    margin: 0 auto; /* Centraliza o contêiner horizontalmente */
+    position: relative;
+}
+main form {
+    font-family: "Michroma", sans-serif;
+    font-weight: bolder;
+   width: 100%;
+    margin: auto; /* Centraliza o formulário horizontalmente */
+    margin-bottom: 0.4rem; /* Espaçamento abaixo do label */
+    color: #00690A; 
 }
 .input-container i {
     position: absolute;
@@ -262,24 +379,34 @@ main form input, main form select {
     margin-bottom: 1.2rem;
     
 }
-
+.table-container {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+     
+    padding: 10%;
+}
 
 table {
     width: 500px;
     border-collapse: collapse;
     margin: 1em 0; 
-    margin-top: 50px; 
+   
+    height: 100px;
+
 }
+
+
 
 th, td {
    
-    border: 1px solid #ddd;
+    border: 1px solid #d1c1c1;
     padding: 0.8rem;
     text-align: left;
 }
 
 th {
-    background-color: #f4f4f4;
+    background-color: #65B307;
+    color: #ddd;
 }
 tb{
     padding: 0.8rem;
@@ -287,4 +414,214 @@ tb{
 tbody tr:nth-child(even) {
     
     background-color: #f9f9f9;
+}
+
+
+
+
+.sidebar {
+    width: 250px;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  z-index: 1000; /* Mantém a sidebar acima do conteúdo */
+  transition: transform 0.3s ease;
+  }
+  
+  .sidebar.open {
+    transform: translateX(0); /* Move a sidebar para a tela */
+  }
+  
+  .container.sidebar-open .main-body {
+    margin-left: 250px; /* Ajusta a margem do conteúdo principal quando a sidebar está aberta */
+  }
+  
+  .container.sidebar-open .sidebar {
+    transform: translateX(0); /* Mostra a sidebar quando a classe 'sidebar-open' está presente */
+  }
+  
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 200px; /* Ajuste a largura da sidebar para dispositivos menores */
+    }
+  }
+
+/* Sidebar na direita */
+@media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+    
+    .sidebar {
+      margin-top: 20px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .main-body, .sidebar {
+      width: 100%;
+    }
+  }
+  
+.sidebar {
+    margin-top: 100px;
+    width: 15%;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: fixed; /* Fixa a sidebar na tela */
+    top: 0; /* Posiciona no topo */
+    right: 0; /* Alinha à direita */
+    height: 64.5vh; /* Altura completa da tela */
+    overflow-y: auto; /* Adiciona rolagem vertical se necessário */
+}
+
+.sidebar h4 {
+    margin-bottom: 1.5rem;
+}
+
+.sidebar .balance {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.balance .icon {
+    color: #fff;
+    font-size: 20px;
+    border-radius: 6px;
+    margin-right: 1rem;
+    padding: 1rem;
+    background: #65B307;
+}
+
+.balance .info h5 {
+    font-size: 16px;
+}
+
+.balance .info span {
+    font-size: 14px;
+    color: rgb(100, 100, 100);
+}
+
+.balance .info i {
+    margin-right: 2px;
+}
+
+  .container{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
+
+  .main-body {
+    flex: 1;
+    width: calc(100% - 500px); /* Largura total menos a soma das larguras das sidebars */
+  margin-left: 100px; /* Espaço para a sidebar principal */
+  margin-right: 250px; /* Espaço para a sidebar adicional */    
+   
+    padding: 20px;
+    margin-top: 5.5px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: margin 0.3s ease;
+  } 
+.promo_card{
+    width: 100%;
+    color: #fff;
+    margin-top: 10px;
+    border-radius: 8px;
+    padding: 0.5rem 1rem 1rem 3rem;
+    background: #65B307;
+    
+  }
+  .promo_card h1, .promo_card span, button{
+    margin: 10px;
+  }
+  .promo_card button{
+    display: block;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .history_lists{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+  }
+  .row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
+  }
+  .list1{
+    padding-right: 20px;
+  }
+
+
+/* Tela de carregamento */
+#loading-screen {
+    position: fixed;
+    top: 60px; /* Ajuste conforme a altura do cabeçalho */
+    left: 0;
+    width: 100%;
+    height: calc(100% - 60px); /* Ajuste para preencher o restante da tela */
+    background: #e3e9f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Garante que a tela de carregamento esteja acima de outros conteúdos */
+}
+
+/* Estilos para o container do carregamento */
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-image {
+    width: 100px; /* Ajuste o tamanho conforme necessário */
+    height: auto;
+    margin-bottom: 20px; /* Espaçamento entre a imagem e o loader */
+}
+
+.loader {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+/* Animação de rotação */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Ocultar o conteúdo principal até o carregamento ser concluído */
+#main-content {
+    opacity: 0; /* Inicialmente invisível */
+    transition: opacity 0.5s ease-in-out; /* Transição suave */
+}
+
+#loading-screen.hidden {
+    display: none; /* Oculta a tela de carregamento */
+}
+
+#main-content.visible {
+    opacity: 1; /* Torna o conteúdo visível */
 }

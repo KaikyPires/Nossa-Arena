@@ -8,28 +8,21 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "usuario")
 public class Usuario {
+  
     @Id
-    @Column(name = "cpf", unique = true, nullable = false)  
+    @Column(name = "cpf", unique = true, nullable = false, length = 11)  // CPF com 11 dígitos
     private String cpf;
-    
+
     @Column(name = "nome", length = 200, nullable = true) 
     private String nome;
-    
-    @Column(name = "telefone", length = 15, nullable = true) 
+
+    @Column(name = "telefone", length = 15, nullable = true)  // Ajustado para String, se for número grande
     private String telefone;
-    
+
     @Column(name = "nascimento", columnDefinition = "DATE", nullable = false)
     private String nascimento;
 
-   
-    public String getNascimento() {
-        return nascimento;
-    }
-
-    public void setNascimento(String nascimento) {
-        this.nascimento = nascimento;
-    }
-
+    // Getters e Setters
     public String getCpf() {
         return cpf;
     }
@@ -54,6 +47,12 @@ public class Usuario {
         this.telefone = telefone;
     }
 
+    public String getNascimento() {
+        return nascimento;
+    }
 
-    
+    public void setNascimento(String nascimento) {
+        this.nascimento = nascimento;
+    }
 }
+    

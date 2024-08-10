@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Roboto, sans-serif;
 }
 
 /* Definições globais para html e body */
@@ -19,10 +20,11 @@ html, body {
 body {
     font-family: Roboto, sans-serif;
     font-size: 1.4rem;
-    background-color: #65B307;
+    background-color: white;
     position: relative;
     min-height: 100vh;
 }
+
 
 .content {
     display: grid;
@@ -31,9 +33,9 @@ body {
     ". hero . form ."
     ". hero . form ."
     ". . . . .";
-    gap: 8.5rem;
+    gap: 11.5rem;
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 main {
@@ -41,6 +43,7 @@ main {
     background-color: white;
     z-index: 3;
     position: relative;
+    transform: translateY(10%);
 }
 
 aside {
@@ -62,12 +65,13 @@ span {
 
 main {
     width: 60rem;
-    height: 40rem;
+    height: 35rem;
     padding-top: 4.4rem;
     padding: 4rem;
     border-radius: 3rem;
     z-index: 10; /* Garante que o conteúdo esteja acima do slider */
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6); /* Adiciona a sombra */
+    box-shadow: 0 60px 90px rgba(0, 0, 0, 0.6); /* Adiciona a sombra */
+
 }
 
 
@@ -92,7 +96,7 @@ main .action a {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 4rem;
+    margin-top: 2rem;
 }
 
 main .action a + a {
@@ -119,7 +123,7 @@ main footer a {
 .slider_section {
     width: 100%;
     height: 110vh; /* Garante que a seção ocupe a altura total da visualização */
-    background: linear-gradient(45deg, #000000, #49A852);
+    background: #00690A;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -168,4 +172,142 @@ main footer a {
     width: 50px; /* Ajuste o valor conforme necessário */
     height: auto; /* Mantém a proporção da imagem */
    
+}
+.button:hover {
+    background-color: #005508;
+}
+.action a:hover{
+    background-color: #005508;
+}
+
+aside h1 {
+    font-family: Roboto;
+    font-size: 64px;
+    font-weight: 500;
+    line-height: 75px;
+    text-align: left;
+}
+
+span {
+    color: #00690A;
+}
+
+main h2 {
+    max-width: 43rem;
+    font-size: 3.6rem;
+    font-weight: 500;
+}
+
+
+
+main .action {
+    display: flex;
+    flex-flow: column;
+}
+
+main form input, main form select {
+    width: 51.2rem;
+    height: 4.2rem;
+    background-color: white;
+    border: var(--default-border);
+    border-radius: var(--default-border-radius);
+    margin-bottom: 1.6rem;
+    padding: 0.5rem 0.5rem 0.5rem 3.8rem;
+}
+
+main form label {
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 0.4rem;
+ 
+}
+
+main header {
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+}
+
+main header i {
+    color: #00690A;
+    font-size: 3rem;
+}
+
+main form {
+    margin-top: 1.6rem;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight:bolder;
+}
+
+main button {
+    color: #00690A;
+}
+
+p {
+    text-align: center;
+}
+
+.button {
+    background-color: #65B307;
+    height: 6.5rem;
+    font-size: 2.4rem;
+    border-radius: 2rem;
+    color: white;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    border: none; /* Remove a borda padrão do botão */
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #005508;
+}
+
+.button:active {
+    background-color: #004106;
+}
+
+/* Estilos da seção slider_section */
+.slider_section {
+    width: 100%;
+    height: 110vh; /* Garante que a seção ocupe a altura total da visualização */
+    background: #00690A;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Garante que o slider fique atrás do conteúdo */
+    clip-path: ellipse(100% 65% at 3% 5%);
+    animation: slideIn 3s forwards;
+}
+
+.slider_content {
+    text-align: center;
+    color: white;
+}
+
+.slider_content h2 {
+    font-size: 2.4rem;
+    margin-bottom: 1rem;
+}
+
+.slider_content button {
+    padding: 1rem 2rem;
+    font-size: 1.6rem;
+    border: none;
+    background-color: #ffffff;
+    color: #00690A;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.slider_content button:hover {
+    background-color: #e0e0e0;
 }

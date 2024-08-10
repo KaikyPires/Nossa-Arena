@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Roboto, sans-serif;
 }
 
 :root {
@@ -18,7 +19,7 @@ html, body {
 body {
     font-family: Roboto, sans-serif;
     font-size: 1.4rem;
-    background-color: #65B307;
+    background-color: white;
     position: relative;
 }
 
@@ -42,7 +43,7 @@ body {
     ". hero . form ."
     ". hero . form ."
     ". . . . .";
-    gap: 8.5rem;
+    gap: 11.5rem;
     position: relative;
     z-index: 2; /* Garantir que o conteúdo fique acima do slider */
 }
@@ -50,27 +51,14 @@ main{
     position: relative;
     grid-area: form;
     width: 60rem;
-    height: 40rem;
+    height: 35rem;
     padding-top: 4.4rem;
     padding: 4rem;
     border-radius: 3rem;
     background-color: white;
     z-index: 10; /* Garante que o conteúdo esteja acima do slider */
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6); /* Adiciona a sombra */
-    transform: translateY(-9%);
-}
-main cadastro{
-    position: relative;
-    grid-area: form;
-    width: 90rem;
-    height: 40rem;
-    padding-top: 4.4rem;
-    padding: 4rem;
-    border-radius: 3rem;
-    background-color: white;
-    z-index: 10; /* Garante que o conteúdo esteja acima do slider */
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6); /* Adiciona a sombra */
-    transform: translateY(-9%);
+    transform: translateY(4%);
 }
 
 aside {
@@ -140,37 +128,7 @@ main button {
     color: #00690A;
 }
 
-.entidade-list {
-    margin-top: 2rem;
-}
 
-.entidade {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 0;
-    border-bottom: var(--default-border);
-}
-
-.entidade h3 {
-    font-size: 2rem;
-    margin-right: 2rem;
-}
-
-.entidade .especialização {
-    font-size: 1.4rem;
-    color: #666;
-    margin-right: 2rem;
-    background-color: #f1f1f1;
-    padding: 0.5rem 1rem;
-    border-radius: 1rem;
-}
-
-.entidade .view-more {
-    font-size: 1.4rem;
-    color: #00690A;
-    text-decoration: none;
-}
 
 p {
     text-align: center;
@@ -204,7 +162,7 @@ p {
 .slider_section {
     width: 100%;
     height: 110vh; /* Garante que a seção ocupe a altura total da visualização */
-    background: linear-gradient(45deg, #000000, #49A852);
+    background: #00690A;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -247,7 +205,7 @@ p {
     position: relative;
     z-index: 3; /* Garante que a logo esteja acima do slider */
     margin-top: 15vh; /* Ajusta a posição vertical conforme necessário */
-    transform: translateY(-12%);
+    transform: translateY(-7%);
 
 }
 

@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(function (res) {
             if (!res.ok) {
-                throw new Error('Network response was not ok');
+              
+                throw new Error('Dados invalidos');
             }
             return res.json();
         })
@@ -33,7 +34,9 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("Resposta do servidor:", data);
         })
         .catch(function (error) {
-            console.log('Fetch error:', error);
+            const errorMessage = document.getElementById('error-message');
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = error.message;
         });
     }
 
@@ -73,14 +76,15 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(response => {
             if (response.ok) {
-                window.location.href = 'calendar.html';
+               window.location.href = 'loading.html';
+                
             } else {
                 return response.text(text => { throw new Error(text); }); // Lê a mensagem de erro
             }
         })
             .then(function (res) {
                 if (!res.ok) {
-                    throw new Error('CPF ou senha incorretos');
+                    
                 }
                 return res.text(); // Altera para .text() para obter a resposta como texto
             })
@@ -88,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert(data); // Exibe a resposta do servidor
             })
             .catch(function (error) {
-                const errorMessage = document.getElementById('error-message');
+                //const errorMessage = document.getElementById('error-message');
                 errorMessage.style.display = 'block';
                 errorMessage.textContent = error.message;
             });
