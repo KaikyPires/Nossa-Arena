@@ -57,8 +57,8 @@ main{
     border-radius: 3rem;
     background-color: white;
     z-index: 10; /* Garante que o conteúdo esteja acima do slider */
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6); /* Adiciona a sombra */
-    transform: translateY(4%);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8); /* Adiciona a sombra */
+    transform: translateY(11%);
 }
 
 aside {
@@ -135,7 +135,7 @@ p {
 }
 
 .button {
-    background-color: #65B307;
+    background-color:  #00690A;
     height: 6.5rem;
     font-size: 2.4rem;
     border-radius: 2rem;
@@ -151,7 +151,7 @@ p {
 }
 
 .button:hover {
-    background-color: #005508;
+    background-color: #65B307;
 }
 
 .button:active {
@@ -160,18 +160,21 @@ p {
 
 /* Estilos da seção slider_section */
 .slider_section {
-    width: 100%;
-    height: 110vh; /* Garante que a seção ocupe a altura total da visualização */
-    background: #00690A;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1; /* Garante que o slider fique atrás do conteúdo */
-    clip-path: ellipse(100% 65% at 3% 5%);
-    animation: slideIn 3s forwards;
+   
+        width: 100%;
+        height: 110vh; /* Garante que a seção ocupe a altura total da visualização */
+        background: #00690A;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1; /* Garante que o slider fique atrás do conteúdo */
+        clip-path: ellipse(100% 65% at 3% 5%);
+        animation: slideIn 3s forwards;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 2); /* Ajustado */
+    
 }
 
 .slider_content {
@@ -281,3 +284,78 @@ p {
         transform: translateX(96%);
         cursor: pointer;
     }
+    .popup h2 {
+        display: block;
+        font-size: 1.5em;
+        margin-block-start: 0.83em;
+        margin-block-end: 0.83em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+        unicode-bidi: isolate;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .popup {
+        width: 400px;
+        height: 170px;
+        background-color: #fff;
+        border-radius: 6px;
+        position: absolute;
+        top: 50%; /* Ajusta o topo do popup para o meio da tela */
+        left: 50%; /* Ajusta a esquerda do popup para o meio da tela */
+        transform: translate(-138%, -50%); /* Centraliza o popup horizontal e verticalmente */
+        text-align: center;
+        padding: 10px; /* Adiciona um padding uniforme */
+        color: #15451a;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
+    }
+    
+
+    
+    .popup img {
+        width: 100px;
+        margin-top: -20%; /* Ajuste conforme necessário */
+        border-radius: 50%;
+    }
+    
+    .popup button {
+        margin-top: 1rem;
+        width: calc(100% - 2rem);
+        height: 4.2rem;
+        font-size: 2.4rem;
+        border-radius: 2rem;
+        color: white;
+        text-decoration: none;
+        display: block; /* Torna o botão um bloco para aplicar margin auto */
+        margin-left: auto; /* Centraliza o botão horizontalmente */
+        margin-right: auto; /* Centraliza o botão horizontalmente */
+    }
+    
+    /* Estilização para popups de sucesso e erro */
+    .success-popup {
+        border: 2px solid #4CAF50; /* Verde para sucesso */
+    }
+    
+    .error-popup {
+        border: 2px solid #F44336; /* Vermelho para erro */
+    }
+    
+    /* Estilização dos botões de sucesso e erro */
+    .success-button {
+        background-color: #28a745; /* Cor verde para sucesso */
+    }
+    
+    .success-button:hover {
+        background-color: #218838; /* Tom de verde mais escuro no hover */
+    }
+    
+    .error-button {
+        background-color: #dc3545; /* Cor vermelha para erro */
+    }
+    
+    .error-button:hover {
+        background-color: #c82333; /* Tom de vermelho mais escuro no hover */
+    }
+    

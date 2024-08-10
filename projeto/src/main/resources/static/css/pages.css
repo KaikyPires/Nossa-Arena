@@ -203,7 +203,7 @@ header {
     align-items: center;
     z-index: 1; /* Fica acima da sidebar e do conteúdo principal */
     height: 65px;
-    
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 header h1 {
@@ -213,6 +213,7 @@ header h1 {
 
 header img {
     max-width: 100px; /* Ajuste o tamanho conforme necessário */
+    padding-right: 10px;
    
 }
 
@@ -265,13 +266,15 @@ span {
     color: #00690A;
 }
 .page-title {
+    margin-top: 1rem;
     padding-left: 120px;    
     font-size: 3.6rem;
     font-weight: 500;
     padding-left: 42%;
     margin-bottom: 1.6rem; /* Espaço entre o título e o formulário */
-    font-family: 'Poppins', sans-serif;
-    font-weight: bold;
+    font-family: "Michroma", sans-serif;
+    font-style: bold;
+  
 }
 
 /* Estilo do formulário */
@@ -599,7 +602,7 @@ tbody tr:nth-child(even) {
 
 .loader {
     border: 8px solid #f3f3f3;
-    border-top: 8px solid #3498db;
+    border-top: 8px solid #00690A;
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -624,4 +627,119 @@ tbody tr:nth-child(even) {
 
 #main-content.visible {
     opacity: 1; /* Torna o conteúdo visível */
+}
+
+.popup{
+    width: 400px;
+    height: 120px;
+    background-color: #fff;
+    border-radius: 6px;
+    position: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, 50%);
+    text-align: center;
+    padding: 0 30px 30px;
+    color: #15451a;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+    
+    
+}
+.popup img{
+    width: 50px;
+    margin-top: -12%;
+    border-radius: 50%; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+}
+.popup button{
+  margin-top: 1rem;
+  
+}
+
+.success-popup {
+    border: 2px solid #4CAF50; /* Verde para sucesso */
+}
+
+.error-popup {
+    border: 2px solid #F44336; /* Vermelho para erro */
+}
+
+.success-button {
+    background-color: #28a745; /* Cor verde para sucesso */
+}
+
+.success-button:hover {
+    background-color: #218838; /* Tom de verde mais escuro no hover */
+}
+
+.error-button {
+    background-color: #dc3545; /* Cor vermelha para erro */
+}
+
+.error-button:hover {
+    background-color: #c82333; /* Tom de vermelho mais escuro no hover */
+}
+.contatos {
+    font-size: 18px;
+    justify-content: space-around;
+    display: flex;
+    gap: 12px;
+    padding-left: 980px; /* Corrigido de 1000px para 100px para um posicionamento mais razoável */
+    color: #15451a;
+}
+
+.contatos p {
+    margin-top: -0.3rem;
+}
+
+.contatos a {
+    text-decoration: none; /* Remove o sublinhado dos links */
+    color: inherit; /* Garante que os links herdem a cor dos ícones */
+}
+
+.contatos .fa-brands.fa-instagram:hover { 
+    background: linear-gradient(to right, #f9ce34, #ee2a7b, #6228d7);
+    -webkit-background-clip: text;
+    color: transparent;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+.contatos .fa-brands.fa-whatsapp:hover { 
+    
+    color:#00690A;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+.contatos .fa-solid.fa-envelope:hover { 
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(227,36,36,1) 50%, rgba(255,255,255,1) 100%);
+    -webkit-background-clip: text;
+    color: transparent;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.contatos .fa-solid.fa-phone:hover { 
+    color: #217f16;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.contatos .fa-solid.fa-location-dot:hover { 
+    color: red;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+#notification {
+    position: fixed;
+    bottom: 20px; /* Ajuste a posição conforme necessário */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #15451a; /* Cor de fundo verde */
+    color: white; /* Cor do texto */
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    z-index: 1000; /* Garante que a notificação fique acima de outros elementos */
+    font-size: 16px;
 }

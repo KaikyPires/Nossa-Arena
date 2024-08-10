@@ -56,7 +56,12 @@
             <div class="action">
                 <button type="submit" class="button">Entrar</button>
             </div>
-            <p id="error-message" style="color: red; display: none;">CPF ou senha incorretos</p>
+            <div class="popup error-popup" id="error-popup" style="display: none;">
+                <img src="../static/images/Imagem1.png">
+                <h2 class="popuph2">Dados incorretos!</h2>
+                <p id="error-message">Erro desconhecido.</p>
+                <button type="button" class="button error-button" id="closeErrorPopupBtn">Ok</button>
+            </div>
         
             
         </form>

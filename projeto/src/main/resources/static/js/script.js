@@ -1,19 +1,64 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const formulario = document.querySelector("form");
-    const Icpf = document.querySelector("#cpf");
-    const Inome = document.querySelector("#nome");
-    const Itelefone = document.querySelector("#telefone");
-    const Inascimento = document.querySelector("#nascimento");
+    const formularioCadastro = document.querySelector("form");
+    const IcpfCadastro = document.querySelector("#cpf");
+    const InomeCadastro = document.querySelector("#nome");
+    const ItelefoneCadastro = document.querySelector("#telefone");
+    const InascimentoCadastro = document.querySelector("#nascimento");
+
+    const successPopup = document.getElementById('success-popup');
+    const errorPopup = document.getElementById('error-popup');
+    const errorMessage = document.getElementById('error-message');
+
+    function showSuccessPopup() {
+        successPopup.style.display = 'block';
+    }
+
+    function showErrorPopup(message) {
+        errorMessage.textContent = message;
+        errorPopup.style.display = 'block';
+    }
+
+    function validarCpf(cpf) {
+        const cpfRegex = /^[0-9]{11}$/;
+        return cpfRegex.test(cpf);
+    }
+
+    function validarNome(nome) {
+        const nomeRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/; // Apenas letras e espaços
+        return nomeRegex.test(nome);
+    }
+
+    function validarTelefone(telefone) {
+        const telefoneRegex = /^[0-9]{10,11}$/;
+        return telefoneRegex.test(telefone);
+    }
 
     function cadastrar() {
-        const userData = {
-            cpf: Icpf.value,
-            nome: Inome.value,
-            telefone: Itelefone.value,
-            nascimento: Inascimento.value
-        };
+        const cpfValido = validarCpf(IcpfCadastro.value);
+        const nomeValido = validarNome(InomeCadastro.value);
+        const telefoneValido = validarTelefone(ItelefoneCadastro.value);
 
-        console.log("Dados a serem enviados:", userData);
+        if (!cpfValido) {
+            showErrorPopup('CPF inválido. Deve conter exatamente 11 dígitos.');
+            return;
+        }
+
+        if (!nomeValido) {
+            showErrorPopup('Nome inválido. Use apenas letras e espaços.');
+            return;
+        }
+
+        if (!telefoneValido) {
+            showErrorPopup('Telefone inválido. Deve conter 10 ou 11 dígitos.');
+            return;
+        }
+
+        const userData = {
+            cpf: IcpfCadastro.value,
+            nome: InomeCadastro.value,
+            telefone: ItelefoneCadastro.value,
+            nascimento: InascimentoCadastro.value
+        };
 
         fetch("http://localhost:8080/usuarios", {
             headers: {
@@ -25,45 +70,66 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(function (res) {
             if (!res.ok) {
-              
-                throw new Error('Dados invalidos');
+                throw new Error('Dados inválidos');
             }
             return res.json();
         })
         .then(function (data) {
-            console.log("Resposta do servidor:", data);
+            showSuccessPopup();
+            limparCadastro();
         })
         .catch(function (error) {
-            const errorMessage = document.getElementById('error-message');
-                errorMessage.style.display = 'block';
-                errorMessage.textContent = error.message;
+            showErrorPopup(error.message);
         });
     }
 
-    function limpar() {
-        Icpf.value = "";
-        Inome.value = "";
-        Itelefone.value = "";
-        Inascimento.value = "";
+    function limparCadastro() {
+        IcpfCadastro.value = "";
+        InomeCadastro.value = "";
+        ItelefoneCadastro.value = "";
+        InascimentoCadastro.value = "";
     }
 
-    formulario.addEventListener('submit', function (event) {
-        event.preventDefault(); // Impede o envio do formulário padrão
-        cadastrar(); // Chama a função de cadastro
-        limpar(); // Limpa o formulário após enviar
-    });
-});
+    if (formularioCadastro) {
+        formularioCadastro.addEventListener('submit', function (event) {
+            event.preventDefault();
+            cadastrar();
+        });
+    }
 
+    const closeSuccessPopupBtn = document.getElementById('closeSuccessPopupBtn');
+    const closeErrorPopupBtn = document.getElementById('closeErrorPopupBtn');
 
-document.addEventListener('DOMContentLoaded', function () {
-    const formulario = document.querySelector("form");
-    const Icpf = document.querySelector("#cpf");
-    const Isenha = document.querySelector("#senha");
+    if (closeSuccessPopupBtn) {
+        closeSuccessPopupBtn.addEventListener('click', function () {
+            successPopup.style.display = 'none';
+        });
+    }
+
+    if (closeErrorPopupBtn) {
+        closeErrorPopupBtn.addEventListener('click', function () {
+            errorPopup.style.display = 'none';
+        });
+    }
+
+    // Login Script
+    const formularioLogin = document.querySelector("#loginForm");
+    const IcpfLogin = document.querySelector("#cpf");
+    const IsenhaLogin = document.querySelector("#senha");
+
+    if (formularioLogin) {
+        formularioLogin.addEventListener('submit', function (event) {
+            event.preventDefault();
+            login();
+        });
+    } else {
+        console.error("O formulário com ID 'loginForm' não foi encontrado.");
+    }
 
     function login() {
         const loginData = {
-            cpf: Icpf.value,
-            senha: Isenha.value
+            cpf: IcpfLogin.value,
+            senha: IsenhaLogin.value
         };
 
         fetch("http://localhost:8080/usuarios/login", {
@@ -76,51 +142,32 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(response => {
             if (response.ok) {
-               window.location.href = 'loading.html';
-                
+                window.location.href = 'loading.html';
             } else {
-                return response.text(text => { throw new Error(text); }); // Lê a mensagem de erro
+                showErrorPopup(error.message);
             }
         })
-            .then(function (res) {
-                if (!res.ok) {
-                    
-                }
-                return res.text(); // Altera para .text() para obter a resposta como texto
-            })
-            .then(function (data) {
-                alert(data); // Exibe a resposta do servidor
-            })
-            .catch(function (error) {
-                //const errorMessage = document.getElementById('error-message');
-                errorMessage.style.display = 'block';
-                errorMessage.textContent = error.message;
-            });
+        .catch(function (error) {
+            showErrorPopup(error.message);
+        });
     }
-    function limparLogin() {
- 
-        Isenha.value = "";
-    }
-    
 
-    formulario.addEventListener('submit', function (event) {
-        event.preventDefault(); // Impede o envio do formulário padrão
-        login(); // Chama a função de login
-        limparLogin();
-    });
+    function togglePasswordVisibility() {
+        var senhaField = document.getElementById("senha");
+        var toggleIcon = document.getElementById("togglePassword");
+        if (senhaField.type === "password") {
+            senhaField.type = "text";
+            toggleIcon.classList.remove("fa-eye");
+            toggleIcon.classList.add("fa-eye-slash");
+        } else {
+            senhaField.type = "password";
+            toggleIcon.classList.remove("fa-eye-slash");
+            toggleIcon.classList.add("fa-eye");
+        }
+    }
+
+    const togglePasswordIcon = document.getElementById('togglePassword');
+    if (togglePasswordIcon) {
+        togglePasswordIcon.addEventListener('click', togglePasswordVisibility);
+    }
 });
-
-
-function togglePasswordVisibility() {
-    var senhaField = document.getElementById("senha");
-    var toggleIcon = document.getElementById("togglePassword");
-    if (senhaField.type === "password") {
-        senhaField.type = "text";
-        toggleIcon.classList.remove("fa-eye");
-        toggleIcon.classList.add("fa-eye-slash");
-    } else {
-        senhaField.type = "password";
-        toggleIcon.classList.remove("fa-eye-slash");
-        toggleIcon.classList.add("fa-eye");
-    }
-}

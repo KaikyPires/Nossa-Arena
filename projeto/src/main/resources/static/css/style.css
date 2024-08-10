@@ -43,7 +43,7 @@ main {
     background-color: white;
     z-index: 3;
     position: relative;
-    transform: translateY(10%);
+    transform: translateY(17%);
 }
 
 aside {
@@ -70,7 +70,7 @@ main {
     padding: 4rem;
     border-radius: 3rem;
     z-index: 10; /* Garante que o conteúdo esteja acima do slider */
-    box-shadow: 0 60px 90px rgba(0, 0, 0, 0.6); /* Adiciona a sombra */
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8); /* Adiciona a sombra */
 
 }
 
@@ -79,6 +79,7 @@ main h2 {
     max-width: 43rem;
     font-size: 3.6rem;
     font-weight: 500;
+    margin-top: 1.5rem;
 }
 
 main .action {
@@ -87,7 +88,7 @@ main .action {
 }
 
 main .action a {
-    background-color: #65B307;
+    background-color: #00690A;
     height:6.5rem;
     font-size: 2.4rem;
     border-radius: 2rem;
@@ -96,12 +97,12 @@ main .action a {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 2rem;
+    margin-top: 5.1rem;
 }
 
 main .action a + a {
     background-color: #00690A;
-    margin-top: 4rem;
+    margin-top: 6rem;
 }
 
 main footer p {
@@ -177,7 +178,7 @@ main footer a {
     background-color: #005508;
 }
 .action a:hover{
-    background-color: #005508;
+    background-color: #65B307;
 }
 
 aside h1 {
@@ -310,4 +311,55 @@ p {
 
 .slider_content button:hover {
     background-color: #e0e0e0;
+}
+
+.popup{
+    width: 400px;
+    height: 170px;
+    background-color: #fff;
+    border-radius: 6px;
+    position: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, 50%);
+    text-align: center;
+    padding: 0 30px 30px;
+    color: #15451a;
+    
+    
+}
+.popup img{
+    width: 100px;
+    margin-top: -20%;
+    border-radius: 50%; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+}
+.popup button{
+  margin-top: 2rem;
+  
+}
+
+.success-popup {
+    border: 2px solid #4CAF50; /* Verde para sucesso */
+}
+
+.error-popup {
+    border: 2px solid #F44336; /* Vermelho para erro */
+}
+
+.success-button {
+    background-color: #28a745; /* Cor verde para sucesso */
+}
+
+.success-button:hover {
+    background-color: #218838; /* Tom de verde mais escuro no hover */
+}
+
+.error-button {
+    background-color: #dc3545; /* Cor vermelha para erro */
+}
+
+.error-button:hover {
+    background-color: #c82333; /* Tom de vermelho mais escuro no hover */
 }
