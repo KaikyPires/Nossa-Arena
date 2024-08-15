@@ -8,14 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import br.com.criandoapi.projeto.dto.UsuarioDTO;
 import br.com.criandoapi.projeto.model.LoginRequest;
 import br.com.criandoapi.projeto.model.Usuario;
 import br.com.criandoapi.projeto.repository.InterfaceUsuario;
 import br.com.criandoapi.projeto.service.UsuarioService;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://127.0.0.1:5502")
 @RequestMapping("/usuarios")
 public class UsuarioController {
 

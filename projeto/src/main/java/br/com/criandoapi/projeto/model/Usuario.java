@@ -21,8 +21,14 @@ public class Usuario {
 
     @Column(name = "nascimento", columnDefinition = "DATE", nullable = false)
     private String nascimento;
+    
+    @Column(name = "Quantidade_Partidas", nullable = false)
+    private String quantidadePartidas; 
+   
 
-    // Getters e Setters
+   
+
+   
     public String getCpf() {
         return cpf;
     }
@@ -53,6 +59,14 @@ public class Usuario {
 
     public void setNascimento(String nascimento) {
         this.nascimento = nascimento;
+    }
+
+    public String getQuantidadePartidas() {
+        return quantidadePartidas;
+    }
+
+    public void setQuantidadePartidas(String quantidadePartidas) {
+        this.quantidadePartidas = quantidadePartidas;
     }
 }
     

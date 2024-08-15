@@ -59,12 +59,7 @@
                           <span class="item-description">Jogadores</span>
                       </a>
                   </li>
-                  <li class="side-item">
-                      <a href="#">
-                          <i class="fa-solid fa-image"></i>
-                          <span class="item-description">Imagens</span>
-                      </a>
-                  </li>
+
                   <li class="side-item">
                       <a href="#">
                           <i class="fa-solid fa-gear"></i>
@@ -135,29 +130,32 @@
                     <h1>Dashboards</h1>
                     <span>Acesso a do documentação explicativa.</span>
                     <button>Sobre</button>
+                    
                   </div>
             
                   <div class="history_lists">
-                    <div class="list1">
-                      <div class="row">
-                        <h4>History</h4>
+                    
                        
-                      </div>
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>CPF</th>
-                            <th>Nome</th>
-                            <th>QUANTIDADE_PARTIDAS</th>
+                    
+                        <div class="table-container">
+                          <h4>History</h4>  
+                          <table id="usuariosTable">
                             
-                          </tr>
-                        </thead>
-                        <tbody>
-                          
-                        </tbody>
-                      </table>
-                    </div>
-            
+                              <thead>
+                                  <tr>
+                                      <th>CPF</th>
+                                      <th>Nome</th>
+                                      <th>Telefone</th>
+                                      <th>Nascimento</th>
+                                      <th>quantidadePartidas</th>
+                                    
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                 
+                              </tbody>
+                          </table>
+                      </div>
                     <div class="list2">
                       <div class="row">
                         <h4>Documnets</h4>
@@ -221,7 +219,7 @@
                   <div class="balance">
                     <i class="fas fa-dollar icon"></i>
                     <div class="info">
-                      <h5>Dollar</h5>
+                      <h5>Receita:</h5>
                       <span><i class="fas fa-dollar"></i>25,000.00</span>
                     </div>
                   </div>
@@ -230,7 +228,7 @@
                     <i class="fa-solid fa-rupee-sign icon"></i>
                     <div class="info">
                       <h5>PKR</h5>
-                      <span><i class="fa-solid fa-rupee-sign"></i>300,000.00</span>
+                      <span><i class="fa-solid fa-rupee-sign" id="resultadoTotal"></i></span>
                     </div>
                   </div>
             

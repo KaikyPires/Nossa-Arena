@@ -57,7 +57,8 @@ document.addEventListener('DOMContentLoaded', function () {
             cpf: IcpfCadastro.value,
             nome: InomeCadastro.value,
             telefone: ItelefoneCadastro.value,
-            nascimento: InascimentoCadastro.value
+            nascimento: InascimentoCadastro.value,
+            quantidadePartidas: "0"  // Adicionando o campo quantidadePartidas com valor inicial de 0
         };
 
         fetch("http://localhost:8080/usuarios", {
@@ -111,6 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
             errorPopup.style.display = 'none';
         });
     }
+});
 
     // Login Script
     const formularioLogin = document.querySelector("#loginForm");
@@ -170,4 +172,3 @@ document.addEventListener('DOMContentLoaded', function () {
     if (togglePasswordIcon) {
         togglePasswordIcon.addEventListener('click', togglePasswordVisibility);
     }
-});

@@ -23,9 +23,10 @@ public class UsuarioService {
     }
 
     public List<Usuario> listarUsuario() {
-        List<Usuario> lista = usuarioRepository.findAll();
+        List<Usuario> lista = usuarioRepository.findAllOrderByQuantidadePartidas();
         return lista;
     }
+    
 
     public Usuario criaUsuario(Usuario usuario) {
         Usuario usuarioNovo = usuarioRepository.save(usuario);
@@ -41,5 +42,5 @@ public class UsuarioService {
         // Checa CPF e senha diretamente, sem acessar o banco de dados
         return "123456".equals(cpf) && "admin".equals(senha);
     }
-
+  
 }

@@ -204,11 +204,13 @@ header {
     z-index: 1; /* Fica acima da sidebar e do conteúdo principal */
     height: 65px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    
 }
 
 header h1 {
     padding-left: 12rem;
     margin: 0;
+    font-family: "Michroma", sans-serif;
 }
 
 header img {
@@ -314,6 +316,11 @@ main form input, main form select {
 
 
 
+
+
+
+
+
 /* Ajustes de responsividade */
 @media screen and (max-width: 768px) {
     main {
@@ -342,6 +349,7 @@ main form input, main form select {
     max-width: 600px; /* Largura máxima */
     margin: 0 auto; /* Centraliza o contêiner horizontalmente */
     position: relative;
+
 }
 main form {
     font-family: "Michroma", sans-serif;
@@ -383,25 +391,34 @@ main form {
     
 }
 .table-container {
-    display: flex;
+    
     justify-content: center; /* Centraliza horizontalmente */
-     
-    padding: 10%;
+    overflow: auto;
+  
+    max-height: 400px;
 }
 
 table {
-    width: 500px;
+
     border-collapse: collapse;
     margin: 1em 0; 
-   
-    height: 100px;
+    overflow:scroll;
+    height: 60px;
+    font-size: 12px;
 
+}
+
+.table-jogador {
+    padding-left: 30%;
+    justify-content: center; /* Centraliza horizontalmente */
+    overflow: auto;
+    max-height: 400px;
+    
 }
 
 
 
 th, td {
-   
     border: 1px solid #d1c1c1;
     padding: 0.8rem;
     text-align: left;
@@ -417,6 +434,44 @@ tb{
 tbody tr:nth-child(even) {
     
     background-color: #f9f9f9;
+}
+.edit-btn {
+    background-color: #65B307; /* Verde */
+    color: white; /* Texto branco */
+    border: none; /* Remove a borda padrão */
+    padding: 10px 20px; /* Espaçamento interno */
+    text-align: center; /* Alinhamento do texto */
+    text-decoration: none; /* Remove o sublinhado */
+    display: inline-block; /* Exibição em linha com bloco */
+    font-size: 12px; /* Tamanho da fonte */
+    margin: 4px 2px; /* Margem */
+    cursor: pointer; /* Cursor em forma de mão ao passar o mouse */
+    border-radius: 4px; /* Bordas arredondadas */
+    transition: background-color 0.3s; /* Transição suave na cor de fundo */
+    width: 100%;
+}
+
+.edit-btn:hover {
+    background-color: #45a049; /* Cor mais escura ao passar o mouse */
+}
+.delete-btn {
+    background-color: #f44336; /* Vermelho */
+    color: white; /* Texto branco */
+    border: none; /* Remove a borda padrão */
+    padding: 10px 20px; /* Espaçamento interno */
+    text-align: center; /* Alinhamento do texto */
+    text-decoration: none; /* Remove o sublinhado */
+    display: inline-block; /* Exibição em linha com bloco */
+    font-size: 12px; /* Tamanho da fonte */
+    margin: 4px 2px; /* Margem */
+    cursor: pointer; /* Cursor em forma de mão ao passar o mouse */
+    border-radius: 4px; /* Bordas arredondadas */
+    transition: background-color 0.3s; /* Transição suave na cor de fundo */
+    width: 100%;
+}
+
+.delete-btn:hover {
+    background-color: #e53935; /* Cor mais escura ao passar o mouse */
 }
 
 
@@ -544,6 +599,7 @@ tbody tr:nth-child(even) {
     border-radius: 8px;
     padding: 0.5rem 1rem 1rem 3rem;
     background: #65B307;
+    margin-bottom: 30px;
     
   }
   .promo_card h1, .promo_card span, button{
@@ -696,6 +752,7 @@ tbody tr:nth-child(even) {
 .contatos a {
     text-decoration: none; /* Remove o sublinhado dos links */
     color: inherit; /* Garante que os links herdem a cor dos ícones */
+    transition: transform 0.3s, color 0.3s;
 }
 
 .contatos .fa-brands.fa-instagram:hover { 
@@ -730,16 +787,43 @@ tbody tr:nth-child(even) {
     transform: scale(1.05);
     cursor: pointer;
 }
+
 #notification {
     position: fixed;
-    bottom: 20px; /* Ajuste a posição conforme necessário */
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #15451a; /* Cor de fundo verde */
-    color: white; /* Cor do texto */
+    background-color: #15451a;
+    color: white;
     padding: 10px 20px;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    z-index: 1000; /* Garante que a notificação fique acima de outros elementos */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
     font-size: 16px;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+#cpf-search {
+    margin-bottom: 10px;
+    padding: 5px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 300px;
+    border-radius: 8px;
+}
+
+.search-result {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+    
+}
+#cpf-search i {
+    position: absolute;
+    left: 1rem; /* Espaçamento da borda esquerda */
+    top: 50%; /* Centraliza verticalmente */
+    transform: translateY(-100%); /* Ajusta para centralização vertical */
+    font-size: 1.6rem; /* Tamanho do ícone */
+    color: #00690A; /* Cor do ícone */
 }
