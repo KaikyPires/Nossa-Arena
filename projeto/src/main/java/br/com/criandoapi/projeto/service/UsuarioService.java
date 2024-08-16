@@ -1,5 +1,6 @@
 package br.com.criandoapi.projeto.service;
 
+import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +39,14 @@ public class UsuarioService {
         return editUsuario;
     }
 
-    public boolean autenticar(String cpf, String senha) {
-        // Checa CPF e senha diretamente, sem acessar o banco de dados
-        return "123456".equals(cpf) && "admin".equals(senha);
+
+
+    public Usuario incrementarQuantidadePartidas(String cpf) {
+        Usuario usuario = usuarioRepository.findById(cpf).orElse(null);
+        if (usuario != null) {
+            usuario.setQuantidadePartidas(usuario.getQuantidadePartidas() + 1);
+            return usuarioRepository.save(usuario);
+        }
+        return null; // Retorna null se o usuário não for encontrado
     }
-  
 }

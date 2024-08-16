@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import br.com.criandoapi.projeto.model.LoginRequest;
 import br.com.criandoapi.projeto.model.Usuario;
 import br.com.criandoapi.projeto.repository.InterfaceUsuario;
+import br.com.criandoapi.projeto.repository.UsuarioRepository;
 import br.com.criandoapi.projeto.service.UsuarioService;
 
 @RestController
@@ -60,5 +61,25 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("CPF ou senha incorretos");
         }
     }
+     @Autowired
+    private UsuarioRepository usuarioRepository;
+
+
+
+    @PutMapping("/{cpf}/incrementar-partidas")
+    public ResponseEntity<Usuario> incrementarPartidas(@PathVariable String cpf) {
+        Optional<Usuario> optionalUsuario = usuarioRepository.findById(cpf);
+        if (optionalUsuario.isPresent()) {
+            Usuario usuario = optionalUsuario.get();
+            // Garantir que quantidadePartidas é tratada como um número inteiro
+            int quantidadePartidasAtual = Integer.parseInt(usuario.getQuantidadePartidas());
+            usuario.setQuantidadePartidas(String.valueOf(quantidadePartidasAtual + 1));
+            usuarioRepository.save(usuario);
+            return ResponseEntity.ok(usuario);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
 
 }

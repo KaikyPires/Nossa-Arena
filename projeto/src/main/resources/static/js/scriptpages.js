@@ -16,10 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <td>${usuario.telefone}</td>
                     <td>${usuario.nascimento}</td>
                     <td>${usuario.quantidadePartidas}</td>
-                     <td>
-                        <button class="edit-btn" data-cpf="${usuario.cpf}">Editar</button>
-                        <button class="delete-btn" data-cpf="${usuario.cpf}">Excluir</button>
-                    </td>
+                    
                 `;
                 tableBody.appendChild(row);
             });
@@ -274,35 +271,90 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 });
 
-function populateTable(data) {
-    const tableBody = document.querySelector('#usuariosTable tbody');
-    tableBody.innerHTML = ''; // Limpa o corpo da tabela antes de adicionar novas linhas
 
-    data.forEach(usuario => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${usuario.cpf}</td>
-            <td>${usuario.nome}</td>
-            <td>${usuario.telefone}</td>
-            <td>${usuario.nascimento}</td>
-            <td>${usuario.quantidadePartidas}</td>
-            <td>
-                <button class="edit-btn" data-cpf="${usuario.cpf}">Editar</button>
-                <button class="delete-btn" data-cpf="${usuario.cpf}">Excluir</button>
-            </td>
-        `;
-        tableBody.appendChild(row);
-    });
+document.addEventListener('DOMContentLoaded', function() {
+    // Função para atualizar a tabela de usuários
+    function populateTable(data) {
+        const tableBody = document.querySelector('#usuariosTable tbody');
+        tableBody.innerHTML = ''; // Limpa o corpo da tabela antes de adicionar novas linhas
 
-    // Adiciona eventos para os botões de editar e excluir
-    document.querySelectorAll('.edit-btn').forEach(button => {
-        button.addEventListener('click', handleEdit);
-    });
+        data.forEach(usuario => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${usuario.cpf}</td>
+                <td>${usuario.nome}</td>
+                <td>${usuario.telefone}</td>
+                <td>${usuario.nascimento}</td>
+                <td class="quantidade-partidas">${usuario.quantidadePartidas}</td>
+                <td>
+                    <button class="edit-btn" data-cpf="${usuario.cpf}">Editar</button>
+                    <button class="delete-btn" data-cpf="${usuario.cpf}">Excluir</button>
+                    <button class="incrementar-btn" data-cpf="${usuario.cpf}">Adicionar Partida</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
 
-    document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', handleDelete);
-    });
-}
+        // Adiciona eventos para os botões de editar, excluir e incrementar partidas
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', handleEdit);
+        });
+
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', handleDelete);
+        });
+
+        document.querySelectorAll('.incrementar-btn').forEach(button => {
+            button.addEventListener('click', handleIncrementar);
+        });
+
+        calcularEAtualizarResultado(data);
+    }
+
+    // Função para manipular o incremento de partidas
+    function handleIncrementar(event) {
+        const cpf = event.target.getAttribute('data-cpf');
+        fetch(`http://localhost:8080/usuarios/${cpf}/incrementar-partidas`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao incrementar partidas');
+            }
+            return response.json();
+        })
+        .then(usuario => {
+            // Atualiza a quantidade de partidas no frontend
+            const row = event.target.closest('tr');
+            const quantidadePartidasElem = row.querySelector('.quantidade-partidas');
+            
+            if (quantidadePartidasElem) {
+                // Converte o valor atual para número, incrementa e atualiza o conteúdo
+                const quantidadePartidasAtual = parseInt(quantidadePartidasElem.textContent, 10);
+                quantidadePartidasElem.textContent = quantidadePartidasAtual + 1;
+            } else {
+                console.error('Elemento com a classe quantidade-partidas não encontrado.');
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao incrementar partidas:', error);
+        });
+    }
+
+    // Carregar dados iniciais
+    fetch('http://localhost:8080/usuarios')
+        .then(response => response.json())
+        .then(data => {
+            data.sort((a, b) => b.quantidadePartidas - a.quantidadePartidas);
+            populateTable(data);
+        })
+        .catch(error => {
+            console.error('Erro ao carregar os dados:', error);
+        });
+});
 
 function searchCPF() {
     const searchValue = document.getElementById('cpf-search').value.toLowerCase();
@@ -317,16 +369,4 @@ function searchCPF() {
             row.style.display = 'none';
         }
     });
-}
-
-function handleEdit(event) {
-    // Função para editar o usuário
-    const cpf = event.target.getAttribute('data-cpf');
-    console.log('Edit user with CPF:', cpf);
-}
-
-function handleDelete(event) {
-    // Função para excluir o usuário
-    const cpf = event.target.getAttribute('data-cpf');
-    console.log('Delete user with CPF:', cpf);
 }

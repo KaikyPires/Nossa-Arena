@@ -269,15 +269,19 @@ span {
 }
 .page-title {
     margin-top: 1rem;
-    padding-left: 120px;    
+    padding-left: 125px;    
     font-size: 3.6rem;
-    font-weight: 500;
+    text-shadow: 0px 2px 0px #f9f9f9;
     padding-left: 42%;
     margin-bottom: 1.6rem; /* Espaço entre o título e o formulário */
-    font-family: "Michroma", sans-serif;
-    font-style: bold;
-  
+
 }
+
+
+
+
+
+
 
 /* Estilo do formulário */
 
@@ -416,8 +420,6 @@ table {
     
 }
 
-
-
 th, td {
     border: 1px solid #d1c1c1;
     padding: 0.8rem;
@@ -473,8 +475,24 @@ tbody tr:nth-child(even) {
 .delete-btn:hover {
     background-color: #e53935; /* Cor mais escura ao passar o mouse */
 }
-
-
+.incrementar-btn {
+    background-color: #00690A; /* Verde */
+    color: white; /* Texto branco */
+    border: none; /* Remove a borda padrão */
+    padding: 10px 20px; /* Espaçamento interno */
+    text-align: center; /* Alinhamento do texto */
+    text-decoration: none; /* Remove o sublinhado */
+    display: inline-block; /* Exibição em linha com bloco */
+    font-size: 12px; /* Tamanho da fonte */
+    margin: 4px 2px; /* Margem */
+    cursor: pointer; /* Cursor em forma de mão ao passar o mouse */
+    border-radius: 4px; /* Bordas arredondadas */
+    transition: background-color 0.3s; /* Transição suave na cor de fundo */
+    width: 100%;
+}
+.incrementar-btn:hover {
+    background-color: #024a09; /* Cor mais escura ao passar o mouse */
+}
 
 
 .sidebar {
@@ -811,14 +829,28 @@ tbody tr:nth-child(even) {
     width: 100%;
     max-width: 300px;
     border-radius: 8px;
+    padding-left: 30px;
 }
 
 .search-result {
     margin-top: 10px;
     font-size: 14px;
-    color: #333;
+
+
     
 }
+.search-result i{
+    margin-top: 10px;
+    font-size: 14px;
+    left: 1rem; /* Espaçamento da borda esquerda */
+    top: 50%; /* Centraliza verticalmente */
+    transform: translateX(160%); /* Ajusta para centralização vertical */
+    font-size: 1.6rem; /* Tamanho do ícone */
+    color: #00690A;
+    
+}
+
+
 #cpf-search i {
     position: absolute;
     left: 1rem; /* Espaçamento da borda esquerda */
@@ -826,4 +858,5 @@ tbody tr:nth-child(even) {
     transform: translateY(-100%); /* Ajusta para centralização vertical */
     font-size: 1.6rem; /* Tamanho do ícone */
     color: #00690A; /* Cor do ícone */
+
 }
