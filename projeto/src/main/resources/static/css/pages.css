@@ -13,6 +13,7 @@ body {
     min-height: 100vh;
     background-color: #e3e9f7;
     width: 100%;
+    
 }
 
 main {
@@ -203,7 +204,7 @@ header {
     align-items: center;
     z-index: 1; /* Fica acima da sidebar e do conteúdo principal */
     height: 65px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     
 }
 
@@ -215,7 +216,7 @@ header h1 {
 
 header img {
     max-width: 100px; /* Ajuste o tamanho conforme necessário */
-    padding-right: 10px;
+    padding-right: 12px;
    
 }
 
@@ -248,6 +249,7 @@ header img {
     top: 30px; /* Posição em relação ao topo */
     width: 1390px;
     padding-top: 50px;
+    border-color: 0.3 #00690A;
 }
 
 /* Ajuste conforme necessário */
@@ -268,8 +270,8 @@ span {
     color: #00690A;
 }
 .page-title {
-    margin-top: 1rem;
-    padding-left: 125px;    
+    margin-top: 2.5rem;
+    padding-left: 124px;    
     font-size: 3.6rem;
     text-shadow: 0px 2px 0px #f9f9f9;
     padding-left: 42%;
@@ -300,7 +302,7 @@ main form input, main form select {
 /* Ajuste do botão */
 .button {
     background-color: #65B307;
-    height: 4.2rem;
+    height: 5.2rem;
     font-size: 2.4rem;
     border-radius: 2rem;
     color: white;
@@ -313,11 +315,13 @@ main form input, main form select {
     border: none; /* Remove a borda padrão do botão */
     transition: background-color 0.3s ease;
     width: calc(100% - 2rem); /* Ajusta a largura do botão */
-    margin-bottom: 2.6rem;
+    margin-bottom: 2.4rem;
     padding: 0.5rem;
 }
 
-
+.button:hover{
+    transform: scale(1.02);
+}
 
 
 
@@ -350,7 +354,7 @@ main form input, main form select {
     box-shadow: 0 40px 50px rgba(0, 0, 0, 0.6);/* Sombra leve */
     padding: 20px; /* Espaçamento interno */
     width: 100%; /* Largura total do contêiner */
-    max-width: 600px; /* Largura máxima */
+    max-width: 700px; /* Largura máxima */
     margin: 0 auto; /* Centraliza o contêiner horizontalmente */
     position: relative;
 
@@ -360,8 +364,10 @@ main form {
     font-weight: bolder;
    width: 100%;
     margin: auto; /* Centraliza o formulário horizontalmente */
-    margin-bottom: 0.4rem; /* Espaçamento abaixo do label */
+    margin-bottom: 0.5rem; /* Espaçamento abaixo do label */
     color: #00690A; 
+    font-size: 1.4rem;
+
 }
 .input-container i {
     position: absolute;
@@ -383,11 +389,11 @@ main form {
 .input-container input   {
     width: 100%; /* Ocupa toda a largura do container */
     height: 3.8rem; /* Altura do campo de entrada */
-    padding-left: 3.5rem; /* Espaçamento para o ícone */
+    padding-left: 3.9rem; /* Espaçamento para o ícone */
     background-color: white;
     border: 0.1rem solid rgba(0, 0, 0, 0.15);
     border-radius: 1.2rem;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
 }
 .input-container {
     position: relative;
