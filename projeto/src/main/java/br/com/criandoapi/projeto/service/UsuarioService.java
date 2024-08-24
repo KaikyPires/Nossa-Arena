@@ -1,6 +1,6 @@
 package br.com.criandoapi.projeto.service;
 
-import org.apache.el.stream.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

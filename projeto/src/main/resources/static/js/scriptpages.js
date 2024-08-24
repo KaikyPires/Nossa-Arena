@@ -1,282 +1,82 @@
-document.getElementById('open_btn').addEventListener('click', function () {
-    document.getElementById('sidebar').classList.toggle('open-sidebar');
-});
-
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('http://localhost:8080/usuarios')
-        .then(response => response.json())
-        .then(data => {
-            data.sort((a, b) => b.quantidadePartidas - a.quantidadePartidas);
-            const tableBody = document.querySelector('#usuariosTable tbody');
-            data.forEach(usuario => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${usuario.cpf}</td>
-                    <td>${usuario.nome}</td>
-                    <td>${usuario.telefone}</td>
-                    <td>${usuario.nascimento}</td>
-                    <td>${usuario.quantidadePartidas}</td>
-                    
-                `;
-                tableBody.appendChild(row);
-            });
-            calcularEAtualizarResultado(data);
-                
-            // Adiciona os eventos de clique para os botões
-            document.querySelectorAll('.save-btn').forEach(button => {
-                button.addEventListener('click', handleSave);
-            });
+    // Função para calcular o valor total das partidas multiplicado por 200 e atualizar o HTML
+    function calcularEAtualizarResultado(data) {
+        function calcularValorPartidas(quantidadePartidas) {
+            return quantidadePartidas * 200;
+        }
 
-            document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', handleDelete);
-            });
-        })
-            .catch(error => {
-                console.error('Erro ao carregar os dados:', error);
-            });
-    });
-    function handleSave(event) {
+        let resultadoTotal = 0;
+
+        data.forEach(usuario => {
+            const valorMultiplicado = calcularValorPartidas(usuario.quantidadePartidas);
+            resultadoTotal += valorMultiplicado;
+        });
+
+        const resultadoFormatado = resultadoTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        document.querySelector('.balance .info span').textContent = resultadoFormatado;
+    }
+
+    // Função para manipular o incremento de partidas
+    function handleIncrementar(event) {
         const cpf = event.target.getAttribute('data-cpf');
-        const row = event.target.closest('tr');
-        
-        const nome = row.querySelector('.edit-nome').value;
-        const telefone = row.querySelector('.edit-telefone').value;
-        const nascimento = row.querySelector('.edit-nascimento').value;
-        const quantidadePartidas = parseInt(row.querySelector('.edit-quantidadePartidas').value, 10);
-    
-        const usuario = { cpf, nome, telefone, nascimento, quantidadePartidas };
-    
-        fetch(`http://localhost:8080/usuarios`, {
+        fetch(`http://localhost:8080/usuarios/${cpf}/incrementar-partidas`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(usuario)
-        })
-        .then(response => {
-            if (response.ok) {
-                alert('Usuário atualizado com sucesso!');
-            } else {
-                console.error('Erro ao atualizar o usuário');
             }
         })
-        .catch(error => {
-            console.error('Erro ao atualizar o usuário:', error);
-        });
-    }
-    
-    // Função para lidar com a exclusão
-    function handleDelete(event) {
-        const cpf = event.target.getAttribute('data-cpf');
-        fetch(`http://localhost:8080/usuarios/${cpf}`, {
-            method: 'DELETE'
-        })
-        .then(response => {
-            if (response.ok) {
-                // Remove a linha da tabela
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao incrementar partidas');
+                }
+                return response.json();
+            })
+            .then(usuario => {
                 const row = event.target.closest('tr');
-                row.remove();
-                alert('Usuário excluído com sucesso!');
-            } else {
-                console.error('Erro ao excluir o usuário');
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao excluir o usuário:', error);
-        });
-    }
-    // Função para lidar com a edição
-    function handleEdit(event) {
-        const cpf = event.target.getAttribute('data-cpf');
-        // Redireciona ou exibe um formulário para edição
-        window.location.href = `/edit_usuario.html?cpf=${cpf}`;
-    }
-    
-    // Função para lidar com a exclusão
-    function handleDelete(event) {
-        const cpf = event.target.getAttribute('data-cpf');
-        fetch(`http://localhost:8080/usuarios/${cpf}`, {
-            method: 'DELETE'
-        })
-        .then(response => {
-            if (response.ok) {
-                // Remove a linha da tabela
-                const row = event.target.closest('tr');
-                row.remove();
-            } else {
-                console.error('Erro ao excluir o usuário');
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao carregar os dados:', error);
-        });
-};
+                const quantidadePartidasElem = row.querySelector('.quantidade-partidas');
 
-document.addEventListener("DOMContentLoaded", function() {
-    const loadingScreen = document.getElementById('loading-screen');
-    const mainContent = document.querySelector('main');
-
-    // Simule um atraso para demonstrar a tela de carregamento
-    setTimeout(() => {
-        loadingScreen.style.display = 'none'; // Oculta a tela de carregamento
-        mainContent.style.display = 'block'; // Exibe o conteúdo principal
-    }, 1000); // Ajuste o tempo conforme necessário
-});
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    fetch('http://localhost:8080/usuarios/partidas')
-        .then(response => response.json())
-        .then(data => {
-            const tableBody = document.querySelector('#partidasTable tbody');
-            data.forEach(usuario => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${usuario.cpf}</td>
-                    <td>${usuario.quantidadePartidas}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        })
-        .catch(error => console.error('Error:', error));
-});
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector("form");
-    const container = document.querySelector("#data-container");
-
-    if (form && container) {
-        fetch('http://localhost:8080/usuarios/partidas')
-            .then(response => response.json())
-            .then(data => {
-                // Supondo que data é uma lista de itens
-                data.forEach(item => {
-                    const div = document.createElement('div');
-                    div.textContent = item.nome; // Exemplo de conteúdo
-                    container.appendChild(div);
-                });
+                if (quantidadePartidasElem) {
+                    const quantidadePartidasAtual = parseInt(quantidadePartidasElem.textContent, 10);
+                    quantidadePartidasElem.textContent = quantidadePartidasAtual + 1;
+                } else {
+                    console.error('Elemento com a classe quantidade-partidas não encontrado.');
+                }
             })
             .catch(error => {
-                console.error('Erro ao carregar os dados:', error);
+                console.error('Erro ao incrementar partidas:', error);
             });
-    } else {
-        console.error('Elementos DOM não encontrados.');
-    }
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    const logoutButton = document.getElementById('logout_btn'); // Botão de logout
-    const logoutConfirmation = document.getElementById('logout-confirmation');
-    const confirmLogoutButton = document.getElementById('confirm-logout');
-    const cancelLogoutButton = document.getElementById('cancel-logout');
-    
-    // Verifica se o botão de logout e os popups existem
-    if (logoutButton && logoutConfirmation && confirmLogoutButton && cancelLogoutButton) {
-        logoutButton.addEventListener('click', function (event) {
-            event.preventDefault(); // Impede a ação padrão do botão
-            logoutConfirmation.style.display = 'block'; // Exibe o popup de confirmação
-        });
-
-        confirmLogoutButton.addEventListener('click', function () {
-            window.location.href = 'index.html'; // Redireciona para a página inicial
-        });
-
-        cancelLogoutButton.addEventListener('click', function () {
-            logoutConfirmation.style.display = 'none'; // Oculta o popup
-        });
-    } else {
-        console.error("Um ou mais elementos não foram encontrados no DOM.");
-    }
-});
-document.getElementById('phone-icon').addEventListener('click', function(event) {
-    event.preventDefault(); // Impede o comportamento padrão do link
-
-    // Número de telefone a ser copiado
-    const phoneNumber = '+55 31 99957-5269'; // Substitua pelo número desejado
-
-    // Cria um elemento de textarea temporário
-    const tempTextArea = document.createElement('textarea');
-    tempTextArea.value = phoneNumber;
-    document.body.appendChild(tempTextArea);
-
-    // Seleciona e copia o texto
-    tempTextArea.select();
-    document.execCommand('copy');
-
-    // Remove o elemento de textarea temporário
-    document.body.removeChild(tempTextArea);
-
-    
-});
-
-document.getElementById('phone-icon').addEventListener('click', function(event) {
-    event.preventDefault(); // Impede o comportamento padrão do link
-
-    // Número de telefone a ser copiado
-    const phoneNumber = '5531999575269'; // Substitua pelo número desejado
-
-    // Cria um elemento de textarea temporário
-    const tempTextArea = document.createElement('textarea');
-    tempTextArea.value = phoneNumber;
-    document.body.appendChild(tempTextArea);
-
-    // Seleciona e copia o texto
-    tempTextArea.select();
-    document.execCommand('copy');
-
-    // Remove o elemento de textarea temporário
-    document.body.removeChild(tempTextArea);
-
-    // Exibe a notificação
-    const notification = document.getElementById('notification');
-    notification.style.display = 'block';
-
-    // Oculta a notificação após 3 segundos
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 3000);
-});
-
-// Função para calcular o valor total das partidas multiplicado por 200 e atualizar o HTML
-function calcularEAtualizarResultado(data) {
-    // Função interna para multiplicar o valor das partidas
-    function calcularValorPartidas(quantidadePartidas) {
-        return quantidadePartidas * 200;
     }
 
-    let resultadoTotal = 0;
+    // Função para manipular a edição
+    function handleEdit(event) {
+        const cpf = event.target.getAttribute('data-cpf');
+        window.location.href = `/edit_usuario.html?cpf=${cpf}`;
+    }
 
-    // Calcula o valor total
-    data.forEach(usuario => {
-        const valorMultiplicado = calcularValorPartidas(usuario.quantidadePartidas);
-        resultadoTotal += valorMultiplicado;
-    });
-
-    // Atualiza o conteúdo do HTML com o resultado total
-    const resultadoFormatado = resultadoTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-    document.querySelector('.balance .info span').textContent = resultadoFormatado;
-}
-document.getElementById('open_btn').addEventListener('click', function () {
-    document.getElementById('sidebar').classList.toggle('open-sidebar');
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    fetch('http://localhost:8080/usuarios')
-        .then(response => response.json())
-        .then(data => {
-            data.sort((a, b) => b.quantidadePartidas - a.quantidadePartidas);
-            populateTable(data);
+    // Função para manipular a exclusão
+    function handleDelete(event) {
+        const cpf = event.target.getAttribute('data-cpf');
+        fetch(`http://localhost:8080/usuarios/${cpf}`, {
+            method: 'DELETE'
         })
-        .catch(error => {
-            console.error('Erro ao carregar os dados:', error);
-        });
-});
+            .then(response => {
+                if (response.ok) {
+                    const row = event.target.closest('tr');
+                    row.remove();
+                    alert('Usuário excluído com sucesso!');
+                } else {
+                    console.error('Erro ao excluir o usuário');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao excluir o usuário:', error);
+            });
+    }
 
-
-document.addEventListener('DOMContentLoaded', function() {
     // Função para atualizar a tabela de usuários
     function populateTable(data) {
         const tableBody = document.querySelector('#usuariosTable tbody');
-        tableBody.innerHTML = ''; // Limpa o corpo da tabela antes de adicionar novas linhas
+        tableBody.innerHTML = '';
 
         data.forEach(usuario => {
             const row = document.createElement('tr');
@@ -295,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
             tableBody.appendChild(row);
         });
 
-        // Adiciona eventos para os botões de editar, excluir e incrementar partidas
         document.querySelectorAll('.edit-btn').forEach(button => {
             button.addEventListener('click', handleEdit);
         });
@@ -311,39 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
         calcularEAtualizarResultado(data);
     }
 
-    // Função para manipular o incremento de partidas
-    function handleIncrementar(event) {
-        const cpf = event.target.getAttribute('data-cpf');
-        fetch(`http://localhost:8080/usuarios/${cpf}/incrementar-partidas`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao incrementar partidas');
-            }
-            return response.json();
-        })
-        .then(usuario => {
-            // Atualiza a quantidade de partidas no frontend
-            const row = event.target.closest('tr');
-            const quantidadePartidasElem = row.querySelector('.quantidade-partidas');
-            
-            if (quantidadePartidasElem) {
-                // Converte o valor atual para número, incrementa e atualiza o conteúdo
-                const quantidadePartidasAtual = parseInt(quantidadePartidasElem.textContent, 10);
-                quantidadePartidasElem.textContent = quantidadePartidasAtual + 1;
-            } else {
-                console.error('Elemento com a classe quantidade-partidas não encontrado.');
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao incrementar partidas:', error);
-        });
-    }
-
     // Carregar dados iniciais
     fetch('http://localhost:8080/usuarios')
         .then(response => response.json())
@@ -354,21 +120,120 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Erro ao carregar os dados:', error);
         });
-});
 
-function searchCPF() {
-    const searchValue = document.getElementById('cpf-search').value.toLowerCase();
-    const rows = document.querySelectorAll('#usuariosTable tbody tr');
-    let resultHTML = '';
 
-    rows.forEach(row => {
-        const cpfCell = row.querySelector('td:first-child').textContent.toLowerCase();
-        if (cpfCell.includes(searchValue)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
+
+
+        
+       // Função para abrir o modal com dados
+function openConfirmationModal(date, time, cpf) {
+    document.getElementById('selected-date').value = date;
+    document.getElementById('selected-time').value = time;
+    document.getElementById('name').value = cpf;
+    document.getElementById('confirmation-modal').style.display = 'block';
 }
 
+// Função para fechar o modal
+function closeConfirmationModal() {
+    document.getElementById('confirmation-modal').style.display = 'none';
+}
 
+// Função para enviar dados ao servidor
+function submitConfirmation() {
+    const date = document.getElementById('selected-date').value;
+    const time = document.getElementById('selected-time').value;
+    const cpf = document.getElementById('name').value;
+
+    if (!date || !time || !cpf) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
+
+    const partidaData = {
+        cpf_user: cpf,
+        data_partida: date,
+        horario: time,
+        status_pagamento: 'Pendente'
+    };
+
+    fetch('http://localhost:8080/partidas', {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(partidaData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Falha ao adicionar partida');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Partida adicionada:', data);
+        atualizarTabelaPartidas(); // Atualizar tabela com os dados mais recentes
+        closeConfirmationModal();
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao adicionar partida: ' + error.message);
+    });
+}
+        
+    // Função de abrir/fechar sidebar
+    document.getElementById('open_btn').addEventListener('click', function () {
+        document.getElementById('sidebar').classList.toggle('open-sidebar');
+    });
+
+    // Tela de carregamento
+    const loadingScreen = document.getElementById('loading-screen');
+    const mainContent = document.querySelector('main');
+
+    setTimeout(() => {
+        loadingScreen.style.display = 'none';
+        mainContent.style.display = 'block';
+    }, 1000);
+
+    // Copiar número de telefone e exibir notificação
+    document.getElementById('phone-icon').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        const phoneNumber = '5531999575269';
+        const tempTextArea = document.createElement('textarea');
+        tempTextArea.value = phoneNumber;
+        document.body.appendChild(tempTextArea);
+        tempTextArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempTextArea);
+
+        const notification = document.getElementById('notification');
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    });
+
+    // Logout com confirmação
+    const logoutButton = document.getElementById('logout_btn');
+    const logoutConfirmation = document.getElementById('logout-confirmation');
+    const confirmLogoutButton = document.getElementById('confirm-logout');
+    const cancelLogoutButton = document.getElementById('cancel-logout');
+
+    if (logoutButton && logoutConfirmation && confirmLogoutButton && cancelLogoutButton) {
+        logoutButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            logoutConfirmation.style.display = 'block';
+        });
+
+        confirmLogoutButton.addEventListener('click', function () {
+            window.location.href = 'index.html';
+        });
+
+        cancelLogoutButton.addEventListener('click', function () {
+            logoutConfirmation.style.display = 'none';
+        });
+    } else {
+        console.error("Um ou mais elementos não foram encontrados no DOM.");
+    }
+});

@@ -910,3 +910,299 @@ tbody tr:nth-child(even) {
     color: #00690A; /* Cor do ícone */
 
 }
+
+.time-picker-container {
+    width: 900px;
+    background: #FFF;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin-top: 5%;
+    left: 25%;
+  }
+  
+  h4 {
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .time-picker {
+    display: flex;
+    flex-direction: column; /* Alinha os elementos dentro de time-picker em coluna */
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ajuste conforme necessário */
+    max-width: 900px; /* Ajuste conforme necessário */
+    margin: 0 auto;
+  }
+  
+  .date-slot {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-radius: 5px;
+   gap: 30px;
+}
+.date-slot-item {
+    padding: 10px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    margin: 5px 0;
+    cursor: pointer;
+}
+  .date-slot-wrapper {
+    display:flexbox;
+    flex-direction: row; /* Exibe os itens horizontalmente */
+    justify-content: center; /* Centraliza os itens horizontalmente dentro do wrapper */
+    flex: 10; /* Garante que o wrapper use o espaço restante */
+    flex-wrap: wrap;
+    font-size: 14px;
+    
+  }
+  
+  
+  
+  .date-slot-item.active,
+  .date-slot-item:hover {
+    background: #00690A;
+    color: #FFF;
+    border-color: #00690A;
+  }
+  
+  .date-slot-day {
+    font-size: 16px;
+    color: #666;
+   
+  }
+  
+  .date-slot-date {
+    font-size: 24px;
+    color: #333;
+    gap: 10px;
+  }
+  
+  .arrow {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    background: #c0bebe;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .arrow.left {
+    left: -35px;
+  }
+  
+  .arrow.right {
+    top: 28%;
+    right: -35px;
+  }
+  
+  .arrow:after {
+    font-family: fontawesome;
+    font-size: 20px;
+    color: #FFF;
+  }
+  
+  .arrow.left:after {
+    content: '\f104';
+  }
+  
+  .arrow.right:after {
+    content: '\f105';
+  }
+  
+  .arrow:hover {
+    background: #00690A;
+  }
+  
+  .time-slot {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .time-slot-item {
+    font-size: 14px;
+    color: #666;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center;
+    cursor: pointer;
+    flex-basis: 18%;
+    transition: all 0.3s ease;
+  }
+  
+  .time-slot-item:hover,
+  .time-slot-item.picked {
+    background: #00690A;
+    border-color: #00690A;
+    color: #FFF;
+    transform: scale(1.05);
+  }
+  
+  .time-slot-item.disabled {
+    background: #ccc;
+    color: #999;
+    cursor: not-allowed;
+    border-color: #ccc;
+  }
+  .time-slot-item.selected {
+    background-color: #65B307; /* Cor de fundo quando selecionado */
+    color: #fff; /* Cor do texto quando selecionado */
+    border-color: #65B307; /* Cor da borda quando selecionado */
+}
+  /* CSS para o modal */
+  #confirmation-modal,
+  #success-modal {
+    display: none; /* Oculto por padrão */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Certifique-se de que o modal esteja acima de outros conteúdos */
+  }
+  
+  .modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+  }
+  
+  .modal-content h4 {
+    margin-top: 0;
+  }
+  
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    color: #000;
+  }
+  
+  .calendar-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px; /* Ajuste conforme necessário */
+  }
+  
+  /* Estilo para o ícone */
+  .calendar-input-container i {
+    position: absolute;
+    left: 10px; /* Ajuste conforme necessário */
+    font-size: 1.4rem; /* Ajuste conforme necessário */
+    color: #00690A; /* Cor do ícone */
+    pointer-events: none;
+    transform: translateY(-52%); /* Garante que o ícone não interfira com o clique no input */
+  }
+  
+  /* Estilo para o input */
+  .calendar-input-container input {
+    padding-left: 35px; /* Espaço para o ícone */
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 13px;
+    box-sizing: border-box; /* Inclui padding e border na largura total */
+  }
+  
+  #confirm-button {
+    cursor: pointer;
+    background-color: #65B307;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 20px;
+    display: block; /* Inicialmente oculto */
+    width: 100%;
+    height: 35  px;
+    font-size: 14px;
+  }
+  
+  #confirm-button:hover {
+    background-color: #4b8a2f;
+  }
+  
+  /* Estilo do botão Confirmar no Modal */
+  #submit-confirmation {
+    cursor: pointer;
+    background-color: #65B307;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 20px;
+    display: block; /* Inicialmente oculto */
+    width: 100%;
+  }
+  
+  #submit-confirmation:hover {
+    background-color: #4b8a2f;
+  }
+  
+  /* Estilo do modal de sucesso */
+  .done {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .done svg {
+    width: 80px;
+    height: 80px;
+    fill: none;
+  }
+  
+  .done .circ {
+    stroke: #65B307;
+  }
+  
+  .done .tick {
+    stroke: #fff;
+  }
+  
+  h1 {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .text p {
+    text-align: center;
+    font-size: 13px;
+  }
+  
+  .regards {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center; /* Centraliza o conteúdo na linha */
+  } 
+
