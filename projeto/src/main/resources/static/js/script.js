@@ -172,3 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (togglePasswordIcon) {
         togglePasswordIcon.addEventListener('click', togglePasswordVisibility);
     }
+   // Função para atualizar a página
+document.getElementById('refresh-button').addEventListener('click', () => {
+    location.reload(); // Recarrega a página
+});

@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../static/css/pages.css">
     <link rel="stylesheet" href="./../static/images/assets/fontawesome-free-6.5.2-web/fontawesome-free-6.5.2-web/css/all.css">
-    <script src="../static/js/script.js" defer></script>
+  
+    
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
    <link rel="icon" href="../static/images/WhatsApp_Image_2024-07-20_at_15.43.02-removebg-preview.png">
     <title>Nossa Arena</title>
@@ -137,127 +138,304 @@
             
                   <div class="history_lists">
                     
-                       
+                       <script>
+                        
+                       </script>
                     
                         <div class="table-container">
-                          <h4>History</h4>  
-                          <table id="usuariosTable">
-                            
-                              <thead>
-                                  <tr>
-                                      <th>CPF</th>
-                                      <th>Nome</th>
-                                      <th>Telefone</th>
-                                      <th>Nascimento</th>
-                                      <th>quantidadePartidas</th>
-                                    
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                 
-                              </tbody>
-                          </table>
-                      </div>
-                    <div class="list2">
-                      <div class="row">
-                        <h4>Documnets</h4>
+                          <h4>Histórico de Partidas</h4>  
                         
+                          <table id="partidas-table">
+                            <div class="filters">
+                              <button onclick="filterByDay()">Dia</button>
+                              <button onclick="filterByWeek()">Semana</button>
+                              <button onclick="filterByMonth()">Mês</button>
+                              <button onclick="filterByYear()">Ano</button>
+                            </div>
+                            <div class="button-container">
+                              <!-- Botão de Refresh -->
+                              <button id="refresh-button" class="btn-refresh">
+                                  <i class="fa-solid fa-arrows-rotate"></i>
+                              </button>
+                          </div>
+                            <thead>
+                              <tr>
+                                <th>ID</th>
+                                <th>CPF Usuário</th>
+                                <th>Data da Partida</th>
+                                <th>Horário</th>
+                                <th>Status do Pagamento</th>
+                                
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <!-- Linhas da tabela serão inseridas aqui via JavaScript -->
+                            </tbody>
+                          </table>
+                
                       </div>
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Title</th>
-                            <th>Type</th>
-                            <th>Uplaoded</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>1</td>
-                            <td>CNIC</td>
-                            <td>PDF</td>
-                            <td>20</td>
-                          </tr>
-                          <tr>
-                            <td>2</td>
-                            <td>Passport</td>
-                            <td>PDF</td>
-                            <td>12</td>
-                          </tr>
-                          <tr>
-                            <td>3</td>
-                            <td>Licence</td>
-                            <td>PDF</td>
-                            <td>9</td>
-                          </tr>
-                          <tr>
-                            <td>4</td>
-                            <td>Pic</td>
-                            <td>Jpg</td>
-                            <td>22</td>
-                          </tr> 
-                          <tr>
-                            <td>5</td>
-                            <td>CNIC</td>
-                            <td>Jpg</td>
-                            <td>22</td>
-                          </tr> 
-                          <tr>
-                            <td>6</td>
-                            <td>Docx</td>
-                            <td>Word</td>
-                            <td>22</td>
-                          </tr> 
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-            
+                   
                 <div class="sidebar">
                   <h2>Receita:</h2>
-                  
                   <div class="balance">
-                    <i class="fas fa-dollar icon"></i>
-                    <div class="info">
-                      <h5>Diario:</h5>
-                      <span><i class="fas fa-dollar"></i>25,000.00</span>
-                    </div>
+                      <i class="fas fa-dollar icon"></i>
+                      <div class="info">
+                          <h5>Diária:</h5>
+                          <span class="daily">0.00</span>
+                      </div>
+                  </div>
+                  <div class="balance">
+                      <i class="fas fa-dollar icon"></i>
+                      <div class="info">
+                          <h5>Semanal:</h5>
+                          <span class="weekly">0.00</span>
+                      </div>
+                  </div>
+                  <div class="balance">
+                      <i class="fas fa-dollar icon"></i>
+                      <div class="info">
+                          <h5>Mensal:</h5>
+                          <span class="monthly">0.00</span>
+                      </div>
+                  </div>
+                  <div class="balance">
+                      <i class="fas fa-dollar icon"></i>
+                      <div class="info">
+                          <h5>Anual:</h5>
+                          <span class="annual">0.00</span>
+                      </div>
                   </div>
                   
-                  <div class="balance">
-                    <i class="fas fa-dollar icon"></i>
-                    <div class="info">
-                      <h5>Semanal:</h5>
-                      <span><i class="fas fa-dollar" id="resultadoTotal"></i>20,00</span>
-                    </div>
-                  </div>
-            
-                  <div class="balance">
-                    <i class="fas fa-dollar icon"></i>
-                    <div class="info">
-                      <h5>Mensal:</h5>
-                      <span><i class="fas fa-dollar"></i>25,000.00</span>
-                    </div>
-                  </div>
-            
-                  <div class="balance">
-                    <i class="fas fa-dollar icon"></i>
-                    <div class="info">
-                      <h5>Anual:</h5>
-                      <span><i class="fas fa-dollar"></i>220,000.00</span>
-                    </div>
-                  </div>
-            
-                  
-            
-                </div>
               </div>
         </main>
+        <script>
+        
+        let allData = []; // Armazena todos os dados recebidos
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('http://localhost:8080/partidas')
+        .then(response => response.json())
+        .then(data => {
+            allData = data; // Armazena os dados
+            populateTable(allData); // Popula a tabela com os dados iniciais
+        })
+        .catch(error => {
+            console.error('Erro ao carregar os dados:', error);
+        });
+});
+
+function populateTable(data) {
+    const tableBody = document.querySelector('#partidas-table tbody');
+    tableBody.innerHTML = ''; // Limpa o conteúdo atual do corpo da tabela
+
+    data.forEach(partida => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${partida.id}</td>
+            <td>${partida.cpfUser || 'Não definido'}</td>
+            <td>${partida.dataPartida}</td>
+            <td>${partida.horario}</td>
+             <td class="${partida.statusPagamento === 'Pendente' ? 'status-pendente' : (partida.statusPagamento === 'Pago' ? 'status-pago' : '')}">
+                ${partida.statusPagamento}
+                ${partida.statusPagamento === 'Pendente' ? `<button class="btn-pagar" onclick="marcarComoPago(${partida.id})">Marcar como Pago</button>` : ''}
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+// Função para remover a classe 'active' de todos os botões
+function removeActiveClass() {
+    const filterButtons = document.querySelectorAll('.filters button');
+    filterButtons.forEach(button => {
+        button.classList.remove('active');
+    });
+}
+
+// Função para aplicar o filtro e ativar o botão
+function applyFilter(filterFunction, buttonId) {
+    removeActiveClass(); // Remove a classe 'active' de todos os botões
+    document.getElementById(buttonId).classList.add('active'); // Adiciona a classe 'active' ao botão clicado
+    filterFunction(); // Aplica o filtro
+}
+
+// Modifique as funções de filtro para usar applyFilter
+
+function filterByDay() {
+    applyFilter(() => {
+        const today = new Date().toISOString().split('T')[0];
+        const filteredData = allData.filter(partida => partida.dataPartida === today);
+        populateTable(filteredData);
+    }, 'filter-day');
+}
+
+function filterByWeek() {
+    applyFilter(() => {
+        const today = new Date();
+        const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay())).toISOString().split('T')[0];
+        const endOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 6)).toISOString().split('T')[0];
+        const filteredData = allData.filter(partida => {
+            const partidaDate = new Date(partida.dataPartida);
+            return partidaDate >= new Date(startOfWeek) && partidaDate <= new Date(endOfWeek);
+        });
+        populateTable(filteredData);
+    }, 'filter-week');
+}
+
+function filterByMonth() {
+    applyFilter(() => {
+        const today = new Date();
+        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+        const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString().split('T')[0];
+        const filteredData = allData.filter(partida => {
+            const partidaDate = new Date(partida.dataPartida);
+            return partidaDate >= new Date(startOfMonth) && partidaDate <= new Date(endOfMonth);
+        });
+        populateTable(filteredData);
+    }, 'filter-month');
+}
+
+function filterByYear() {
+    applyFilter(() => {
+        const today = new Date();
+        const startOfYear = new Date(today.getFullYear(), 0, 1).toISOString().split('T')[0];
+        const endOfYear = new Date(today.getFullYear(), 11, 31).toISOString().split('T')[0];
+        const filteredData = allData.filter(partida => {
+            const partidaDate = new Date(partida.dataPartida);
+            return partidaDate >= new Date(startOfYear) && partidaDate <= new Date(endOfYear);
+        });
+        populateTable(filteredData);
+    }, 'filter-year');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    carregarPartidas();
+});
+
+fetch('http://localhost:8080/partidas')
+  .then(response => response.json())
+  .then(partidas => {
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0); // Define a hora do dia para 00:00:00
+
+    const diaAtual = hoje.getDate();
+    const mesAtual = hoje.getMonth();
+    const anoAtual = hoje.getFullYear();
+    const diaSemana = hoje.getDay(); // 0 para Domingo, 6 para Sábado
+
+    // Funções auxiliares
+    const filtrarPorDia = (partida) => {
+      const dataPartida = new Date(partida.dataPartida);
+      dataPartida.setHours(0, 0, 0, 0); // Define a hora para 00:00:00
+      return dataPartida.getTime() === hoje.getTime();
+    };
+
+    const filtrarPorSemana = (partida) => {
+      const dataPartida = new Date(partida.dataPartida);
+      const primeiroDiaDaSemana = new Date(hoje);
+      primeiroDiaDaSemana.setDate(diaAtual - diaSemana);
+      primeiroDiaDaSemana.setHours(0, 0, 0, 0);
+
+      const ultimoDiaDaSemana = new Date(hoje);
+      ultimoDiaDaSemana.setDate(diaAtual + (6 - diaSemana));
+      ultimoDiaDaSemana.setHours(23, 59, 59, 999);
+
+      return dataPartida >= primeiroDiaDaSemana && dataPartida <= ultimoDiaDaSemana;
+    };
+
+    const filtrarPorMes = (partida) => {
+      const dataPartida = new Date(partida.dataPartida);
+      return dataPartida.getMonth() === mesAtual && dataPartida.getFullYear() === anoAtual;
+    };
+
+    const filtrarPorAno = (partida) => {
+      const dataPartida = new Date(partida.dataPartida);
+      return dataPartida.getFullYear() === anoAtual;
+    };
+
+    // Cálculos
+    const ganhosDiarios = partidas.filter(filtrarPorDia).length * 200;
+    const ganhosSemanais = partidas.filter(filtrarPorSemana).length * 200;
+    const ganhosMensais = partidas.filter(filtrarPorMes).length * 200;
+    const ganhosAnuais = partidas.filter(filtrarPorAno).length * 200;
+
+    // Logs para depuração
+    console.log('Ganhos Diários:', ganhosDiarios);
+    console.log('Ganhos Semanais:', ganhosSemanais);
+    console.log('Ganhos Mensais:', ganhosMensais);
+    console.log('Ganhos Anuais:', ganhosAnuais);
+
+    // Inserir valores no HTML
+    document.querySelector('.daily').textContent = ganhosDiarios.toFixed(2);
+    document.querySelector('.weekly').textContent = ganhosSemanais.toFixed(2);
+    document.querySelector('.monthly').textContent = ganhosMensais.toFixed(2);
+    document.querySelector('.annual').textContent = ganhosAnuais.toFixed(2);
+  })
+  .catch(error => console.error('Erro ao buscar os dados:', error));
+  document.addEventListener('DOMContentLoaded', () => {
+    carregarPartidas();
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    carregarPartidas();
+});
+
+function carregarPartidas() {
+    fetch('http://localhost:8080/partidas')
+        .then(response => response.json())
+        .then(partidas => {
+            const container = document.getElementById('partidas-container');
+            container.innerHTML = ''; // Limpar o conteúdo anterior
+            partidas.forEach(partida => {
+                const partidaDiv = document.createElement('div');
+                partidaDiv.classList.add('partida');
+                partidaDiv.setAttribute('data-id', partida.id); // Adicionar data-id
+                partidaDiv.innerHTML = `
+                    <p>ID: ${partida.id} - Status: <span class="status ${partida.statusPagamento === 'Pendente' ? 'pendente' : 'pago'}">${partida.statusPagamento}</span></p>
+                    ${partida.statusPagamento === 'Pendente' ? `<button class="btn-pagar" onclick="marcarComoPago(${partida.id})">Marcar como Pago</button>` : ''}
+                `;
+                container.appendChild(partidaDiv);
+            });
+        })
+        .catch(error => console.error('Erro ao carregar partidas:', error));
+}
 
 
-    
+function marcarComoPago(id) {
+    fetch(`http://localhost:8080/partidas/${id}/marcar-pago`, {
+        method: 'PUT',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao marcar como pago');
+        }
+        return response.json();
+    })
+    .then(partida => {
+        // Atualizar o status na interface
+        const row = document.querySelector(`#partidas-table tbody tr td:first-child:contains(${id})`).parentElement;
+        const statusElement = row.querySelector('td:nth-child(5)');
+        if (statusElement) {
+            statusElement.textContent = 'Pago';
+            statusElement.classList.remove('status-pendente');
+            statusElement.classList.add('status-pago');
+        }
+        
+        // Atualizar o botão
+        const button = row.querySelector('.btn-pagar');
+        if (button) {
+            button.textContent = 'Pago';
+            button.classList.add('pago');
+            button.disabled = true; // Desativar o botão após clicar
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao marcar como pago:', error);
+    });
+}
+
+
+        </script>
+        <script src="../static/js/script.js"></script>
     <script src="../static/js/scriptpages.js"></script>
 </body>
 </html>

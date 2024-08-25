@@ -1184,11 +1184,16 @@ tbody tr:nth-child(even) {
     stroke: #fff;
   }
   
-  h1 {
+  .time-picker-container h1 {
     text-align: center;
     margin: 20px 0;
   }
-  
+  #success-modal .modal-content h1 {
+    color: #65B307; /* Altere a cor do texto */
+    font-size: 2rem; /* Ajuste o tamanho da fonte */
+    text-align: center; /* Centralize o texto */
+    margin-bottom: 20px; /* Adicione um espaço abaixo do título */
+  }
   .text p {
     text-align: center;
     font-size: 13px;
@@ -1206,3 +1211,103 @@ tbody tr:nth-child(even) {
     justify-content: center; /* Centraliza o conteúdo na linha */
   } 
 
+  .status-pendente {
+    color: red;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* Estilo para os botões de filtro */
+.filters button {
+  background-color: #ffffff; /* Cor de fundo verde */
+  color: rgb(0, 0, 0); /* Cor do texto branca */
+  border: color(srgb red green blue);
+  border-radius: 5px; /* Cantos arredondados */
+  padding: 10px 10px; /* Espaçamento interno */
+  margin: 0 5px; /* Espaçamento entre os botões */
+  font-size: 12px; /* Tamanho da fonte */
+  cursor: pointer; /* Cursor em forma de mão ao passar o mouse */
+  transition: background-color 0.3s, transform 0.2s; /* Efeito de transição */
+  height: 35px;
+}
+
+/* Estilo para o botão de filtro ao passar o mouse */
+.filters button:hover {
+  background-color: #65B307; /* Cor de fundo verde escuro */
+  transform: scale(1.05); /* Aumenta o tamanho do botão */
+}
+
+/* Estilo para o botão de filtro ao ser clicado */
+.filters button.active {
+  background-color: #65B307; /* Cor de fundo laranja */
+  color: white; /* Cor do texto branca */
+}
+
+/* Estilo para o botão desativado (se necessário) */
+.filters button:disabled {
+  background-color: #d3d3d3; /* Cor de fundo cinza */
+  color: #a9a9a9; /* Cor do texto cinza */
+  cursor: not-allowed; /* Cursor indicando que o botão está desativado */
+}
+
+
+.status-pago {
+  color: green; /* Cor para o status Pago */
+}
+
+
+/* Estilo para o status Pendente */
+
+/* Estilo para o botão de pagamento */
+.btn-pagar {
+  background-color: #ffffff; /* Cor de fundo verde */
+  color: rgb(0, 0, 0); /* Cor do texto branca */
+  border: color(srgb red green blue);
+  border-radius: 5px; /* Cantos arredondados */
+  padding: 5px; /* Espaçamento interno */
+  margin: 0 5px; /* Espaçamento entre os botões */
+  font-size: 10px; /* Tamanho da fonte */
+  cursor: pointer; /* Cursor em forma de mão ao passar o mouse */
+  transition: background-color 0.3s, transform 0.2s; /* Efeito de transição */
+  height: 30px;
+}
+
+.btn-pagar:hover {
+  background-color: #45a049; /* Tom mais escuro de verde ao passar o mouse */
+}
+.btn-pagar.pago {
+  background-color: #45a049; /* Cor verde quando pago */
+}
+
+/* Contêiner para o botão de refresh */
+.button-container {
+  display: flex; /* Utiliza flexbox para alinhamento */
+  justify-content: flex-end; /* Alinha o conteúdo à direita */
+  margin: 1rem; /* Adiciona uma margem ao redor do contêiner, se necessário */
+}
+
+/* Estilo do botão de refresh */
+.btn-refresh {
+  background-color: #65B307; /* Cor de fundo verde */
+  color: white; /* Cor do texto branca */
+  border: none; /* Remove a borda */
+  border-radius: 0.5rem; /* Bordas arredondadas */
+  padding: 0.5rem 1rem; /* Espaçamento interno */
+  cursor: pointer; /* Cursor de mão */
+  display: flex; /* Centraliza o ícone */
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease; /* Transição suave de cor */
+}
+
+.btn-refresh:hover {
+  background-color: #4a9a2d; /* Cor do fundo quando em foco */
+}
+
+.btn-refresh i {
+  font-size: 1.5rem; /* Tamanho do ícone */
+}

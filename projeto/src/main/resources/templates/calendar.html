@@ -121,55 +121,58 @@
                         <div class="loader"></div>
                     </div>
                 </div>
-                <div class="time-picker-container">
-                    <h4 id="month-year"></h4>
-                
-                    <div class="time-picker">
-                      <div class="row time-picker-header">
-                        <button class="arrow left" onclick="prevMonth()"></button>
-                        <ul class="date-slot">
-                          <!-- As datas serão geradas dinamicamente -->
-                        </ul>
-                        <button class="arrow right" onclick="nextMonth()"></button>
+                <div class="calendar">
+                  <div class="time-picker-container">
+                      <h4 id="month-year"></h4>
+                      
+                      <div class="time-picker">
+                          <div class="row time-picker-header">
+                              <button class="arrow left" onclick="prevMonth()">&lt;</button>
+                              <ul class="date-slot">
+                                  <!-- As datas serão geradas dinamicamente -->
+                              </ul>
+                              <button class="arrow right" onclick="nextMonth()">&gt;</button>
+                          </div>
+          
+                          <div class="row">
+                              <ul class="time-slot" id="time-slots">
+                                  <!-- Horários serão gerados dinamicamente -->
+                              </ul>
+                          </div>
+          
+                          <div id="confirm-button" onclick="showConfirmationModal()">Confirmar</div>
                       </div>
-                
-                      <div class="row">
-                        <ul class="time-slot" id="time-slots">
-                          <!-- Horários serão gerados dinamicamente -->
-                        </ul>
-                      </div>
-                
-                      <div id="confirm-button" onclick="showConfirmationModal()">Confirmar</div>
-                    </div>
                   </div>
+              </div>
                 
                   <!-- Modal de Confirmação -->
                   <div id="confirmation-modal">
                     <div class="modal-content">
-                      <span class="close" onclick="closeConfirmationModal()">&times;</span>
-                      <h4>Confirme seus Dados</h4>
-                      <form id="confirmation-form">
-                        <label for="selected-date">Data:</label>
-                        <div class="input-container">
-                          <i class="fa-solid fa-calendar-days"></i>
-                          <input type="text" id="selected-date" readonly>
-                        </div>
+                        <span class="close" onclick="closeConfirmationModal()">&times;</span>
+                        <h4>Confirme seus Dados</h4>
+                        <form id="confirmation-form">
+                            <label for="selected-date">Data:</label>
+                            <div class="input-container">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <input type="text" id="selected-date" readonly>
+                            </div>
                 
-                        <label for="selected-time">Horário:</label>
-                        <div class="input-container">
-                          <i class="fa-solid fa-clock"></i>
-                          <input type="text" id="selected-time" readonly>
-                        </div>
+                            <label for="selected-time">Horário:</label>
+                            <div class="input-container">
+                                <i class="fa-solid fa-clock"></i>
+                                <input type="text" id="selected-time" readonly>
+                            </div>
                 
-                        <label for="name">CPF:</label>
-                        <div class="input-container">
-                          <i class="fa-solid fa-user"></i>
-                          <input type="text" id="cpf" placeholder="000.000.000-00" required>
-                        </div>
-                        <div id="submit-confirmation" onclick="submitConfirmation()">Confirmar Agendamento</div>
-                      </form>
+                            <label for="cpf">CPF:</label>
+                            <div class="input-container">
+                                <i class="fa-solid fa-user"></i>
+                                <input type="text" id="cpf" placeholder="000.000.000-00" required>
+                            </div>
+                            <div id="submit-confirmation">Confirmar Agendamento</div>
+                        </form>
                     </div>
-                  </div>
+                </div>
+                
                 
                   <!-- Modal de Sucesso -->
                   <div id="success-modal">
@@ -197,166 +200,7 @@
                   </div>
               
                 <script>
-             const today = new Date();
-let currentDay = today.getDate();
-let currentMonth = today.getMonth();
-let currentYear = today.getFullYear();
-let startDayIndex = 0; // Índice inicial do dia a ser exibido
-let selectedTimeSlot = null;
-
-const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-
-const dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-
-let appointments = {};
-
-// Função para calcular o índice de início da semana que inclui o dia atual
-function calculateStartDayIndex() {
-  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-  const dayIndex = new Date(currentYear, currentMonth, currentDay).getDay();
-  const offset = (dayIndex - firstDayOfMonth + 7) % 7;
-  return Math.max(0, currentDay - offset - 1);
-}
-
-function updateCalendar() {
-  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-  const dateSlot = document.querySelector('.date-slot');
-  dateSlot.innerHTML = '';
-
-  // Ajusta o startDayIndex para garantir que o dia atual esteja visível
-  const days = [];
-  for (let i = 1; i <= daysInMonth; i++) {
-    days.push(i);
-  }
-
-  // Calcular o índice de início da semana que inclui o dia atual
-  if (startDayIndex === 0) {
-    startDayIndex = calculateStartDayIndex();
-  }
-
-  const weekStart = startDayIndex;
-  const weekEnd = Math.min(startDayIndex + 5, daysInMonth);
-
-  // Adiciona os dias do mês
-  for (let i = weekStart; i < weekEnd; i++) {
-    const dayName = dayNames[new Date(currentYear, currentMonth, days[i]).getDay()];
-    const isActive = (days[i] === currentDay && currentMonth === today.getMonth() && currentYear === today.getFullYear());
-    dateSlot.innerHTML += `
-      <li class="date-slot-wrapper">
-        <div class="date-slot-item ${isActive ? 'active' : ''}" onclick="selectDay(${days[i]})">
-          ${days[i]}
-        </div>
-        <div class="day-name">${dayName}</div>
-      </li>`;
-  }
-
-  // Adiciona espaço em branco se houver dias restantes no mês
-
-
-  // Atualiza o texto do mês e ano
-  document.getElementById('month-year').textContent = `${monthNames[currentMonth]} ${currentYear}`;
-  loadTimeSlots();
-}
-
-function selectDay(day) {
-  currentDay = day;
-  updateCalendar();
-}
-
-function prevMonth() {
-  if (startDayIndex === 0) {
-    if (currentMonth === 0) {
-      currentMonth = 11;
-      currentYear--;
-    } else {
-      currentMonth--;
-    }
-    startDayIndex = 0;
-  } else {
-    startDayIndex -= 5;
-  }
-  updateCalendar();
-}
-
-function nextMonth() {
-  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-  if (startDayIndex + 5 >= daysInMonth) {
-    if (currentMonth === 11) {
-      currentMonth = 0;
-      currentYear++;
-    } else {
-      currentMonth++;
-    }
-    startDayIndex = 0;
-  } else {
-    startDayIndex += 5;
-  }
-  updateCalendar();
-}
-
-function loadTimeSlots() {
-  const timeSlots = document.getElementById('time-slots');
-  timeSlots.innerHTML = '';
-
-  const times = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
-  times.forEach(time => {
-    const isDisabled = appointments[`${currentYear}-${currentMonth + 1}-${currentDay}`]?.includes(time);
-    const slotClass = isDisabled ? 'time-slot-item disabled' : 'time-slot-item';
-
-    timeSlots.innerHTML += `
-      <li class="${slotClass}" onclick="${isDisabled ? 'return false;' : `selectTimeSlot('${time}')`}">
-        ${time}
-      </li>`;
-  });
-}
-
-function selectTimeSlot(time) {
-  if (selectedTimeSlot === time) {
-    selectedTimeSlot = null;
-    document.querySelectorAll('.time-slot-item').forEach(item => item.classList.remove('selected'));
-  } else {
-    selectedTimeSlot = time;
-    document.querySelectorAll('.time-slot-item').forEach(item => item.classList.remove('selected'));
-    event.target.classList.add('selected');
-    document.getElementById('confirm-button').style.display = 'block';
-  }
-}
-
-function showConfirmationModal() {
-  document.getElementById('selected-date').value = `${currentDay}/${currentMonth + 1}/${currentYear}`;
-  document.getElementById('selected-time').value = selectedTimeSlot;
-  document.getElementById('confirmation-modal').style.display = 'flex'; // Use 'flex' para centralizar
-}
-
-function closeConfirmationModal() {
-  document.getElementById('confirmation-modal').style.display = 'none';
-}
-
-function submitConfirmation() {
-  const date = `${currentYear}-${currentMonth + 1}-${currentDay}`;
-  if (!appointments[date]) {
-    appointments[date] = [];
-  }
-  appointments[date].push(selectedTimeSlot);
-
-  document.getElementById('success-date').textContent = `${currentDay}/${currentMonth + 1}/${currentYear}`;
-  document.getElementById('success-time').textContent = selectedTimeSlot;
-  document.getElementById('confirmation-modal').style.display = 'none';
-  document.getElementById('success-modal').style.display = 'flex'; // Use 'flex' para centralizar
-}
-
-function closeSuccessModal() {
-  document.getElementById('success-modal').style.display = 'none';
-  // Reset the calendar and selection
-  selectedTimeSlot = null;
-  loadTimeSlots();
-  document.getElementById('confirm-button').style.display = 'none';
-}
-
-// Inicializar o calendário na semana que inclui o dia atual
-updateCalendar();
-
+           
               
                 </script>
    

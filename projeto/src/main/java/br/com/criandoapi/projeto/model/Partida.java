@@ -18,7 +18,7 @@ public class Partida {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "cpf_user")
+    @Column(name = "cpf_user", nullable = true)
     private String cpfUser;
 
     private LocalDate dataPartida;

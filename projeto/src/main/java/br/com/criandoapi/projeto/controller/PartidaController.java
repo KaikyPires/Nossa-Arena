@@ -17,7 +17,8 @@ import java.util.List;
     
         @Autowired
         private PartidaService partidaService;
-    
+        
+     
         @GetMapping
         public List<Partida> listarPartidas() {
             return partidaService.listarPartida();
@@ -56,6 +57,17 @@ import java.util.List;
             List<Partida> partidas = partidaService.filtrarPorAno(ano);
             return new ResponseEntity<>(partidas, HttpStatus.OK);
         }
+
+        
+        @PutMapping("/{id}/marcar-pago")
+        public ResponseEntity<Partida> marcarComoPago(@PathVariable Long id) {
+            Partida partidaAtualizada = partidaService.marcarComoPago(id);
+            if (partidaAtualizada != null) {
+                return new ResponseEntity<>(partidaAtualizada, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }
+        
     }
     
-
