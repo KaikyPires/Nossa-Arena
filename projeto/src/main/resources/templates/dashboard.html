@@ -31,7 +31,7 @@
         
                 <ul id="side_items">
                   <li class="side-item">
-                    <a href="#">
+                    <a href="home.html">
                         <i class="fa-solid fa-house"></i>
                         <span class="item-description">Inicio</span>
                     </a>
@@ -147,11 +147,12 @@
                         
                           <table id="partidas-table">
                             <div class="filters">
-                              <button onclick="filterByDay()">Dia</button>
-                              <button onclick="filterByWeek()">Semana</button>
-                              <button onclick="filterByMonth()">Mês</button>
-                              <button onclick="filterByYear()">Ano</button>
-                            </div>
+                                <button id="filter-day" onclick="filterByDay()">Dia</button>
+                                <button id="filter-week" onclick="filterByWeek()">Semana</button>
+                                <button id="filter-month" onclick="filterByMonth()">Mês</button>
+                                <button id="filter-year" onclick="filterByYear()">Ano</button>
+                              </div>
+                              
                             <div class="button-container">
                               <!-- Botão de Refresh -->
                               <button id="refresh-button" class="btn-refresh">

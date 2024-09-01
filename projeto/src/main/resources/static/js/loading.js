@@ -8,7 +8,7 @@ gsap.fromTo(
       delay: 3.5,
       onComplete: () => {
         // Redirecionar para outra página após a animação
-        window.location.href = 'calendar.html'; // Substitua com o URL da sua página principal
+        window.location.href = 'home.html'; // Substitua com o URL da sua página principal
       },
     }
   );

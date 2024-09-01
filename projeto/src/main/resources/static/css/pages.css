@@ -271,11 +271,12 @@ span {
 }
 .page-title {
     margin-top: 2.5rem;
-    padding-left: 124px;    
+  
     font-size: 3.6rem;
     text-shadow: 0px 2px 0px #f9f9f9;
-    padding-left: 42%;
+
     margin-bottom: 1.6rem; /* Espaço entre o título e o formulário */
+    text-align: center;
 
 }
 
@@ -443,11 +444,12 @@ main form {
     
 }
 .table-container {
-    
-    justify-content: center; /* Centraliza horizontalmente */
+    text-align: center;
+    justify-content: center; /* Centraliza horizo ntalmente */
     overflow: auto;
-  
-    max-height: 400px;
+    margin-left: 30%;
+    max-height: 600px;
+
 }
 
 table {
@@ -456,7 +458,8 @@ table {
     margin: 1em 0; 
     overflow:scroll;
     height: 60px;
-    font-size: 12px;
+    font-size: 14px;
+
 
 }
 
@@ -464,13 +467,13 @@ table {
     padding-left: 30%;
     justify-content: center; /* Centraliza horizontalmente */
     overflow: auto;
-    max-height: 400px;
+    max-height: 1000px;
     
 }
 
 th, td {
     border: 1px solid #d1c1c1;
-    padding: 0.8rem;
+    padding: 1.1rem;
     text-align: left;
 }
 
@@ -489,8 +492,8 @@ tbody tr:nth-child(even) {
     font-size: 11px;
 }
 .edit-btn {
-    background-color: #65B307; /* Verde */
-    color: white; /* Texto branco */
+    background-color: #ffffff; /* Verde */
+    color: rgb(0, 0, 0); /* Texto branco */
     border: none; /* Remove a borda padrão */
     padding: 10px 20px; /* Espaçamento interno */
     text-align: center; /* Alinhamento do texto */
@@ -501,15 +504,16 @@ tbody tr:nth-child(even) {
     cursor: pointer; /* Cursor em forma de mão ao passar o mouse */
     border-radius: 4px; /* Bordas arredondadas */
     transition: background-color 0.3s; /* Transição suave na cor de fundo */
-    width: 100%;
+    border: 1PX SOLID black;
+ 
 }
 
 .edit-btn:hover {
-    background-color: #45a049; /* Cor mais escura ao passar o mouse */
+    background-color: #266191; /* Cor mais escura ao passar o mouse */
 }
 .delete-btn {
-    background-color: #f44336; /* Vermelho */
-    color: white; /* Texto branco */
+    background-color: #ffffff; /* Vermelho */
+    color: rgb(0, 0, 0); /* Texto branco */
     border: none; /* Remove a borda padrão */
     padding: 10px 20px; /* Espaçamento interno */
     text-align: center; /* Alinhamento do texto */
@@ -520,15 +524,16 @@ tbody tr:nth-child(even) {
     cursor: pointer; /* Cursor em forma de mão ao passar o mouse */
     border-radius: 4px; /* Bordas arredondadas */
     transition: background-color 0.3s; /* Transição suave na cor de fundo */
-    width: 100%;
+    border: 1PX SOLID black;
+    
 }
 
 .delete-btn:hover {
     background-color: #e53935; /* Cor mais escura ao passar o mouse */
 }
 .incrementar-btn {
-    background-color: #00690A; /* Verde */
-    color: white; /* Texto branco */
+    background-color: #ffffff; /* Verde */
+    color: rgb(0, 0, 0); /* Texto branco */
     border: none; /* Remove a borda padrão */
     padding: 10px 20px; /* Espaçamento interno */
     text-align: center; /* Alinhamento do texto */
@@ -539,15 +544,16 @@ tbody tr:nth-child(even) {
     cursor: pointer; /* Cursor em forma de mão ao passar o mouse */
     border-radius: 4px; /* Bordas arredondadas */
     transition: background-color 0.3s; /* Transição suave na cor de fundo */
-    width: 100%;
+    border: 1PX SOLID black;
+ 
 }
 .incrementar-btn:hover {
-    background-color: #024a09; /* Cor mais escura ao passar o mouse */
+    background-color: #04610e; /* Cor mais escura ao passar o mouse */
 }
 
 
 .sidebar {
-    width: 250px;
+   width: 100%;
   background: #f8f9fa;
   padding: 20px;
   border-radius: 8px;
@@ -597,16 +603,17 @@ tbody tr:nth-child(even) {
   
 .sidebar {
     margin-top: 105px;
-    width: 15%;
+    width: 13%;
     background: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    position: absolute; /* Fixa a sidebar na tela */
+     /* Fixa a sidebar na tela */
     top: 0; /* Posiciona no topo */
     right: 0; /* Alinha à direita */
-    height: 63vh; /* Altura completa da tela */
+    height: 85%;/* Altura completa da tela */
     overflow-y: auto; /* Adiciona rolagem vertical se necessário */
+
 }
 
 .sidebar h2 {
@@ -646,11 +653,12 @@ tbody tr:nth-child(even) {
     display: flex;
     justify-content: space-between;
     padding: 20px;
+    width: 95%;
   }
 
   .main-body {
     flex: 1;
-    width: calc(100% - 500px); /* Largura total menos a soma das larguras das sidebars */
+  /* Largura total menos a soma das larguras das sidebars */
     margin-left: 100px; /* Espaço para a sidebar principal */
     margin-right: 250px; /* Espaço para a sidebar adicional */    
     padding: 20px;
@@ -809,7 +817,7 @@ tbody tr:nth-child(even) {
     justify-content: space-around;
     display: flex;
     gap: 12px;
-    padding-left: 980px; /* Corrigido de 1000px para 100px para um posicionamento mais razoável */
+    padding-left: 1350px; /* Corrigido de 1000px para 100px para um posicionamento mais razoável */
     color: #15451a;
 }
 
@@ -904,10 +912,11 @@ tbody tr:nth-child(even) {
 #cpf-search i {
     position: absolute;
     left: 1rem; /* Espaçamento da borda esquerda */
-    top: 50%; /* Centraliza verticalmente */
+    /* Centraliza verticalmente */
     transform: translateY(-100%); /* Ajusta para centralização vertical */
     font-size: 1.6rem; /* Tamanho do ícone */
     color: #00690A; /* Cor do ícone */
+    justify-content: center;
 
 }
 
@@ -919,7 +928,7 @@ tbody tr:nth-child(even) {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     position: relative;
     margin-top: 5%;
-    left: 25%;
+    left: 28%;
   }
   
   h4 {

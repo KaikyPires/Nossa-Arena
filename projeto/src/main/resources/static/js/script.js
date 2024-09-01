@@ -10,12 +10,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const errorMessage = document.getElementById('error-message');
 
     function showSuccessPopup() {
-        successPopup.style.display = 'block';
+        if (successPopup) {
+            successPopup.style.display = 'block';
+        }
     }
 
     function showErrorPopup(message) {
-        errorMessage.textContent = message;
-        errorPopup.style.display = 'block';
+        if (errorMessage && errorPopup) {
+            errorMessage.textContent = message;
+            errorPopup.style.display = 'block';
+        }
     }
 
     function validarCpf(cpf) {
@@ -24,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function validarNome(nome) {
-        const nomeRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/; // Apenas letras e espaços
+        const nomeRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/;
         return nomeRegex.test(nome);
     }
 
@@ -34,6 +38,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function cadastrar() {
+        if (!IcpfCadastro || !InomeCadastro || !ItelefoneCadastro || !InascimentoCadastro) {
+            console.error("Um ou mais campos do formulário não foram encontrados.");
+            return;
+        }
+
         const cpfValido = validarCpf(IcpfCadastro.value);
         const nomeValido = validarNome(InomeCadastro.value);
         const telefoneValido = validarTelefone(ItelefoneCadastro.value);
@@ -58,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
             nome: InomeCadastro.value,
             telefone: ItelefoneCadastro.value,
             nascimento: InascimentoCadastro.value,
-            quantidadePartidas: "0"  // Adicionando o campo quantidadePartidas com valor inicial de 0
+            quantidadePartidas: "0"
         };
 
         fetch("http://localhost:8080/usuarios", {
@@ -85,10 +94,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function limparCadastro() {
-        IcpfCadastro.value = "";
-        InomeCadastro.value = "";
-        ItelefoneCadastro.value = "";
-        InascimentoCadastro.value = "";
+        if (IcpfCadastro) IcpfCadastro.value = "";
+        if (InomeCadastro) InomeCadastro.value = "";
+        if (ItelefoneCadastro) ItelefoneCadastro.value = "";
+        if (InascimentoCadastro) InascimentoCadastro.value = "";
     }
 
     if (formularioCadastro) {
@@ -103,18 +112,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (closeSuccessPopupBtn) {
         closeSuccessPopupBtn.addEventListener('click', function () {
-            successPopup.style.display = 'none';
+            if (successPopup) successPopup.style.display = 'none';
         });
     }
 
     if (closeErrorPopupBtn) {
         closeErrorPopupBtn.addEventListener('click', function () {
-            errorPopup.style.display = 'none';
+            if (errorPopup) errorPopup.style.display = 'none';
         });
     }
-});
 
-    // Login Script
     const formularioLogin = document.querySelector("#loginForm");
     const IcpfLogin = document.querySelector("#cpf");
     const IsenhaLogin = document.querySelector("#senha");
@@ -129,6 +136,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function login() {
+        if (!IcpfLogin || !IsenhaLogin) {
+            console.error("Campos de login não encontrados.");
+            return;
+        }
+
         const loginData = {
             cpf: IcpfLogin.value,
             senha: IsenhaLogin.value
@@ -146,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.ok) {
                 window.location.href = 'loading.html';
             } else {
-                showErrorPopup(error.message);
+                showErrorPopup("Credenciais inválidas");
             }
         })
         .catch(function (error) {
@@ -157,14 +169,16 @@ document.addEventListener('DOMContentLoaded', function () {
     function togglePasswordVisibility() {
         var senhaField = document.getElementById("senha");
         var toggleIcon = document.getElementById("togglePassword");
-        if (senhaField.type === "password") {
-            senhaField.type = "text";
-            toggleIcon.classList.remove("fa-eye");
-            toggleIcon.classList.add("fa-eye-slash");
-        } else {
-            senhaField.type = "password";
-            toggleIcon.classList.remove("fa-eye-slash");
-            toggleIcon.classList.add("fa-eye");
+        if (senhaField && toggleIcon) {
+            if (senhaField.type === "password") {
+                senhaField.type = "text";
+                toggleIcon.classList.remove("fa-eye");
+                toggleIcon.classList.add("fa-eye-slash");
+            } else {
+                senhaField.type = "password";
+                toggleIcon.classList.remove("fa-eye-slash");
+                toggleIcon.classList.add("fa-eye");
+            }
         }
     }
 
@@ -172,7 +186,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (togglePasswordIcon) {
         togglePasswordIcon.addEventListener('click', togglePasswordVisibility);
     }
-   // Função para atualizar a página
-document.getElementById('refresh-button').addEventListener('click', () => {
-    location.reload(); // Recarrega a página
+
+    const refreshButton = document.getElementById('refresh-button');
+    if (refreshButton) {
+        refreshButton.addEventListener('click', () => {
+            location.reload();
+        });
+    } else {
+        console.error("O botão de refresh com ID 'refresh-button' não foi encontrado.");
+    }
 });
