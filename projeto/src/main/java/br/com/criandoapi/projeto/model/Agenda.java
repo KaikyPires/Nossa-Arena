@@ -12,16 +12,20 @@ public class Agenda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "dia", nullable = false)
     private LocalDate dia;
 
-    @Column(nullable = false)
+    @Column(name = "hora", nullable = false)
     private LocalTime hora;
 
-    @Column(nullable = false)
-    private boolean situacao = true;  // TRUE = Disponível, FALSE = Indisponível
+    @Column(name = "statusAgendamento", nullable = false)  // Corrigido para o nome da coluna e tipo booleano
+    private Boolean statusAgendamento = true;  // TRUE = Disponível, FALSE = Reservado
 
-    // Getters and Setters
+    @ManyToOne
+    @JoinColumn(name = "partida_id", nullable = true)  // Chave estrangeira que pode ser nula
+    private Partida partida;
+
+    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -46,11 +50,19 @@ public class Agenda {
         this.hora = hora;
     }
 
-    public boolean isSituacao() {
-        return situacao;
+    public Boolean getStatusAgendamento() {
+        return statusAgendamento;
     }
 
-    public void setSituacao(boolean situacao) {
-        this.situacao = situacao;
+    public void setStatusAgendamento(Boolean statusAgendamento) {
+        this.statusAgendamento = statusAgendamento;
+    }
+
+    public Partida getPartida() {
+        return partida;
+    }
+
+    public void setPartida(Partida partida) {
+        this.partida = partida;
     }
 }

@@ -13,21 +13,16 @@ public class Usuario {
     @Column(name = "cpf", unique = true, nullable = false, length = 11)  // CPF com 11 dígitos
     private String cpf;
 
-    @Column(name = "nome", length = 200, nullable = true) 
-    private String nome;
-
     @Column(name = "telefone", length = 15, nullable = true)  // Ajustado para String, se for número grande
     private String telefone;
 
     @Column(name = "nascimento", columnDefinition = "DATE", nullable = false)
     private String nascimento;
     
-    @Column(name = "Quantidade_Partidas", nullable = false)
+    @Column(name = "quantPartidas", nullable = false)  // Corrigido para o nome correto da coluna
     private String quantidadePartidas; 
-   
 
-   
-
+    // Getters e Setters
    
     public String getCpf() {
         return cpf;
@@ -35,14 +30,6 @@ public class Usuario {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public String getTelefone() {
@@ -69,4 +56,3 @@ public class Usuario {
         this.quantidadePartidas = quantidadePartidas;
     }
 }
-    
