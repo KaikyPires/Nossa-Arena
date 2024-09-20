@@ -16,6 +16,12 @@ public class AgendaController {
     @Autowired
     private AgendaService agendaService;
 
+    @GetMapping
+    public ResponseEntity<List<Agenda>> listarTodos() {
+        List<Agenda> agendas = agendaService.listarTodos();
+        return ResponseEntity.ok(agendas);
+    }
+
     @GetMapping("/{dia}")
     public ResponseEntity<List<Agenda>> getHorariosDoDia(@PathVariable String dia) {
         LocalDate localDate = LocalDate.parse(dia);

@@ -18,7 +18,7 @@ public class Agenda {
     @Column(name = "hora", nullable = false)
     private LocalTime hora;
 
-    @Column(name = "statusAgendamento", nullable = false)  // Corrigido para o nome da coluna e tipo booleano
+    @Column(name = "status_agendamento", nullable = false)  // Corrigido para o nome da coluna e tipo booleano
     private Boolean statusAgendamento = true;  // TRUE = Disponível, FALSE = Reservado
 
     @ManyToOne

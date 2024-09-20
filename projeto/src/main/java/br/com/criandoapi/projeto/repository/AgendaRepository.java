@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface AgendaRepository extends JpaRepository<Agenda, Long> {
+
     List<Agenda> findByDia(LocalDate dia);
 }

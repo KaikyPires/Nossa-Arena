@@ -19,7 +19,7 @@ public class Usuario {
     @Column(name = "nascimento", columnDefinition = "DATE", nullable = false)
     private String nascimento;
     
-    @Column(name = "quantPartidas", nullable = false)  // Corrigido para o nome correto da coluna
+    @Column(name = "quantidade_partidas", nullable = false)  // Corrigido para o nome correto da coluna
     private String quantidadePartidas; 
 
     // Getters e Setters

@@ -14,6 +14,10 @@ public class AgendaService {
     @Autowired
     private AgendaRepository agendaRepository;
 
+    public List<Agenda> listarTodos() {
+        return agendaRepository.findAll();
+    }
+
     public List<Agenda> getHorariosDoDia(LocalDate dia) {
         return agendaRepository.findByDia(dia);
     }
