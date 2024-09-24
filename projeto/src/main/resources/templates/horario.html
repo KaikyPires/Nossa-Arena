@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../static/css/pages.css">
+    <link rel="stylesheet" href="./../static/images/assets/fontawesome-free-6.5.2-web/fontawesome-free-6.5.2-web/css/all.css">
+    <script src="../static/js/script.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="icon" href="../static/images/WhatsApp_Image_2024-07-20_at_15.43.02-removebg-preview.png">
+    <title>Nossa Arena</title>
+    <style>
+        #agendaForm {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Estilos dos inputs e selects */
+input[type="date"],
+input[type="time"],
+input[type="number"],
+select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+}
+
+/* Estilos dos labels */
+label {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Estilos do botão */
+button[type="submit"] {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+    </style>
+</head>
+<body>
+    <body>
+        <nav id="sidebar">
+            <div id="sidebar_content">
+                <div id="user">
+                    <img src="../static/images/WhatsApp_Image_2024-07-20_at_15.43.02-removebg-preview.png" id="user_avatar" alt="Avatar">
+        
+                    <p id="user_infos">
+                        <span class="item-description">
+                        Nossa Arena
+                        </span>
+                        <span class="item-description">
+                            Software
+                        </span>
+                    </p>
+                </div>
+        
+                <ul id="side_items">
+                    <li class="side-item">
+                        <a href="home.html">
+                            <i class="fa-solid fa-house"></i>
+                            <span class="item-description">Inicio</span>
+                        </a>
+                    </li>
+                    <li class="side-item active">
+                        <a href="calendar.html">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <span class="item-description">Calendário</span>
+                        </a>
+                    </li>
+                    <li class="side-item">
+                        <a href="dashboard.html">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span class="item-description">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="side-item">
+                        <a href="cadastro.html">
+                            <i class="fa-solid fa-address-card"></i>
+                            <span class="item-description">Cadastro</span>
+                        </a>
+                    </li>
+                    <li class="side-item">
+                        <a href="jogadores.html">
+                            <i class="fa-solid fa-futbol"></i>
+                            <span class="item-description">Jogadores</span>
+                        </a>
+                    </li>
+                   
+                    <li class="side-item">
+                        <a href="#">
+                            <i class="fa-solid fa-gear"></i>
+                            <span class="item-description">Configurações</span>
+                        </a>
+                    </li>
+                </ul>
+                
+        
+                <button id="open_btn">
+                    <i id="open_btn_icon" class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <div id="logout">
+                <a href="index.html">
+                <button id="logout_btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+                    <span class="item-description">
+                        Logout
+                    </span>
+                
+                </button>
+            </div>
+        </nav>
+    
+        <main>     
+            <header>
+                <h1>Nossa <span>Arena</span></h1>  
+                <div class="contatos">
+                    <a href="https://www.instagram.com/nossarena_/"> <i class="fa-brands fa-instagram"></i></a>
+          
+                    <p>|</p> 
+                    
+                    <a href="https://api.whatsapp.com/send/?phone=5531999575269&text=Oi!+Vim+pelo+Instagram+e+queria+informa%C3%A7%C3%B5es+sobre+a+NossArena!&type=phone_number&app_absent=0">
+                      <i class="fa-brands fa-whatsapp"></i></a>
+                    
+                    <p>|</p> 
+                    <a href="#"><i class="fa-solid fa-envelope"></i></a>
+                    
+                    <p>|</p> 
+                   
+
+                    <a href="#" id="phone-icon">
+                        <i class="fa-solid fa-phone"></i>
+                    </a>
+                    
+                    <p>|</p> 
+                    <a href="https://www.google.com/maps/place/NossArena+Uruc%C3%A2nia/@-20.3589574,-42.7521078,17z/data=!3m1!4b1!4m6!3m5!1s0xa4b9c6f8a90ad7:0x7833dfc79ca6d117!8m2!3d-20.3589574!4d-42.7521078!16s%2Fg%2F11vjg0w6hq?entry=ttu">
+                         <i class="fa-solid fa-location-dot"></i></a>
+                         <div id="notification" style="display: none;">Número de telefone copiado!</div>
+                  </div>
+                <img src="../static/images/WhatsApp_Image_2024-07-20_at_15.43.02-removebg-preview.png" id="user_avatar" alt="Avatar">
+            </header>
+            <div id="loading-screen">
+                <div class="loader-container">
+                    <img src="../static/images/WhatsApp_Image_2024-07-20_at_15.43.02-removebg-preview.png" alt="Loading Image" class="loading-image">
+                    <div class="loader"></div>
+                </div>
+            </div>
+            <form id="agendaForm">
+                <label for="dia">Dia:</label>
+                <input type="date" id="dia" name="dia" required><br><br>
+    
+                <label for="horaInicio">Hora Início:</label>
+                <input type="time" id="horaInicio" name="horaInicio" required><br><br>
+    
+                <label for="horaFim">Hora Fim:</label>
+                <input type="time" id="horaFim" name="horaFim" required><br><br>
+    
+                <label for="status">Status Agendamento:</label>
+                <select id="status" name="status">
+                    <option value="true">Disponível</option>
+                    <option value="false">Reservado</option>
+                </select><br><br>
+    
+                <label for="partidaId">ID da Partida (opcional):</label>
+                <input type="number" id="partidaId" name="partidaId"><br><br>
+    
+                <button type="button" id="adicionarHorarios">Adicionar Horários</button>
+                <button type="submit">Adicionar Horário</button>
+            </form>
+    
+            <script>
+                const form = document.getElementById('agendaForm');
+                const adicionarHorariosButton = document.getElementById('adicionarHorarios');
+    
+                adicionarHorariosButton.addEventListener('click', function () {
+                    const dia = document.getElementById('dia').value;
+                    const horaInicio = document.getElementById('horaInicio').value;
+                    const horaFim = document.getElementById('horaFim').value;
+                    const statusAgendamento = document.getElementById('status').value;
+                    const partidaId = document.getElementById('partidaId').value;
+    
+                    if (!dia || !horaInicio || !horaFim) {
+                        alert('Por favor, preencha todos os campos de data e hora.');
+                        return;
+                    }
+    
+                    const [inicioHoras, inicioMinutos] = horaInicio.split(':').map(Number);
+                    const [fimHoras, fimMinutos] = horaFim.split(':').map(Number);
+                    const horarios = [];
+    
+                    for (let h = inicioHoras; h <= fimHoras; h++) {
+                        const minutos = (h === fimHoras) ? fimMinutos : 59; // Última hora não pode ultrapassar a hora final
+                        for (let m = 0; m <= minutos; m += 60) {
+                            const hora = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+                            horarios.push({
+                                dia: dia,
+                                hora: hora,
+                                statusAgendamento: statusAgendamento === "true",
+                                partida: partidaId ? { id: partidaId } : null
+                            });
+                        }
+                    }
+    
+                    // Adicionar cada horário à API
+                    horarios.forEach(data => {
+                        fetch('http://localhost:8080/api/agenda', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(data),
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            } else {
+                                throw new Error('Erro ao adicionar horário');
+                            }
+                        })
+                        .then(result => {
+                            console.log('Horário adicionado:', result);
+                            alert('Horários adicionados com sucesso!');
+                            form.reset();
+                        })
+                        .catch(error => {
+                            console.error('Erro:', error);
+                            alert('Erro ao adicionar o horário. Tente novamente.');
+                        });
+                    });
+                });
+    
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    // Lógica para adicionar um único horário
+                    // (mantida a lógica original do seu código)
+                });
+            </script>
+    
+    
+    <script src="../static/js/scriptpages.js"></script>
+</body>
+</html>

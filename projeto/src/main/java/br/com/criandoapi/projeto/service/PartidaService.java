@@ -66,14 +66,11 @@ public class PartidaService {
     }
     public Partida marcarComoPago(Long id) {
         return partidaRepository.findById(id).map(partida -> {
-            // Verifica se o status é "Pendente" (false)
-            if (Boolean.FALSE.equals(partida.getStatusPagamento())) {
-                partida.setStatusPagamento(Boolean.TRUE); // Define como "Pago" (true)
-                return partidaRepository.save(partida);
-            } else {
-                return partida; // Se não estiver "Pendente", retorna a partida como está
-            }
+            // Atualiza o status para "Pago" (true), independente do valor anterior
+            partida.setStatusPagamento(true); // Define como "Pago"
+            return partidaRepository.save(partida);
         }).orElse(null);
     }
+    
     
 }

@@ -18,34 +18,34 @@ public class PartidaController {
     @Autowired
     private PartidaService partidaService;
 
+    // Listar todas as partidas
     @GetMapping
     public List<Partida> listarPartidas() {
         return partidaService.listarPartida();
     }
 
-    // Construtor para injeção de dependência
-    public PartidaController(PartidaService partidaService) {
-        this.partidaService = partidaService;
-    }
-
+    // Criar uma nova partida
     @PostMapping
     public ResponseEntity<Partida> criarPartida(@RequestBody Partida partida) {
         Partida novaPartida = partidaService.novaPartida(partida);
         return new ResponseEntity<>(novaPartida, HttpStatus.CREATED);
     }
 
+    // Filtrar partidas por dia
     @GetMapping("/dia")
     public ResponseEntity<List<Partida>> filtrarPorDia(@RequestParam("data") LocalDate data) {
         List<Partida> partidas = partidaService.filtrarPorDia(data);
         return new ResponseEntity<>(partidas, HttpStatus.OK);
     }
 
+    // Filtrar partidas por mês e ano
     @GetMapping("/mes")
     public ResponseEntity<List<Partida>> filtrarPorMes(@RequestParam("mes") int mes, @RequestParam("ano") int ano) {
         List<Partida> partidas = partidaService.filtrarPorMes(mes, ano);
         return new ResponseEntity<>(partidas, HttpStatus.OK);
     }
 
+    // Filtrar partidas por semana e ano
     @GetMapping("/semana")
     public ResponseEntity<List<Partida>> filtrarPorSemana(@RequestParam("semana") int semana,
             @RequestParam("ano") int ano) {
@@ -53,12 +53,14 @@ public class PartidaController {
         return new ResponseEntity<>(partidas, HttpStatus.OK);
     }
 
+    // Filtrar partidas por ano
     @GetMapping("/ano")
     public ResponseEntity<List<Partida>> filtrarPorAno(@RequestParam("ano") int ano) {
         List<Partida> partidas = partidaService.filtrarPorAno(ano);
         return new ResponseEntity<>(partidas, HttpStatus.OK);
     }
 
+    // Marcar uma partida como paga
     @PutMapping("/{id}/marcar-pago")
     public ResponseEntity<Partida> marcarComoPago(@PathVariable Long id) {
         Partida partidaAtualizada = partidaService.marcarComoPago(id);

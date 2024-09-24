@@ -379,28 +379,33 @@ fetch('http://localhost:8080/partidas')
   document.addEventListener('DOMContentLoaded', () => {
     carregarPartidas();
 });
-
 function carregarPartidas() {
     fetch('http://localhost:8080/partidas')
         .then(response => response.json())
         .then(partidas => {
             const container = document.getElementById('partidas-container');
             container.innerHTML = ''; // Limpar o conteúdo anterior
+
             partidas.forEach(partida => {
                 const partidaDiv = document.createElement('div');
                 partidaDiv.classList.add('partida');
                 partidaDiv.setAttribute('data-id', partida.id); // Adicionar data-id
+                
+                // Verificar o status de pagamento (booleano)
+                const statusPagamento = partida.statusPagamento ? 'Disponível' : 'Não disponível';
+                const statusClass = partida.statusPagamento ? 'disponivel' : 'nao-disponivel';
+                
+                // Criar o HTML para cada partida
                 partidaDiv.innerHTML = `
-                    <p>ID: ${partida.id} - Status: <span class="status ${partida.statusPagamento === 'Pendente' ? 'pendente' : 'pago'}">${partida.statusPagamento}</span></p>
-                    ${partida.statusPagamento === 'Pendente' ? `<button class="btn-pagar" onclick="marcarComoPago(${partida.id})">Marcar como Pago</button>` : ''}
+                    <p>ID: ${partida.id} - CPF: ${partida.cpfUser} - Dia: ${partida.dataPartida} - Hora: ${partida.horario} - Status: <span class="status ${statusClass}">${statusPagamento}</span></p>
+                    ${partida.statusPagamento ? `<button class="btn-marcar-indisponivel" onclick="marcarComoIndisponivel(${partida.id})">Marcar como Não disponível</button>` : ''}
                 `;
+
                 container.appendChild(partidaDiv);
             });
         })
         .catch(error => console.error('Erro ao carregar partidas:', error));
 }
-
-
 function marcarComoPago(id) {
     fetch(`http://localhost:8080/partidas/${id}/marcar-pago`, {
         method: 'PUT',
@@ -413,26 +418,30 @@ function marcarComoPago(id) {
     })
     .then(partida => {
         // Atualizar o status na interface
-        const row = document.querySelector(`#partidas-table tbody tr td:first-child:contains(${id})`).parentElement;
-        const statusElement = row.querySelector('td:nth-child(5)');
-        if (statusElement) {
-            statusElement.textContent = 'Pago';
-            statusElement.classList.remove('status-pendente');
-            statusElement.classList.add('status-pago');
-        }
+        const row = document.querySelector(`.partida[data-id='${id}']`);
+        const statusElement = row.querySelector('.status');
         
+        if (statusElement) {
+            statusElement.textContent = 'Não disponível';
+            statusElement.classList.remove('disponivel');
+            statusElement.classList.add('nao-disponivel');
+        }
+
         // Atualizar o botão
-        const button = row.querySelector('.btn-pagar');
+        const button = row.querySelector('.btn-marcar-indisponivel');
         if (button) {
-            button.textContent = 'Pago';
-            button.classList.add('pago');
+            button.textContent = 'Indisponível';
+            button.classList.add('indisponivel');
             button.disabled = true; // Desativar o botão após clicar
         }
     })
     .catch(error => {
-        console.error('Erro ao marcar como pago:', error);
+        console.error('Erro ao marcar como não disponível:', error);
     });
 }
+
+
+
 
 
         </script>
