@@ -1,64 +1,40 @@
-// Função para buscar horários do dia
-async function buscarHorariosDoDia(dia) {
-    try {
-        const response = await fetch(`http://localhost:8080/api/agenda/${dia}`);
-        if (!response.ok) {
-            throw new Error('Erro ao buscar horários');
-        }
-        const horarios = await response.json();
-        
-        // Exemplo de exibir os horários
-        horarios.forEach(horario => {
-            console.log(`Hora: ${horario.hora}, Disponível: ${horario.situacao ? 'Sim' : 'Não'}`);
-        });
-    } catch (error) {
-        console.error('Erro:', error);
+document.addEventListener('DOMContentLoaded', function () {
+    const apiUrl = 'http://localhost:8080/api/agenda'; // API para buscar os dados da Agenda
+
+    // Função para carregar os agendamentos da Agenda
+    function loadAgenda() {
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('calendar-body');
+                tbody.innerHTML = ''; // Limpa a tabela antes de preenchê-la
+
+                // Loop pelos dados retornados da API
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+
+                    // Coluna da data
+                    const diaCell = document.createElement('td');
+                    diaCell.textContent = item.dia;
+                    row.appendChild(diaCell);
+
+                    // Coluna da hora
+                    const horaCell = document.createElement('td');
+                    horaCell.textContent = item.hora;
+                    row.appendChild(horaCell);
+
+                    // Coluna do status
+                    const statusCell = document.createElement('td');
+                    statusCell.textContent = item.statusAgendamento ? 'Disponível' : 'Reservado';
+                    row.appendChild(statusCell);
+
+                    // Adiciona a linha à tabela
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Erro ao carregar agendamentos:', error));
     }
-}
 
-// Exemplo de uso: buscar horários de '2024-09-16'
-buscarHorariosDoDia('2024-09-16');
-
-// Função para adicionar um novo horário
-async function adicionarHorario(dia, hora, situacao) {
-    const data = {
-        dia: dia,  // '2024-09-16'
-        hora: hora,  // '14:00'
-        situacao: situacao  // true (disponível) ou false (indisponível)
-    };
-
-    try {
-        const response = await fetch('http://localhost:8080/api/agenda/adicionar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-        if (!response.ok) {
-            throw new Error('Erro ao adicionar horário');
-        }
-        const resultado = await response.json();
-        console.log('Horário adicionado:', resultado);
-    } catch (error) {
-        console.error('Erro:', error);
-    }
-}
-
-// Exemplo de uso: adicionar um horário para '2024-09-16' às '14:00' como disponível
-adicionarHorario('2024-09-16', '14:00', true);
-
-// Função para deletar um horário
-async function deletarHorario(id) {
-    try {
-        await fetch(`http://localhost:8080/api/agenda/deletar/${id}`, {
-            method: 'DELETE'
-        });
-        console.log('Horário deletado:', id);
-    } catch (error) {
-        console.error('Erro:', error);
-    }
-}
-
-// Exemplo de uso: deletar o horário com ID 1
-deletarHorario(1);
+    // Carrega os agendamentos ao iniciar a página
+    loadAgenda();
+});
