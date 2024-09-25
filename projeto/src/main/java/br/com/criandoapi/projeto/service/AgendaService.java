@@ -2,6 +2,7 @@ package br.com.criandoapi.projeto.service;
 
 import br.com.criandoapi.projeto.model.Agenda;
 import br.com.criandoapi.projeto.repository.AgendaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,4 +30,6 @@ public class AgendaService {
     public void deletarHorario(Long id) {
         agendaRepository.deleteById(id);
     }
+
+
 }
