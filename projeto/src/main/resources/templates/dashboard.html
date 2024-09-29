@@ -218,7 +218,9 @@
               </div>
         </main>
         <script>
+ 
    let allData = []; // Armazena todos os dados recebidos
+
 
 document.addEventListener('DOMContentLoaded', function() {
     fetch('http://localhost:8080/partidas')
@@ -271,67 +273,73 @@ function marcarComoPago(id) {
     // Aqui você deve adicionar a lógica para atualizar o status no backend
     // e recarregar a tabela para refletir a mudança de status.
 }
-function filterByDay() {
-    applyFilter(() => {
-        const today = new Date().toISOString().split('T')[0];
-        const filteredData = allData.filter(partida => partida.dataPartida === today);
-        populateTable(filteredData);
-    }, 'filter-day');
-}
+fetch('http://localhost:8080/partidas')
+  .then(response => response.json())
+  .then(partidas => {
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0); // Define a hora do dia para 00:00:00
 
-function filterByWeek() {
-    applyFilter(() => {
-        const today = new Date();
-        const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay())).toISOString().split('T')[0];
-        const endOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 6)).toISOString().split('T')[0];
-        const filteredData = allData.filter(partida => {
-            const partidaDate = new Date(partida.dataPartida);
-            return partidaDate >= new Date(startOfWeek) && partidaDate <= new Date(endOfWeek);
-        });
-        populateTable(filteredData);
-    }, 'filter-week');
-}
+    const diaAtual = hoje.getDate();
+    const mesAtual = hoje.getMonth();
+    const anoAtual = hoje.getFullYear();
+    const diaSemana = hoje.getDay(); // 0 para Domingo, 6 para Sábado
 
-function filterByMonth() {
-    applyFilter(() => {
-        const today = new Date();
-        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
-        const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString().split('T')[0];
-        const filteredData = allData.filter(partida => {
-            const partidaDate = new Date(partida.dataPartida);
-            return partidaDate >= new Date(startOfMonth) && partidaDate <= new Date(endOfMonth);
-        });
-        populateTable(filteredData);
-    }, 'filter-month');
-}
+    // Funções auxiliares
+    const filtrarPorDia = (partida) => {
+      const dataPartida = new Date(partida.dataPartida);
+      dataPartida.setHours(0, 0, 0, 0); // Define a hora para 00:00:00
+      return dataPartida.getTime() === hoje.getTime();
+    };
 
-function filterByYear() {
-    applyFilter(() => {
-        const today = new Date();
-        const startOfYear = new Date(today.getFullYear(), 0, 1).toISOString().split('T')[0];
-        const endOfYear = new Date(today.getFullYear(), 11, 31).toISOString().split('T')[0];
-        const filteredData = allData.filter(partida => {
-            const partidaDate = new Date(partida.dataPartida);
-            return partidaDate >= new Date(startOfYear) && partidaDate <= new Date(endOfYear);
-        });
-        populateTable(filteredData);
-    }, 'filter-year');
-}
+    const filtrarPorSemana = (partida) => {
+      const dataPartida = new Date(partida.dataPartida);
+      const primeiroDiaDaSemana = new Date(hoje);
+      primeiroDiaDaSemana.setDate(diaAtual - diaSemana);
+      primeiroDiaDaSemana.setHours(0, 0, 0, 0);
 
-// Função para remover a classe 'active' de todos os botões
-function removeActiveClass() {
-    const filterButtons = document.querySelectorAll('.filters button');
-    filterButtons.forEach(button => {
-        button.classList.remove('active');
-    });
-}
+      const ultimoDiaDaSemana = new Date(hoje);
+      ultimoDiaDaSemana.setDate(diaAtual + (6 - diaSemana));
+      ultimoDiaDaSemana.setHours(23, 59, 59, 999);
 
-// Função para aplicar o filtro e ativar o botão
-function applyFilter(filterFunction, buttonId) {
-    removeActiveClass(); // Remove a classe 'active' de todos os botões
-    document.getElementById(buttonId).classList.add('active'); // Adiciona a classe 'active' ao botão clicado
-    filterFunction(); // Aplica o filtro
-}
+      return dataPartida >= primeiroDiaDaSemana && dataPartida <= ultimoDiaDaSemana;
+    };
+
+    const filtrarPorMes = (partida) => {
+      const dataPartida = new Date(partida.dataPartida);
+      return dataPartida.getMonth() === mesAtual && dataPartida.getFullYear() === anoAtual;
+    };
+
+    const filtrarPorAno = (partida) => {
+      const dataPartida = new Date(partida.dataPartida);
+      return dataPartida.getFullYear() === anoAtual;
+    };
+
+    // Cálculos
+    const ganhosDiarios = partidas.filter(filtrarPorDia).length * 200;
+    const ganhosSemanais = partidas.filter(filtrarPorSemana).length * 200;
+    const ganhosMensais = partidas.filter(filtrarPorMes).length * 200;
+    const ganhosAnuais = partidas.filter(filtrarPorAno).length * 200;
+
+    // Logs para depuração
+    console.log('Ganhos Diários:', ganhosDiarios);
+    console.log('Ganhos Semanais:', ganhosSemanais);
+    console.log('Ganhos Mensais:', ganhosMensais);
+    console.log('Ganhos Anuais:', ganhosAnuais);
+
+    // Inserir valores no HTML
+    document.querySelector('.daily').textContent = ganhosDiarios.toFixed(2);
+    document.querySelector('.weekly').textContent = ganhosSemanais.toFixed(2);
+    document.querySelector('.monthly').textContent = ganhosMensais.toFixed(2);
+    document.querySelector('.annual').textContent = ganhosAnuais.toFixed(2);
+  })
+  .catch(error => console.error('Erro ao buscar os dados:', error));
+  document.addEventListener('DOMContentLoaded', () => {
+    carregarPartidas();
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    carregarPartidas();
+});
 
 
         </script>
