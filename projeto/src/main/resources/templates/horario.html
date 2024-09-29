@@ -176,62 +176,78 @@ button[type="submit"]:hover {
             </div>          
             <form id="agendaForm">
                 <label for="dia">Dia:</label>
-                <input type="date" id="dia" name="dia" required><br><br>
-    
+                <input type="date" id="dia" name="dia" required><br>
+            
                 <label for="horaInicio">Hora Início:</label>
-                <input type="time" id="horaInicio" name="horaInicio" required><br><br>
-    
+                <input type="time" id="horaInicio" name="horaInicio" required><br>
+            
                 <label for="horaFim">Hora Fim:</label>
-                <input type="time" id="horaFim" name="horaFim" required><br><br>
-    
+                <input type="time" id="horaFim" name="horaFim"><br> <!-- Removido o atributo 'required' -->
+            
                 <label for="status">Status Agendamento:</label>
                 <select id="status" name="status">
                     <option value="true">Disponível</option>
                     <option value="false">Reservado</option>
-                </select><br><br>
-    
-                <label for="partidaId">ID da Partida (opcional):</label>
-                <input type="number" id="partidaId" name="partidaId"><br><br>
-    
-                <button type="button" id="adicionarHorarios">Adicionar Horários</button>
-                <button type="submit">Adicionar Horário</button>
+                </select>
+            
+                <button type="submit" id="adicionarHorarios">Adicionar Horários</button>
             </form>
-    
+            
             <script>
                 const form = document.getElementById('agendaForm');
-                const adicionarHorariosButton = document.getElementById('adicionarHorarios');
-    
-                adicionarHorariosButton.addEventListener('click', function () {
+                let horariosAdicionados = []; // Array para armazenar os horários já adicionados
+            
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault(); // Impede o comportamento padrão de envio do formulário
+            
+                    // Obtém os valores dos campos do formulário
                     const dia = document.getElementById('dia').value;
                     const horaInicio = document.getElementById('horaInicio').value;
                     const horaFim = document.getElementById('horaFim').value;
                     const statusAgendamento = document.getElementById('status').value;
-                    const partidaId = document.getElementById('partidaId').value;
-    
-                    if (!dia || !horaInicio || !horaFim) {
-                        alert('Por favor, preencha todos os campos de data e hora.');
+                    const partidaId = document.getElementById('partidaId') ? document.getElementById('partidaId').value : null;
+            
+                    // Checar se todos os campos obrigatórios estão preenchidos
+                    if (!dia || !horaInicio) {
+                        alert('Por favor, preencha todos os campos obrigatórios.');
                         return;
                     }
-    
-                    const [inicioHoras, inicioMinutos] = horaInicio.split(':').map(Number);
-                    const [fimHoras, fimMinutos] = horaFim.split(':').map(Number);
-                    const horarios = [];
-    
-                    for (let h = inicioHoras; h <= fimHoras; h++) {
-                        const minutos = (h === fimHoras) ? fimMinutos : 59; // Última hora não pode ultrapassar a hora final
-                        for (let m = 0; m <= minutos; m += 60) {
-                            const hora = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
-                            horarios.push({
-                                dia: dia,
-                                hora: hora,
-                                statusAgendamento: statusAgendamento === "true",
-                                partida: partidaId ? { id: partidaId } : null
-                            });
-                        }
+            
+                    // Converter as horas para objetos Date para facilitar o incremento
+                    const inicio = new Date(`1970-01-01T${horaInicio}:00`);
+                    const fim = horaFim ? new Date(`1970-01-01T${horaFim}:00`) : inicio;
+            
+                    // Validar se a hora final não é anterior à inicial
+                    if (inicio > fim) {
+                        alert('A hora final deve ser maior ou igual à hora inicial.');
+                        return;
                     }
-    
-                    // Adicionar cada horário à API
-                    horarios.forEach(data => {
+            
+                    // Iterar sobre cada hora no intervalo de tempo fornecido
+                    for (let horaAtual = new Date(inicio); horaAtual <= fim; horaAtual.setHours(horaAtual.getHours() + 1)) {
+                        const horaFormatada = horaAtual.toTimeString().substring(0, 5); // Formata como HH:mm
+                        const horarioCompleto = `${dia} ${horaFormatada}`;
+                        
+                        // Checar se o horário já foi adicionado anteriormente
+                        if (horariosAdicionados.includes(horarioCompleto)) {
+                            alert(`O horário ${horaFormatada} no dia ${dia} já foi adicionado!`);
+                            continue;
+                        }
+            
+                        // Adicionar horário ao array para controle
+                        horariosAdicionados.push(horarioCompleto);
+            
+                        // Criar objeto de dados para enviar à API
+                        const data = {
+                            dia: dia,
+                            hora: horaFormatada,  // Ajustado para campo `hora`
+                            statusAgendamento: statusAgendamento === "true",  // Converte para booleano
+                            partida: partidaId ? { id: partidaId } : null  // Relacionamento opcional com a entidade `Partida`
+                        };
+            
+                        console.log('Dados enviados à API:', JSON.stringify(data)); // Verificar dados enviados
+            
+                        // Enviar o horário à API
                         fetch('http://localhost:8080/api/agenda', {
                             method: 'POST',
                             headers: {
@@ -240,31 +256,26 @@ button[type="submit"]:hover {
                             body: JSON.stringify(data),
                         })
                         .then(response => {
+                            console.log('Resposta da API:', response); // Verificar a resposta bruta
                             if (response.ok) {
                                 return response.json();
                             } else {
-                                throw new Error('Erro ao adicionar horário');
+                                return response.json().then(err => { throw new Error(err.message || 'Erro ao adicionar horário'); });
                             }
                         })
                         .then(result => {
                             console.log('Horário adicionado:', result);
-                            alert('Horários adicionados com sucesso!');
-                            form.reset();
                         })
                         .catch(error => {
-                            console.error('Erro:', error);
-                            alert('Erro ao adicionar o horário. Tente novamente.');
+                            console.error('Erro:', error); // Log detalhado do erro
+                            alert(`Erro ao adicionar o horário ${horaFormatada}. Tente novamente.`);
                         });
-                    });
-                });
-    
-                form.addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    // Lógica para adicionar um único horário
-                    // (mantida a lógica original do seu código)
+                    }
+            
+                    alert('Todos os horários adicionados com sucesso!');
+                    form.reset(); // Limpa os campos do formulário após adicionar todos os horários
                 });
             </script>
-    
     
     <script src="../static/js/scriptpages.js"></script>
 </body>

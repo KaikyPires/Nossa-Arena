@@ -116,13 +116,19 @@
 
 
         <div class="time-picker">
-            <div class="row time-picker-header">
+            <div class="time-picker-header">
                 <button class="arrow left" onclick="prevMonth()">&lt;</button>
                 <ul class="date-slot" id="date-slots">
-                    <!-- As datas serão geradas dinamicamente aqui -->
+                    <!-- Dinamically generated date slots -->
                 </ul>
                 <button class="arrow right" onclick="nextMonth()">&gt;</button>
             </div>
+            <div class="time-picker-body">
+                <ul class="time-slot" id="time-slots">
+                    <!-- Dinamically generated time slots -->
+                </ul>
+            </div>
+        </div>
 
             <div class="row">
                 <ul class="time-slot" id="time-slots">
