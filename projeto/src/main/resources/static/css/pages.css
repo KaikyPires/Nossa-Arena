@@ -81,6 +81,13 @@ main {
     height: 50px;
     object-fit: cover;
     border-radius: 20px;
+    transform: translateX(30%);
+}
+#user_avatar_secondary{
+    height: 60px;
+  object-fit: cover;
+  border-radius: 20px;
+  transform: translateY(-3%);
 }
 
 #user_infos {
@@ -164,6 +171,7 @@ color: #0a0a0a;
     cursor: pointer;
     background-color: transparent;
     text-decoration: none;
+    transform: translateX(15%);
 }
 
 #open_btn {

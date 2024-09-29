@@ -71,7 +71,7 @@ main {
     border-radius: 3rem;
     z-index: 10; /* Garante que o conteúdo esteja acima do slider */
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8); /* Adiciona a sombra */
-
+    transform: translateY(30%);
 }
 
 
@@ -167,6 +167,7 @@ main footer a {
     position: relative;
     z-index: 3; /* Garante que a logo esteja acima do slider */
     margin-top: 15vh; /* Ajusta a posição vertical conforme necessário */
+    transform: translateY(15%);
 }
 
 .logo {

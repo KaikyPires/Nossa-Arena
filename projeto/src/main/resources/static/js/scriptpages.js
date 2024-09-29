@@ -46,10 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Erro ao incrementar partidas:', error);
         });
     }
-    
-
-
-
     // Função para manipular a edição
     function handleEdit(event) {
         const cpf = event.target.getAttribute('data-cpf');
