@@ -113,15 +113,15 @@
         </header>
 
 
-
+        
 
         <div class="time-picker">
             <div class="time-picker-header">
-                <button class="arrow left" onclick="prevMonth()">&lt;</button>
+                <button class="arrow left" onclick="prevMonth()"></button>
                 <ul class="date-slot" id="date-slots">
                     <!-- Dinamically generated date slots -->
                 </ul>
-                <button class="arrow right" onclick="nextMonth()">&gt;</button>
+                <button class="arrow right" onclick="nextMonth()"></button>
             </div>
             <div class="time-picker-body">
                 <ul class="time-slot" id="time-slots">
@@ -204,7 +204,9 @@
             const modal = document.getElementById('success-modal');
             modal.style.display = 'none';
         }
-
+        document.getElementById('open_btn').addEventListener('click', function () {
+      document.getElementById('sidebar').classList.toggle('open-sidebar');
+    });
         document.addEventListener('DOMContentLoaded', function () {
             const apiUrl = 'http://localhost:8080/api/agenda'; // URL da API para buscar os horários
 

@@ -230,25 +230,31 @@ header img {
 }
 
 
-
-
-
-#sidebar.open-sidebar .item-description {
-    width: 150px;
-    height: auto;
-    
-    color: black;
+#sidebar.open-sidebar .item-description { 
+  width: 150px;
+  height: auto;
+  margin-left: 12px;
+  color: black; /* Cor padrão */
+  font-weight: 500;
+  text-transform: uppercase;
 }
-.item-description span {
-    color: #fff;
 
+.item-description span {
+  color: #fff; /* Cor padrão dos spans */
+}
+
+/* Muda a cor do texto para branco quando o item está ativo */
+
+
+/* Para garantir que o estilo é aplicado corretamente, pode ser necessário usar !important */
+.side-item.active a .item-description {
+  color: white !important; /* Adiciona !important para garantir que essa regra prevaleça */
 }
 
 #sidebar.open-sidebar .side-item a {
-    justify-content: flex-start;
-    gap: 14px;
+  justify-content: flex-start;
+  gap: 14px;
 }
-
 
 #calendar-container {
     position: absolute;
@@ -952,12 +958,17 @@ tbody tr:nth-child(even) {
     flex-direction: column; /* Alinha os elementos dentro de time-picker em coluna */
     justify-content: center;
     align-items: center;
-    width: 100%; /* Ajuste conforme necessário */
-    max-width: 900px; /* Ajuste conforme necessário */
-    margin: 0 auto;
+    margin-top: 100px;
+    transform: translateX(50%);
+    width: 1000px; /* Largura do componente */
+    background-color: #FFF; /* Cor de fundo branca */
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidade */
+    padding: 30px; /* Espaçamento interno */
+  
   }
   
-  .date-slot {
+  .date-slot{
     list-style: none;
     display: flex;
     justify-content: space-between;
@@ -965,6 +976,19 @@ tbody tr:nth-child(even) {
     border-radius: 5px;
    gap: 30px;
 }
+
+.date-slot li{
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-radius: 5px;
+  gap: 30px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  margin-right: 10px;
+}
+
 .date-slot-item {
     padding: 10px;
     border: 1px solid transparent;
@@ -1016,11 +1040,12 @@ tbody tr:nth-child(even) {
   }
   
   .arrow.left {
+    top: 28%;
     left: -35px;
   }
   
   .arrow.right {
-    top: 28%;
+   top: 28%; 
     right: -35px;
   }
   
@@ -1049,7 +1074,7 @@ tbody tr:nth-child(even) {
     flex-wrap: wrap;
     justify-content: space-between;
   }
-  
+
   .time-slot-item {
     font-size: 14px;
     color: #666;
@@ -1062,6 +1087,31 @@ tbody tr:nth-child(even) {
     flex-basis: 18%;
     transition: all 0.3s ease;
   }
+  .time-picker-body button {
+    width: 100%; /* Botões ocupam toda a largura do item da lista */
+    padding: 10px; /* Adiciona preenchimento interno aos botões */
+    border: none; /* Remove a borda padrão dos botões */
+    border-radius: 5px; /* Arredonda os cantos dos botões */
+    cursor: pointer; /* Muda o cursor ao passar sobre o botão */
+ 
+  }
+
+.time-picker-body .disponivel {
+    background-color: #65B307; /* Cor de fundo para horários disponíveis */
+    color: white; /* Cor do texto para botões disponíveis */
+    transition: background-color 0.3s; /* Efeito de transição para cor de fundo */
+    
+  }
+
+.time-picker-body .disponivel:hover {
+    background-color: #4cae4f; /* Cor ao passar o mouse sobre horários disponíveis */
+}
+
+.time-picker-body .reservado {
+    background-color: #ccc; /* Cor de fundo para horários reservados */
+    color: #666; /* Cor do texto para botões reservados */
+    cursor: not-allowed; /* Cursor que indica que não é clicável */
+}
   
   .time-slot-item:hover,
   .time-slot-item.picked {
