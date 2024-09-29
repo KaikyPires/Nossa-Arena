@@ -473,8 +473,7 @@ table {
     overflow:scroll;
     height: 60px;
     font-size: 14px;
-
-
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
 }
 
 .table-jogador {
@@ -482,6 +481,7 @@ table {
     justify-content: center; /* Centraliza horizontalmente */
     overflow: auto;
     max-height: 1000px;
+   
     
 }
 
@@ -489,11 +489,13 @@ th, td {
     border: 1px solid #d1c1c1;
     padding: 1.1rem;
     text-align: left;
+   
 }
 
 th {
     background-color: #65B307;
-    color: #ddd;
+    color: #ffffff;
+  
 }
 tb{
     padding: 0.8rem;

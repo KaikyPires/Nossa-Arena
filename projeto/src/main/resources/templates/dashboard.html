@@ -164,7 +164,7 @@
                               <!-- Botão de Refresh -->
                               <button id="refresh-button" class="btn-refresh">
                                   <i class="fa-solid fa-arrows-rotate"></i>
-                              </button>
+                                 
                           </div>
                             <thead>
                               <tr>
@@ -178,6 +178,7 @@
                             </thead>
                             <tbody>
                               <!-- Linhas da tabela serão inseridas aqui via JavaScript -->
+                              
                             </tbody>
                           </table>
                 
@@ -217,8 +218,7 @@
               </div>
         </main>
         <script>
-        
-        let allData = []; // Armazena todos os dados recebidos
+   let allData = []; // Armazena todos os dados recebidos
 
 document.addEventListener('DOMContentLoaded', function() {
     fetch('http://localhost:8080/partidas')
@@ -231,43 +231,46 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Erro ao carregar os dados:', error);
         });
 });
-
 function populateTable(data) {
     const tableBody = document.querySelector('#partidas-table tbody');
     tableBody.innerHTML = ''; // Limpa o conteúdo atual do corpo da tabela
 
     data.forEach(partida => {
+        // Verifica o status corretamente usando valores booleanos
+        const statusPagamento = partida.statusPagamento ? 'Pago' : 'Pendente';
+        const statusClass = statusPagamento === 'Pendente' ? 'status-pendente' : 'status-pago';
+
+        // Criação da linha da tabela
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${partida.id}</td>
             <td>${partida.cpfUser || 'Não definido'}</td>
             <td>${partida.dataPartida}</td>
             <td>${partida.horario}</td>
-             <td class="${partida.statusPagamento === 'Pendente' ? 'status-pendente' : (partida.statusPagamento === 'Pago' ? 'status-pago' : '')}">
-                ${partida.statusPagamento}
-                ${partida.statusPagamento === 'Pendente' ? `<button class="btn-pagar" onclick="marcarComoPago(${partida.id})">Marcar como Pago</button>` : ''}
+            <td class="${statusClass}">
+                ${statusPagamento}
+                ${statusPagamento === 'Pendente' ? createPaymentButton(partida.id) : ''}
             </td>
         `;
         tableBody.appendChild(row);
     });
 }
-// Função para remover a classe 'active' de todos os botões
-function removeActiveClass() {
-    const filterButtons = document.querySelectorAll('.filters button');
-    filterButtons.forEach(button => {
-        button.classList.remove('active');
-    });
+
+// Função para criar o botão de pagamento
+function createPaymentButton(id) {
+    return `
+        <button class="btn-pagar" onclick="marcarComoPago(${id})">
+            Marcar como pagar
+        </button>
+    `;
 }
 
-// Função para aplicar o filtro e ativar o botão
-function applyFilter(filterFunction, buttonId) {
-    removeActiveClass(); // Remove a classe 'active' de todos os botões
-    document.getElementById(buttonId).classList.add('active'); // Adiciona a classe 'active' ao botão clicado
-    filterFunction(); // Aplica o filtro
+// Função para marcar como pago (apenas exemplo, precisa integrar com backend)
+function marcarComoPago(id) {
+    alert(`Partida com ID ${id} foi marcada como paga!`);
+    // Aqui você deve adicionar a lógica para atualizar o status no backend
+    // e recarregar a tabela para refletir a mudança de status.
 }
-
-// Modifique as funções de filtro para usar applyFilter
-
 function filterByDay() {
     applyFilter(() => {
         const today = new Date().toISOString().split('T')[0];
@@ -315,140 +318,20 @@ function filterByYear() {
     }, 'filter-year');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    carregarPartidas();
-});
-
-fetch('http://localhost:8080/partidas')
-  .then(response => response.json())
-  .then(partidas => {
-    const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0); // Define a hora do dia para 00:00:00
-
-    const diaAtual = hoje.getDate();
-    const mesAtual = hoje.getMonth();
-    const anoAtual = hoje.getFullYear();
-    const diaSemana = hoje.getDay(); // 0 para Domingo, 6 para Sábado
-
-    // Funções auxiliares
-    const filtrarPorDia = (partida) => {
-      const dataPartida = new Date(partida.dataPartida);
-      dataPartida.setHours(0, 0, 0, 0); // Define a hora para 00:00:00
-      return dataPartida.getTime() === hoje.getTime();
-    };
-
-    const filtrarPorSemana = (partida) => {
-      const dataPartida = new Date(partida.dataPartida);
-      const primeiroDiaDaSemana = new Date(hoje);
-      primeiroDiaDaSemana.setDate(diaAtual - diaSemana);
-      primeiroDiaDaSemana.setHours(0, 0, 0, 0);
-
-      const ultimoDiaDaSemana = new Date(hoje);
-      ultimoDiaDaSemana.setDate(diaAtual + (6 - diaSemana));
-      ultimoDiaDaSemana.setHours(23, 59, 59, 999);
-
-      return dataPartida >= primeiroDiaDaSemana && dataPartida <= ultimoDiaDaSemana;
-    };
-
-    const filtrarPorMes = (partida) => {
-      const dataPartida = new Date(partida.dataPartida);
-      return dataPartida.getMonth() === mesAtual && dataPartida.getFullYear() === anoAtual;
-    };
-
-    const filtrarPorAno = (partida) => {
-      const dataPartida = new Date(partida.dataPartida);
-      return dataPartida.getFullYear() === anoAtual;
-    };
-
-    // Cálculos
-    const ganhosDiarios = partidas.filter(filtrarPorDia).length * 200;
-    const ganhosSemanais = partidas.filter(filtrarPorSemana).length * 200;
-    const ganhosMensais = partidas.filter(filtrarPorMes).length * 200;
-    const ganhosAnuais = partidas.filter(filtrarPorAno).length * 200;
-
-    // Logs para depuração
-    console.log('Ganhos Diários:', ganhosDiarios);
-    console.log('Ganhos Semanais:', ganhosSemanais);
-    console.log('Ganhos Mensais:', ganhosMensais);
-    console.log('Ganhos Anuais:', ganhosAnuais);
-
-    // Inserir valores no HTML
-    document.querySelector('.daily').textContent = ganhosDiarios.toFixed(2);
-    document.querySelector('.weekly').textContent = ganhosSemanais.toFixed(2);
-    document.querySelector('.monthly').textContent = ganhosMensais.toFixed(2);
-    document.querySelector('.annual').textContent = ganhosAnuais.toFixed(2);
-  })
-  .catch(error => console.error('Erro ao buscar os dados:', error));
-  document.addEventListener('DOMContentLoaded', () => {
-    carregarPartidas();
-  });
-
-  document.addEventListener('DOMContentLoaded', () => {
-    carregarPartidas();
-});
-function carregarPartidas() {
-    fetch('http://localhost:8080/partidas')
-        .then(response => response.json())
-        .then(partidas => {
-            const container = document.getElementById('partidas-container');
-            container.innerHTML = ''; // Limpar o conteúdo anterior
-
-            partidas.forEach(partida => {
-                const partidaDiv = document.createElement('div');
-                partidaDiv.classList.add('partida');
-                partidaDiv.setAttribute('data-id', partida.id); // Adicionar data-id
-                
-                // Verificar o status de pagamento (booleano)
-                const statusPagamento = partida.statusPagamento ? 'Disponível' : 'Não disponível';
-                const statusClass = partida.statusPagamento ? 'disponivel' : 'nao-disponivel';
-                
-                // Criar o HTML para cada partida
-                partidaDiv.innerHTML = `
-                    <p>ID: ${partida.id} - CPF: ${partida.cpfUser} - Dia: ${partida.dataPartida} - Hora: ${partida.horario} - Status: <span class="status ${statusClass}">${statusPagamento}</span></p>
-                    ${partida.statusPagamento ? `<button class="btn-marcar-indisponivel" onclick="marcarComoIndisponivel(${partida.id})">Marcar como Não disponível</button>` : ''}
-                `;
-
-                container.appendChild(partidaDiv);
-            });
-        })
-        .catch(error => console.error('Erro ao carregar partidas:', error));
-}
-function marcarComoPago(id) {
-    fetch(`http://localhost:8080/partidas/${id}/marcar-pago`, {
-        method: 'PUT',
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erro ao marcar como pago');
-        }
-        return response.json();
-    })
-    .then(partida => {
-        // Atualizar o status na interface
-        const row = document.querySelector(`.partida[data-id='${id}']`);
-        const statusElement = row.querySelector('.status');
-        
-        if (statusElement) {
-            statusElement.textContent = 'Não disponível';
-            statusElement.classList.remove('disponivel');
-            statusElement.classList.add('nao-disponivel');
-        }
-
-        // Atualizar o botão
-        const button = row.querySelector('.btn-marcar-indisponivel');
-        if (button) {
-            button.textContent = 'Indisponível';
-            button.classList.add('indisponivel');
-            button.disabled = true; // Desativar o botão após clicar
-        }
-    })
-    .catch(error => {
-        console.error('Erro ao marcar como não disponível:', error);
+// Função para remover a classe 'active' de todos os botões
+function removeActiveClass() {
+    const filterButtons = document.querySelectorAll('.filters button');
+    filterButtons.forEach(button => {
+        button.classList.remove('active');
     });
 }
 
-
-
+// Função para aplicar o filtro e ativar o botão
+function applyFilter(filterFunction, buttonId) {
+    removeActiveClass(); // Remove a classe 'active' de todos os botões
+    document.getElementById(buttonId).classList.add('active'); // Adiciona a classe 'active' ao botão clicado
+    filterFunction(); // Aplica o filtro
+}
 
 
         </script>
