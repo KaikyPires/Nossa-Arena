@@ -969,6 +969,10 @@ tbody tr:nth-child(even) {
     padding: 30px; /* Espaçamento interno */
   
   }
+  .time-picker h1{
+    
+    font-size: 25px;
+  }
   
   .date-slot{
     list-style: none;
@@ -1095,7 +1099,7 @@ tbody tr:nth-child(even) {
     border: none; /* Remove a borda padrão dos botões */
     border-radius: 5px; /* Arredonda os cantos dos botões */
     cursor: pointer; /* Muda o cursor ao passar sobre o botão */
- 
+
   }
 
 .time-picker-body .disponivel {
