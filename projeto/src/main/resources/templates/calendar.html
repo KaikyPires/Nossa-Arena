@@ -37,7 +37,7 @@
                         <span class="item-description">Inicio</span>
                     </a>
                 </li>
-             
+
                 <li class="side-item">
                     <a href="dashboard.html">
                         <i class="fa-solid fa-chart-line"></i>
@@ -49,12 +49,12 @@
                         <i class="fa-solid fa-clock"></i>
                         <span class="item-description">Horarios</span>
                     </a>
-                    <li class="side-item active">
-                        <a href="calendar.html">
-                            <i class="fa-solid fa-calendar-days"></i>
-                            <span class="item-description">Calendário</span>
-                        </a>
-                    </li>
+                <li class="side-item active">
+                    <a href="calendar.html">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span class="item-description">Calendário</span>
+                    </a>
+                </li>
                 <li class="side-item">
                     <a href="cadastro.html">
                         <i class="fa-solid fa-address-card"></i>
@@ -113,7 +113,7 @@
         </header>
 
 
-        
+
 
         <div class="time-picker">
             <h1>Calendario <span> <i class="fa-solid fa-calendar-days"></i></span></h1>
@@ -131,11 +131,11 @@
             </div>
         </div>
 
-            <div class="row">
-                <ul class="time-slot" id="time-slots">
-                    <!-- Os horários serão gerados dinamicamente aqui -->
-                </ul>
-            </div>
+        <div class="row">
+            <ul class="time-slot" id="time-slots">
+                <!-- Os horários serão gerados dinamicamente aqui -->
+            </ul>
+        </div>
         </div>
     </main>
     <div id="confirmation-modal" class="modal">
@@ -206,8 +206,8 @@
             modal.style.display = 'none';
         }
         document.getElementById('open_btn').addEventListener('click', function () {
-      document.getElementById('sidebar').classList.toggle('open-sidebar');
-    });
+            document.getElementById('sidebar').classList.toggle('open-sidebar');
+        });
         document.addEventListener('DOMContentLoaded', function () {
             const apiUrl = 'http://localhost:8080/api/agenda'; // URL da API para buscar os horários
 
@@ -263,38 +263,62 @@
                 modal.style.display = 'block';
             }
 
-            // Função para enviar os dados do formulário de confirmação
             document.getElementById('confirmation-form').addEventListener('submit', function (event) {
                 event.preventDefault(); // Evitar o comportamento padrão do formulário
 
-                const cpf = document.getElementById('cpf').value;
-                const dia = document.getElementById('selected-date').value;
-                const hora = document.getElementById('selected-time').value;
+                // Captura os valores dos campos com os novos nomes
+                const cpfUser = document.getElementById('cpf').value.trim(); // Captura o CPF
+                const dataPartida = document.getElementById('selected-date').value; // Data da agenda selecionada
+                const horario = document.getElementById('selected-time').value; // Hora da agenda selecionada
 
                 const dadosAgendamento = {
-                    cpf: cpf,
-                    dia: dia,
-                    hora: hora
+                    cpfUser: cpfUser,
+                    dataPartida: dataPartida,
+                    horario: horario
                 };
 
-                fetch('http://localhost:8080/api/agenda', {
+                console.log({ cpfUser: cpfUser, dataPartida: dataPartida, horario: horario }); // Para verificar os dados
+
+
+                console.log('Dados a serem enviados:', dadosAgendamento); // Verifique os dados
+
+                fetch('http://localhost:8080/partidas', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(dadosAgendamento)
                 })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(errorData => {
+                                // Verifique se a mensagem de erro é sobre CPF inválido
+                                if (errorData.message.includes("O CPF informado é inválido ou não existe.")) {
+                                    alert("O CPF informado é inválido ou não existe.");
+                                } else {
+                                    throw new Error(`Erro: ${errorData.message || response.statusText}`);
+                                }
+                            });
+                        }
+                        return response.json();
+                    })
+
                     .then(data => {
-                        if (data.success) {
+                        if (data.id) { // Checa se 'id' está presente
                             closeConfirmationModal();
                             showSuccessModal(dia, hora, data.id);
                         } else {
                             alert('Erro ao agendar. Tente novamente.');
+                            console.log(data);
                         }
                     })
-                    .catch(error => console.error('Erro:', error));
+
+
             });
+
+
+
+
 
             // Função para exibir o modal de sucesso
             function showSuccessModal(dia, hora, id) {
