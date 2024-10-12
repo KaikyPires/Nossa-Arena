@@ -1160,6 +1160,8 @@ tbody tr:nth-child(even) {
     width: 90%;
     max-width: 500px;
     position: relative;
+    transform: translate(150%, 75%);
+    
   }
   
   .modal-content h4 {
