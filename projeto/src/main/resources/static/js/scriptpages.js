@@ -381,7 +381,18 @@ function closeSuccessModal() {
 // Inicializar o calendário na semana que inclui o dia atual
 startDayIndex = calculateStartDayIndex();
 updateCalendar();
+document.getElementById('logout_btn').addEventListener('click', function(event) {
+  event.preventDefault(); // Impede o redirecionamento imediato
+  document.getElementById('confirmExitPopup').style.display = 'block'; // Mostra o popup
+});
 
+document.getElementById('confirmExit').addEventListener('click', function() {
+  window.location.href = 'index.html'; // Redireciona para a página de logout
+});
+
+document.getElementById('cancelExit').addEventListener('click', function() {
+  document.getElementById('confirmExitPopup').style.display = 'none'; // Fecha o popup
+});
 
 
 

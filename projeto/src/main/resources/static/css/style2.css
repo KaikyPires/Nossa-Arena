@@ -310,6 +310,7 @@ p {
         padding: 10px; /* Adiciona um padding uniforme */
         color: #15451a;
         box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
+        z-index: 999; 
     }
     
 
@@ -340,6 +341,7 @@ p {
     
     .error-popup {
         border: 2px solid #F44336; /* Vermelho para erro */
+        
     }
     
     /* Estilização dos botões de sucesso e erro */

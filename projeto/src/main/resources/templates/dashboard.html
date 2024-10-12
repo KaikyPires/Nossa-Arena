@@ -104,6 +104,17 @@
             </div>
         </nav>
 
+    <div class="popup sair-popup" id="confirmExitPopup" style="display: none;">
+        <aside>
+            <img src="../static/images/Imagem1.png" alt="" class="logo-img">
+        </aside>
+        <h2>Deseja sair?</h2>
+        
+        <div class="popup-buttons">
+            <button id="confirmExit">Sim</button>
+            <button id="cancelExit">Cancelar</button>
+        </div>
+    </div>
         <main>
 
             <header>
@@ -447,6 +458,18 @@
                         console.error('Erro ao marcar como pago:', error);
                     });
             }
+            document.getElementById('logout_btn').addEventListener('click', function(event) {
+            event.preventDefault(); // Impede o redirecionamento imediato
+            document.getElementById('confirmExitPopup').style.display = 'block'; // Mostra o popup
+        });
+
+        document.getElementById('confirmExit').addEventListener('click', function() {
+            window.location.href = 'index.html'; // Redireciona para a página de logout
+        });
+
+        document.getElementById('cancelExit').addEventListener('click', function() {
+            document.getElementById('confirmExitPopup').style.display = 'none'; // Fecha o popup
+        });
 
         </script>
     </body>
