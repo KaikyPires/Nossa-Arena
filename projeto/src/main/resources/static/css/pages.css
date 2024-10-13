@@ -473,6 +473,7 @@ table {
     justify-content: center; /* Centraliza horizontalmente */
     overflow: auto;
     max-height: 1000px;
+    margin-top: 30px;
    
     
 }

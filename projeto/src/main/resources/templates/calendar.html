@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="../static/css/pages.css">
     <link rel="stylesheet"
         href="./../static/images/assets/fontawesome-free-6.5.2-web/fontawesome-free-6.5.2-web/css/all.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.0.0-rc.7/html2canvas.min.js"></script>
+
+
 
 
     <link
@@ -212,20 +215,26 @@
                         style="fill:none;stroke:#fff;stroke-width:3;stroke-linejoin:round;stroke-miterlimit:10;"
                         points="11.6,20 15.9,24.2 26.4,13.8 " />
                 </svg>
+                
             </div>
             <h1>Agendado com sucesso!</h1>
             <div class="text">
                 <p>Você agendou com sucesso.<br>Detalhes:<br>Data: <span id="success-date"></span><br>
                     Horário: <span id="success-time"></span><br>
                     ID: <span id="success-id"></span>
+                  
+
                 </p>
                 <p>Ansiosos para sua visita</p>
+                <p> <button onclick="window.print()">Imprimir / Salvar PDF</button></p>
             </div>
             <p class="regards">Atenciosamente, Equipe Nossa Arena.</p>
+           
         </div>
     </div>
 
     <script>
+        
         // Função para fechar o modal de confirmação
         function closeConfirmationModal() {
             const modal = document.getElementById('confirmation-modal');

@@ -196,3 +196,5 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error("O botão de refresh com ID 'refresh-button' não foi encontrado.");
     }
 });
+
+ 
