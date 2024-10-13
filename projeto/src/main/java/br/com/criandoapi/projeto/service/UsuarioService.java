@@ -49,4 +49,5 @@ public class UsuarioService {
         }
         return null; // Retorna null se o usuário não for encontrado
     }
+    
 }

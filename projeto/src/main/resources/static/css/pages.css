@@ -426,14 +426,6 @@ main form {
     font-size: 1.4rem;
 
 }
-.input-container i {
-    position: absolute;
-    left: 1rem; /* Espaçamento da borda esquerda */
-    top: 50%; /* Centraliza verticalmente */
-    transform: translateY(-100%); /* Ajusta para centralização vertical */
-    font-size: 1.6rem; /* Tamanho do ícone */
-    color: #00690A; /* Cor do ícone */
-}
 
 .input-container i {
     position: absolute;
@@ -965,7 +957,7 @@ tbody tr:nth-child(even) {
     width: 1000px; /* Largura do componente */
     background-color: #FFF; /* Cor de fundo branca */
     border-radius: 10px; /* Bordas arredondadas */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidade */
+    box-shadow:   5px 8px 20px rgba(0, 0, 0, 0.5); /* Sombra para dar profundidade */
     padding: 30px; /* Espaçamento interno */
   
   }
@@ -1079,10 +1071,12 @@ tbody tr:nth-child(even) {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    gap: 10px;
+
   }
 
   .time-slot-item {
-    font-size: 14px;
+    font-size: 12px;
     color: #666;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -1092,6 +1086,7 @@ tbody tr:nth-child(even) {
     cursor: pointer;
     flex-basis: 18%;
     transition: all 0.3s ease;
+  
   }
   .time-picker-body button {
     width: 100%; /* Botões ocupam toda a largura do item da lista */
@@ -1099,7 +1094,7 @@ tbody tr:nth-child(even) {
     border: none; /* Remove a borda padrão dos botões */
     border-radius: 5px; /* Arredonda os cantos dos botões */
     cursor: pointer; /* Muda o cursor ao passar sobre o botão */
-
+    
   }
 
 .time-picker-body .disponivel {
@@ -1233,6 +1228,8 @@ tbody tr:nth-child(even) {
     margin-top: 20px;
     display: block; /* Inicialmente oculto */
     width: 100%;
+    margin-left: 2px;
+    font-size: 15px;
   }
   
   #submit-confirmation:hover {
@@ -1412,13 +1409,18 @@ tbody tr:nth-child(even) {
   color: #15451a;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
   z-index: 999; 
-  border: 2px solid #15451a;
+  border: 2px solid #23942e;
+ 
 }
 
 .sair-popup img {
   width: 100px;
   margin-top: -20%;
   border-radius: 50%;
+  background: transparent;
+  border: none; /* Remove borda */
+  box-shadow: none; /* Remove qualquer sombra */
+  background: transparent;
 }
 .popup-buttons {
   display: flex;
@@ -1430,7 +1432,7 @@ tbody tr:nth-child(even) {
 .sair-popup button {
   width: calc(50% - 1rem); /* Ajusta o tamanho dos botões */
   height: 4.2rem;
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   border-radius: 2rem;
   color: white;
   background-color: #4a9a2d;
@@ -1450,3 +1452,6 @@ tbody tr:nth-child(even) {
 .sair-popup button#cancelExit:hover {
   background-color: #b12b27; /* Efeito hover para o botão de cancelamento */
 }
+
+
+
