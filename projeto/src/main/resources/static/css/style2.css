@@ -280,7 +280,7 @@ p {
     .input-container i.fa-eye-slash {
         position: absolute;
         right: 10px;
-        top: 26%;
+        top: 21%;
         transform: translateX(96%);
         cursor: pointer;
     }
