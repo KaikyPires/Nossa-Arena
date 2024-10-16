@@ -72,22 +72,28 @@
     integrity="sha512-gmwBmiTVER57N3jYS3LinA9eb8aHrJua5iQD7yqYCKa5x6Jjc7VDVaEA0je0Lu0bP9j7tEjV3+1qUm6loO99Kw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-document.addEventListener('keydown', function(event) {
-  // Verifica se a tecla F11 foi pressionada
-  if (event.key === 'F11') {
-    event.preventDefault(); // Previne o comportamento padrão do F11
-
-    // Entra em tela cheia manualmente
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().then(() => {
-        // Depois de entrar em tela cheia, redireciona imediatamente para a nova página
-        window.location.href = "index.html"; // Substitua pela URL desejada
-      }).catch(err => {
-        console.error(`Erro ao tentar entrar em tela cheia: ${err}`);
-      });
-    }
+// Função para verificar se o modo tela cheia está ativo e redirecionar
+function checkFullscreenAndRedirect() {
+  if (document.fullscreenElement) {
+    // Se estiver em tela cheia, redireciona para outra página
+    setTimeout(function() {
+      window.location.href = "index.html"; // Substitua pela URL desejada
+    }, 1000); // Pequeno delay para garantir que o modo fullscreen está ativado
   }
+}
+
+// Detecta quando o modo de tela cheia é ativado ou desativado
+document.addEventListener('fullscreenchange', function() {
+  checkFullscreenAndRedirect();
 });
+
+// Tenta entrar em tela cheia automaticamente
+if (!document.fullscreenElement) {
+  document.documentElement.requestFullscreen().catch(err => {
+    console.error(`Erro ao tentar entrar em tela cheia: ${err}`);
+  });
+}
+
 </script>
 
 </html>
