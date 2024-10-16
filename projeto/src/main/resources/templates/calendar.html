@@ -42,28 +42,38 @@
             color: #00690A;
             /* Cor do ícone */
         }
+
         @media print {
-    body {
-        visibility: hidden; /* Oculta todo o conteúdo da página */
-        background-image: none !important;
-    }
-    #success-modal, #success-modal * {
-        visibility: visible; /* Apenas o modal de sucesso será visível */
-    }
-    #success-modal {
-        position: absolute;
-        left: 15%;
-        top: -30%;
-       
-        width: 100%;
-        height: auto; /* Preenche a altura total da página */
-        background-color: white; /* Defina um fundo branco para o modal */
-        padding: 40px;
-        margin: 0;
-        font-size: 2rem; /* Ajusta o tamanho da fonte para caber bem no modal */
-        transform: scale(3.5); /* Aplica zoom de 120% */
-    }
-}
+            body {
+                visibility: hidden;
+                /* Oculta todo o conteúdo da página */
+                background-image: none !important;
+            }
+
+            #success-modal,
+            #success-modal * {
+                visibility: visible;
+                /* Apenas o modal de sucesso será visível */
+            }
+
+            #success-modal {
+                position: absolute;
+                left: 15%;
+                top: -30%;
+
+                width: 100%;
+                height: auto;
+                /* Preenche a altura total da página */
+                background-color: white;
+                /* Defina um fundo branco para o modal */
+                padding: 40px;
+                margin: 0;
+                font-size: 2rem;
+                /* Ajusta o tamanho da fonte para caber bem no modal */
+                transform: scale(3.5);
+                /* Aplica zoom de 120% */
+            }
+        }
     </style>
 
 </head>
@@ -349,6 +359,7 @@
                     horario: horario
                 };
 
+                // Faz a requisição para criar a nova Partida
                 fetch('http://localhost:8080/partidas', {
                     method: 'POST',
                     headers: {
@@ -369,7 +380,7 @@
                         return response.json();
                     })
                     .then(data => {
-                        if (data.id) { // Checa se 'id' está presente para a partida
+                        if (data.id) { // Verifica se a Partida foi criada com sucesso
                             closeConfirmationModal();
                             showSuccessModal(dataPartida, horario, data.id);
 
@@ -382,19 +393,21 @@
                                 }
                             });
 
-                            // Atualiza a tabela AGENDA: statusAgendamento e id da nova partida
+                            // Atualiza a AGENDA vinculando a nova Partida à data e hora selecionadas
                             const agendaUpdate = {
                                 statusAgendamento: false,  // Atualiza status para reservado
-                                partida: data.id           // Adiciona o id da nova partida como chave estrangeira
+                                partida: {
+                                    id: dataPartida.id  // Passe apenas o ID da partida criada corretamente
+                                }
                             };
 
                             // Faz a requisição para atualizar a AGENDA
-                            fetch(`http://localhost:8080/agenda/update/${dataPartida}/${horario}`, {
+                            fetch(`http://localhost:8080/api/agenda/update/${dataPartida}/${horario}`, {
                                 method: 'PUT',
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },
-                                body: JSON.stringify(agendaUpdate)
+                                body: JSON.stringify(agendaUpdate)  // Envia o ID correto da Partida para a Agenda
                             })
                                 .then(updateResponse => {
                                     if (!updateResponse.ok) {
@@ -416,9 +429,6 @@
                     })
                     .catch(error => console.error('Erro ao criar a partida:', error));
             });
-
-
-
 
             // Função para exibir o modal de sucesso
             function showSuccessModal(dia, hora, id) {

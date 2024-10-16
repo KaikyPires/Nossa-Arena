@@ -16,6 +16,9 @@ public class AgendaService {
     @Autowired
     private AgendaRepository agendaRepository;
 
+    @Autowired
+    private PartidaService partidaService; // Adiciona a injeção do serviço de Partida
+
     public List<Agenda> listarTodos() {
         return agendaRepository.findAll();
     }
@@ -40,12 +43,16 @@ public class AgendaService {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Agenda não encontrada para a data e hora fornecidas"));
 
-        // Atualize o status do agendamento e vincule a partida
+        // Salvar a partida primeiro se for uma nova (id == null)
+        if (partida.getId() == null) {
+            partida = partidaService.salvarPartida(partida);
+        }
+
+        // Atualizar o status da agenda e associar a partida
         agenda.setStatusAgendamento(false); // False significa que está reservado
         agenda.setPartida(partida);
 
         // Salve as mudanças no banco de dados
         return agendaRepository.save(agenda);
     }
-
 }

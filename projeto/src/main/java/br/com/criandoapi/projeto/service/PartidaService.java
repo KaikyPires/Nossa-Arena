@@ -19,6 +19,10 @@ public class PartidaService {
         this.partidaRepository = partidaRepository;
     }
 
+    public Partida salvarPartida(Partida partida) {
+        return partidaRepository.save(partida);
+    }
+
     public List<Partida> listarPartida() {
         return partidaRepository.findAllByOrderByDataPartidaAsc();
     }
@@ -64,6 +68,7 @@ public class PartidaService {
         }
         return false;
     }
+
     public Partida marcarComoPago(Long id) {
         return partidaRepository.findById(id).map(partida -> {
             // Atualiza o status para "Pago" (true), independente do valor anterior
@@ -71,6 +76,5 @@ public class PartidaService {
             return partidaRepository.save(partida);
         }).orElse(null);
     }
-    
-    
+
 }

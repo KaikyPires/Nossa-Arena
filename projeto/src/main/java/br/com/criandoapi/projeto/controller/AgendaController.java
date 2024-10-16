@@ -34,10 +34,19 @@ public class AgendaController {
     @PutMapping("/update/{dia}/{hora}")
     public ResponseEntity<Agenda> atualizarStatusAgendamento(@PathVariable String dia, @PathVariable String hora,
             @RequestBody Partida partida) {
-        LocalDate localDate = LocalDate.parse(dia);
-        LocalTime localTime = LocalTime.parse(hora);
-        Agenda agendaAtualizada = agendaService.atualizarStatusAgendamento(localDate, localTime, partida);
-        return ResponseEntity.ok(agendaAtualizada);
+        try {
+            LocalDate localDate = LocalDate.parse(dia);
+            LocalTime localTime = LocalTime.parse(hora);
+
+            // Atualiza a agenda com a nova partida e altera o status
+            Agenda agendaAtualizada = agendaService.atualizarStatusAgendamento(localDate, localTime, partida);
+
+            return ResponseEntity.ok(agendaAtualizada);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(null); // Retorna 404 se não encontrar a agenda
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null); // Retorna 500 se ocorrer um erro inesperado
+        }
     }
 
     @PostMapping
