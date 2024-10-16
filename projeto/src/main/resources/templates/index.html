@@ -38,29 +38,7 @@
         </div>
         </main>
         <script>
-       // Função para ativar o modo de tela cheia
-       function ativarTelaCheia() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch((err) => {
-                    console.error(`Erro ao tentar ativar o modo tela cheia: ${err.message}`);
-                });
-            }
-        }
-
-        // Ativa o modo tela cheia ao clicar em qualquer lugar
-        document.addEventListener('click', function () {
-            ativarTelaCheia();
-            // Salva no localStorage que o modo tela cheia foi ativado
-            localStorage.setItem('modoTelaCheia', 'true');
-        });
-
-        // Sai do modo tela cheia e atualiza o localStorage quando o usuário sai da tela cheia
-        document.addEventListener('fullscreenchange', (event) => {
-            if (!document.fullscreenElement) {
-                localStorage.setItem('modoTelaCheia', 'false');
-            }
-        });
-     
+      
         </script>
 </body>
 </html>

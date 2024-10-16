@@ -69,3 +69,24 @@ body {
   margin-left: 20px;
   font-weight: bolder;
 }
+#blinking-heading{
+  color: #fff;
+  font-size: 20px;
+  letter-spacing: 12px;
+  text-transform: uppercase;
+  margin-left: 20px;
+  font-weight: bolder;
+}
+#blinking-heading {
+  animation: blink 1s infinite;
+ padding-bottom: 40px;
+ margin-top: -28px;
+}
+@keyframes blink {
+  0%, 100% {
+      opacity: 1;
+  }
+  50% {
+      opacity: 0;
+  }
+}

@@ -1,12 +1,14 @@
 package br.com.criandoapi.projeto.controller;
 
 import br.com.criandoapi.projeto.model.Agenda;
+import br.com.criandoapi.projeto.model.Partida;
 import br.com.criandoapi.projeto.service.AgendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -29,6 +31,15 @@ public class AgendaController {
         return ResponseEntity.ok(horarios);
     }
 
+    @PutMapping("/update/{dia}/{hora}")
+    public ResponseEntity<Agenda> atualizarStatusAgendamento(@PathVariable String dia, @PathVariable String hora,
+            @RequestBody Partida partida) {
+        LocalDate localDate = LocalDate.parse(dia);
+        LocalTime localTime = LocalTime.parse(hora);
+        Agenda agendaAtualizada = agendaService.atualizarStatusAgendamento(localDate, localTime, partida);
+        return ResponseEntity.ok(agendaAtualizada);
+    }
+
     @PostMapping
     public ResponseEntity<Agenda> adicionarHorario(@RequestBody Agenda agenda) {
         Agenda savedAgenda = agendaService.adicionarHorario(agenda);
@@ -40,7 +51,5 @@ public class AgendaController {
         agendaService.deletarHorario(id);
         return ResponseEntity.noContent().build();
     }
-    
 
-    
 }
