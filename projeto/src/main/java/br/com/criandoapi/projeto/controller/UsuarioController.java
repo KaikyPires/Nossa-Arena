@@ -50,6 +50,7 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
     }
+
     private static final String CPF_CORRETO = "123456";
     private static final String SENHA_CORRETA = "admin";
 
@@ -61,25 +62,21 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("CPF ou senha incorretos");
         }
     }
-     @Autowired
+
+    @Autowired
     private UsuarioRepository usuarioRepository;
-
-
 
     @PutMapping("/{cpf}/incrementar-partidas")
     public ResponseEntity<Usuario> incrementarPartidas(@PathVariable String cpf) {
         Optional<Usuario> optionalUsuario = usuarioRepository.findById(cpf);
         if (optionalUsuario.isPresent()) {
             Usuario usuario = optionalUsuario.get();
-            // Garantir que quantidadePartidas é tratada como um número inteiro
-            int quantidadePartidasAtual = Integer.parseInt(usuario.getQuantidadePartidas());
-            usuario.setQuantidadePartidas(String.valueOf(quantidadePartidasAtual + 1));
+            usuario.setQuantidadePartidas(usuario.getQuantidadePartidas() + 1); // Incrementa a quantidade de partidas
             usuarioRepository.save(usuario);
             return ResponseEntity.ok(usuario);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-    
 
 }
