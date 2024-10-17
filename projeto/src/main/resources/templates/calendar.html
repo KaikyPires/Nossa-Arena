@@ -422,6 +422,23 @@
                                     console.error('Erro ao atualizar a tabela AGENDA:', error);
                                 });
 
+                            // IMPLEMENTAÇÃO DO INCREMENTO DE PARTIDAS
+                            fetch(`http://localhost:8080/usuarios/${cpfUser}/incrementar-partidas`, {
+                                method: 'PUT'
+                            })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Erro ao incrementar a quantidade de partidas.');
+                                    }
+                                    return response.json();
+                                })
+                                .then(updatedUser => {
+                                    console.log('Quantidade de partidas incrementada para o usuário:', updatedUser);
+                                })
+                                .catch(error => {
+                                    console.error('Erro ao incrementar a quantidade de partidas:', error);
+                                });
+
                         } else {
                             alert('Erro ao agendar. Tente novamente.');
                             console.log(data);

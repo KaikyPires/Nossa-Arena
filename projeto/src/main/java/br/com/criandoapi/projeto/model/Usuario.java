@@ -22,8 +22,8 @@ public class Usuario {
     @Column(name = "nascimento", columnDefinition = "DATE", nullable = false)
     private String nascimento;
 
-    @Column(name = "quantidade_partidas", nullable = false) // Corrigido para o nome correto da coluna
-    private String quantidadePartidas;
+    @Column(name = "quantidade_partidas", nullable = false)
+    private int quantidadePartidas;
 
     // Getters e Setters
 
@@ -59,11 +59,11 @@ public class Usuario {
         this.nascimento = nascimento;
     }
 
-    public String getQuantidadePartidas() {
+    public int getQuantidadePartidas() {
         return quantidadePartidas;
     }
 
-    public void setQuantidadePartidas(String quantidadePartidas) {
+    public void setQuantidadePartidas(int quantidadePartidas) {
         this.quantidadePartidas = quantidadePartidas;
     }
 }
