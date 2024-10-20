@@ -393,13 +393,18 @@
                                 }
                             });
 
-                            // Atualiza a AGENDA vinculando a nova Partida à data e hora selecionadas
                             const agendaUpdate = {
                                 statusAgendamento: false,  // Atualiza status para reservado
                                 partida: {
-                                    id: dataPartida.id  // Passe apenas o ID da partida criada corretamente
+                                    id: data.id,               // ID da partida criada
+                                    cpfUser: data.cpfUser,     // CPF do usuário, se necessário
+                                    dataPartida: data.dataPartida, // Data da partida
+                                    horario: data.horario,     // Horário da partida
                                 }
                             };
+
+                            console.log('Agenda Update Payload:', agendaUpdate); // Verifica o payload enviado
+
 
                             // Faz a requisição para atualizar a AGENDA
                             fetch(`http://localhost:8080/api/agenda/update/${dataPartida}/${horario}`, {
@@ -421,7 +426,6 @@
                                 .catch(error => {
                                     console.error('Erro ao atualizar a tabela AGENDA:', error);
                                 });
-
                             // IMPLEMENTAÇÃO DO INCREMENTO DE PARTIDAS
                             fetch(`http://localhost:8080/usuarios/${cpfUser}/incrementar-partidas`, {
                                 method: 'PUT'
@@ -438,12 +442,12 @@
                                 .catch(error => {
                                     console.error('Erro ao incrementar a quantidade de partidas:', error);
                                 });
-
                         } else {
                             alert('Erro ao agendar. Tente novamente.');
                             console.log(data);
                         }
                     })
+
                     .catch(error => console.error('Erro ao criar a partida:', error));
             });
 

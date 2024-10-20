@@ -38,11 +38,13 @@ public class AgendaService {
     public Agenda atualizarStatusAgendamento(LocalDate dia, LocalTime hora, Partida partida) {
         // Encontre a agenda correspondente à data e hora
         List<Agenda> agendas = agendaRepository.findByDia(dia);
+
+        // Usar stream, filtro e findFirst para encontrar a agenda correspondente
         Agenda agenda = agendas.stream()
                 .filter(a -> a.getHora().equals(hora))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Agenda não encontrada para a data e hora fornecidas"));
-
+                
         // Salvar a partida primeiro se for uma nova (id == null)
         if (partida.getId() == null) {
             partida = partidaService.salvarPartida(partida);
@@ -55,4 +57,5 @@ public class AgendaService {
         // Salve as mudanças no banco de dados
         return agendaRepository.save(agenda);
     }
+
 }
