@@ -1,6 +1,7 @@
 package br.com.criandoapi.projeto.controller;
 
 import br.com.criandoapi.projeto.model.Agenda;
+import br.com.criandoapi.projeto.model.AgendaUpdateRequest;
 import br.com.criandoapi.projeto.model.Partida;
 import br.com.criandoapi.projeto.service.AgendaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,12 @@ public class AgendaController {
 
     @PutMapping("/update/{dia}/{hora}")
     public ResponseEntity<Agenda> atualizarStatusAgendamento(@PathVariable String dia, @PathVariable String hora,
-            @RequestBody Partida partida) {
+            @RequestBody AgendaUpdateRequest agendaUpdateRequest) {
         try {
             LocalDate localDate = LocalDate.parse(dia);
             LocalTime localTime = LocalTime.parse(hora);
+
+            Partida partida = agendaUpdateRequest.getPartida();
 
             // Atualiza a agenda com a nova partida e altera o status
             Agenda agendaAtualizada = agendaService.atualizarStatusAgendamento(localDate, localTime, partida);
