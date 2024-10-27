@@ -347,7 +347,7 @@ span {
 
 /* Ajuste dos campos do formulário */
 main form input, main form select {
-    width: calc(100% - 2rem); /* Ajuste para considerar o padding do formulário */
+    width: calc(100% - 0.2rem); /* Ajuste para considerar o padding do formulário */
     height: 4.2rem;
     background-color: white;
     border: var(--default-border);
