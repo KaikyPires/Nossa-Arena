@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="../static/css/pages.css">
     <link rel="stylesheet" href="./../static/images/assets/fontawesome-free-6.5.2-web/fontawesome-free-6.5.2-web/css/all.css">
     <script src="../static/js/script.js" defer></script>
+    <link rel="stylesheet"
+        href="./../static/images/assets/fontawesome-free-6.5.2-web/fontawesome-free-6.5.2-web/css/all.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="icon" href="../static/images/WhatsApp_Image_2024-07-20_at_15.43.02-removebg-preview.png">
     <title>Nossa Arena</title>
@@ -19,6 +21,34 @@ background-color: white;
 background-image: url(../static/images/layered-waves-haikei\ \(2\)_upscayl_4x_realesrgan-x4plus.png);
 background-repeat: no-repeat; /* Impede a repetição da imagem */
 background-size: cover;
+.search-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+#searchInput {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px 40px 10px 40px; /* Espaço para o ícone à esquerda */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+#searchInput::placeholder {
+    color: #aaa;
+}
+
+.search-container i {
+    position: absolute;
+   right: 56.5%;
+    top: 23%;
+    transform: translateY(30%); /* Ajuste para centralização vertical */
+    font-size: 1.4rem;
+    color: #00690A;
+}
     }
 </style>
 <body id="jog-body">
@@ -144,6 +174,13 @@ background-size: cover;
                 <div class="loader"></div>
             </div>
         </div>
+        
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Pesquisar por CPF ou Nome">
+          
+        </div>
+    
         <div class="table-jogador">
             
           
@@ -180,6 +217,61 @@ background-size: cover;
         document.getElementById('cancelExit').addEventListener('click', function() {
             document.getElementById('confirmExitPopup').style.display = 'none'; // Fecha o popup
         });
+        document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('searchInput');
+
+    // Event listener for search input
+    searchInput.addEventListener('input', function() {
+        const searchTerm = searchInput.value.toLowerCase();
+        filterTable(searchTerm);
+    });
+
+    // Function to filter table based on CPF or Name
+    function filterTable(searchTerm) {
+        const rows = document.querySelectorAll('#usuariosTable tbody tr');
+        rows.forEach(row => {
+            const cpf = row.cells[0].textContent.toLowerCase();
+            const nome = row.cells[1].textContent.toLowerCase();
+            
+            // Check if CPF or Name matches the search term
+            if (cpf.includes(searchTerm) || nome.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    // Populate the table with existing data (use your existing populateTable function)
+    fetch('/path/to/your/api')  // Replace with actual API URL
+        .then(response => response.json())
+        .then(data => populateTable(data))
+        .catch(error => console.error('Erro ao carregar dados:', error));
+
+    // Function to populate the table (already defined in your code)
+    function populateTable(data) {
+        const tableBody = document.querySelector('#usuariosTable tbody');
+        tableBody.innerHTML = '';
+        data.forEach(usuario => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${usuario.cpf}</td>
+                <td>${usuario.nome}</td>
+                <td>${usuario.telefone}</td>
+                <td>${usuario.nascimento}</td>
+                <td class="quantidade-partidas">${usuario.quantidadePartidas}</td>
+                <td>
+                    <button class="edit-btn" data-cpf="${usuario.cpf}">Editar</button>
+                    <button class="delete-btn" data-cpf="${usuario.cpf}">Excluir</button>
+                    <button class="incrementar-btn" data-cpf="${usuario.cpf}">Adicionar Partida</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        // Attach event listeners for edit, delete, and increment buttons (already defined in your code)
+    }
+});
 
     </script>
     <script src="../static/js/scriptpages.js"></script>
