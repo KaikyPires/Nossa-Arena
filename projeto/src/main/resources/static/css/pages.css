@@ -1114,7 +1114,6 @@ tbody tr:nth-child(even) {
     border: none; /* Remove a borda padrão dos botões */
     border-radius: 5px; /* Arredonda os cantos dos botões */
     cursor: pointer; /* Muda o cursor ao passar sobre o botão */
-    
   }
 
 .time-picker-body .disponivel {
@@ -1473,5 +1472,12 @@ tbody tr:nth-child(even) {
   background-color: #b12b27; /* Efeito hover para o botão de cancelamento */
 }
 
-
+li.data-header{
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
 

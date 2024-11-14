@@ -294,43 +294,113 @@
 
             // Função para carregar os horários
             function loadAgenda() {
-                fetch(apiUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        const dateSlots = document.getElementById('date-slots');
-                        const timeSlots = document.getElementById('time-slots');
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            // Ordena os dados por dia e hora antes de renderizá-los
+            data.sort((a, b) => {
+                const dataA = new Date(a.dia + ' ' + a.hora);
+                const dataB = new Date(b.dia + ' ' + b.hora);
+                return dataA - dataB;
+            });
 
-                        dateSlots.innerHTML = ''; // Limpar a lista de datas
-                        timeSlots.innerHTML = ''; // Limpar a lista de horários
+            const timeSlots = document.getElementById('time-slots');
+            timeSlots.innerHTML = ''; // Limpar a lista de horários
 
-                        // Adicionar datas e horários dinamicamente
-                        const diasUnicos = [...new Set(data.map(item => item.dia))];
-                        diasUnicos.forEach(dia => {
-                            const li = document.createElement('li');
-                            li.textContent = dia;
-                            dateSlots.appendChild(li);
-                        });
+            // Agrupa os horários por data
+            const horariosPorData = data.reduce((acc, item) => {
+                if (!acc[item.dia]) {
+                    acc[item.dia] = [];
+                }
+                acc[item.dia].push(item);
+                return acc;
+            }, {});
 
-                        data.forEach(item => {
-                            const li = document.createElement('li');
-                            const button = document.createElement('button');
-                            button.className = item.statusAgendamento ? 'disponivel' : 'reservado';
-                            button.textContent = item.hora;
+            // Exibe as datas e horários agrupados
+            for (const dia in horariosPorData) {
+                const dataHeader = document.createElement('li');
+                dataHeader.className = 'data-header';
+                dataHeader.textContent = dia;
+                timeSlots.appendChild(dataHeader);
 
-                            if (!item.statusAgendamento) {
-                                button.disabled = true;
-                            }
+                horariosPorData[dia].forEach(item => {
+                    const li = document.createElement('li');
+                    const button = document.createElement('button');
+                    button.className = item.statusAgendamento ? 'disponivel' : 'reservado';
+                    button.textContent = item.hora;
 
-                            button.addEventListener('click', function () {
-                                showConfirmationModal(item.dia, item.hora);
-                            });
+                    if (!item.statusAgendamento) {
+                        button.disabled = true;
+                    }
 
-                            li.appendChild(button);
-                            timeSlots.appendChild(li);
-                        });
-                    })
-                    .catch(error => console.error('Erro ao carregar horários:', error));
+                    button.addEventListener('click', function () {
+                        showConfirmationModal(item.dia, item.hora);
+                    });
+
+                    li.appendChild(button);
+                    timeSlots.appendChild(li);
+                });
             }
+        })
+        .catch(error => console.error('Erro ao carregar horários:', error));
+}
+document.addEventListener('DOMContentLoaded', function () {
+    const apiUrl = 'http://localhost:8080/api/agenda'; // URL to fetch the schedule data
+    const dateSlots = document.getElementById('date-slots'); // Slot container
+
+    // Function to load and display only the current date initially
+    function loadCurrentDate() {
+        const today = new Date().toISOString().split('T')[0]; // Today's date in 'YYYY-MM-DD' format
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const todayData = data.filter(item => item.dia === today);
+                renderDates(todayData);
+            })
+            .catch(error => console.error('Error loading schedule:', error));
+    }
+
+    // Function to render dates dynamically
+    function renderDates(data) {
+        dateSlots.innerHTML = ''; // Clear previous dates
+        data.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'date-slot-item';
+            li.textContent = item.dia; // Display date
+            dateSlots.appendChild(li);
+        });
+    }
+
+    // Load previous or next dates based on the direction (left or right arrow)
+    function loadAdjacentDates(direction) {
+        const today = new Date().toISOString().split('T')[0];
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const filteredData = data.filter(item => {
+                    return (direction === 'left' && item.dia < today) ||
+                           (direction === 'right' && item.dia > today);
+                });
+                renderDates(filteredData);
+            })
+            .catch(error => console.error('Error loading adjacent dates:', error));
+    }
+
+    // Event listeners for arrow buttons
+    document.querySelector('.arrow.left').addEventListener('click', function () {
+        loadAdjacentDates('left'); // Load past dates
+    });
+
+    document.querySelector('.arrow.right').addEventListener('click', function () {
+        loadAdjacentDates('right'); // Load future dates
+    });
+
+    // Load the current date's schedule on page load
+    loadCurrentDate();
+});
+
 
             // Função para exibir o modal de confirmação
             function showConfirmationModal(dia, hora) {
@@ -505,3 +575,4 @@
 </body>
 
 </html>
+
