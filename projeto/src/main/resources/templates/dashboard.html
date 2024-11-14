@@ -104,18 +104,19 @@
             </div>
         </nav>
 
-    <div class="popup sair-popup" id="confirmExitPopup" style="display: none;">
-        <aside>
-            <img src="../static/images/WhatsApp_Image_2024-07-20_at_15.43.02-removebg-preview.png" alt="" class="logo-img">
-      
-        </aside>
-        <h2>Deseja sair?</h2>
-        
-        <div class="popup-buttons">
-            <button id="confirmExit">Sim</button>
-            <button id="cancelExit">Cancelar</button>
+        <div class="popup sair-popup" id="confirmExitPopup" style="display: none;">
+            <aside>
+                <img src="../static/images/WhatsApp_Image_2024-07-20_at_15.43.02-removebg-preview.png" alt=""
+                    class="logo-img">
+
+            </aside>
+            <h2>Deseja sair?</h2>
+
+            <div class="popup-buttons">
+                <button id="confirmExit">Sim</button>
+                <button id="cancelExit">Cancelar</button>
+            </div>
         </div>
-    </div>
         <main>
 
             <header>
@@ -197,6 +198,7 @@
                                         <th>CPF Usuário</th>
                                         <th>Data da Partida</th>
                                         <th>Horário</th>
+                                        <th>Nome</th> 
                                         <th>Status do Pagamento</th>
 
                                     </tr>
@@ -258,12 +260,16 @@
                         console.error('Erro ao carregar os dados:', error);
                     });
             });
+            function formatarData(dataString) {
+                const partes = dataString.split('-'); // Supondo que a data está no formato "YYYY-MM-DD"
+                return `${partes[2]}/${partes[1]}/${partes[0]}`; // Retorna no formato "DD/MM/YYYY"
+            }
+
             function populateTable(data) {
                 const tableBody = document.querySelector('#partidas-table tbody');
                 tableBody.innerHTML = ''; // Limpa o conteúdo atual do corpo da tabela
 
                 data.forEach(partida => {
-                    // Verifica o status corretamente usando valores booleanos
                     const statusPagamento = partida.statusPagamento ? 'Pago' : 'Pendente';
                     const statusClass = statusPagamento === 'Pendente' ? 'status-pendente' : 'status-pago';
 
@@ -272,8 +278,9 @@
                     row.innerHTML = `
             <td>${partida.id}</td>
             <td>${partida.cpfUser || 'Não definido'}</td>
-            <td>${partida.dataPartida}</td>
+            <td>${formatarData(partida.dataPartida)}</td> <!-- Data formatada -->
             <td>${partida.horario}</td>
+            <td>${partida.nameUser || 'Nome não disponível'}</td> <!-- Nome do usuário -->
             <td class="${statusClass}">
                 ${statusPagamento}
                 ${statusPagamento === 'Pendente' ? createPaymentButton(partida.id) : ''}
@@ -459,18 +466,18 @@
                         console.error('Erro ao marcar como pago:', error);
                     });
             }
-            document.getElementById('logout_btn').addEventListener('click', function(event) {
-            event.preventDefault(); // Impede o redirecionamento imediato
-            document.getElementById('confirmExitPopup').style.display = 'block'; // Mostra o popup
-        });
+            document.getElementById('logout_btn').addEventListener('click', function (event) {
+                event.preventDefault(); // Impede o redirecionamento imediato
+                document.getElementById('confirmExitPopup').style.display = 'block'; // Mostra o popup
+            });
 
-        document.getElementById('confirmExit').addEventListener('click', function() {
-            window.location.href = 'index.html'; // Redireciona para a página de logout
-        });
+            document.getElementById('confirmExit').addEventListener('click', function () {
+                window.location.href = 'index.html'; // Redireciona para a página de logout
+            });
 
-        document.getElementById('cancelExit').addEventListener('click', function() {
-            document.getElementById('confirmExitPopup').style.display = 'none'; // Fecha o popup
-        });
+            document.getElementById('cancelExit').addEventListener('click', function () {
+                document.getElementById('confirmExitPopup').style.display = 'none'; // Fecha o popup
+            });
 
         </script>
     </body>
