@@ -297,27 +297,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to load and display only the current date initially
     function loadCurrentDate() {
-        const today = new Date().toISOString().split('T')[0]; // Today's date in 'YYYY-MM-DD' format
+    const hoje = new Date().toISOString().split('T')[0]; // Data de hoje no formato 'YYYY-MM-DD'
 
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                const todayData = data.filter(item => item.dia === today);
-                renderDates(todayData);
-            })
-            .catch(error => console.error('Error loading schedule:', error));
-    }
+                const hojeData = data.filter(item => item.dia === hoje);
+                renderDates(hojeData); // Renderiza com a data formatada
+        })
+            .catch(error => console.error('Erro ao carregar a agenda:', error));
+   }
+
 
     // Function to render dates dynamically
     function renderDates(data) {
-        dateSlots.innerHTML = ''; // Clear previous dates
+    const dateSlots = document.getElementById('date-slots');
+    dateSlots.innerHTML = ''; // Limpa as datas anteriores
         data.forEach(item => {
             const li = document.createElement('li');
             li.className = 'date-slot-item';
-            li.textContent = item.dia; // Display date
+            li.textContent = formatarData(item.dia); // Chama a função formatada
             dateSlots.appendChild(li);
         });
     }
+
+
 
     // Load previous or next dates based on the direction (left or right arrow)
     function loadAdjacentDates(direction) {
@@ -355,11 +359,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const selectedDate = document.getElementById('selected-date');
                 const selectedTime = document.getElementById('selected-time');
 
-                selectedDate.value = dia;
+                selectedDate.value = formatarData(dia); // Aplica a função formatada aqui
                 selectedTime.value = hora;
 
                 modal.style.display = 'block';
             }
+
 
             // Dentro do listener de submit
             document.getElementById('confirmation-form').addEventListener('submit', function (event) {
@@ -473,12 +478,13 @@ document.addEventListener('DOMContentLoaded', function () {
             // Função para exibir o modal de sucesso
             function showSuccessModal(dia, hora, id) {
                 const successModal = document.getElementById('success-modal');
-                document.getElementById('success-date').textContent = dia;
+                document.getElementById('success-date').textContent = formatarData(dia); // Usa a função formatada aqui
                 document.getElementById('success-time').textContent = hora;
                 document.getElementById('success-id').textContent = id;
 
-                successModal.style.display = 'block'; // Exibir o modal de sucesso
+             successModal.style.display = 'block';
             }
+
 
             // Fechar modal ao clicar fora dele
             window.onclick = function (event) {
@@ -551,7 +557,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Função para exibir a data selecionada
         function renderDate(date) {
             const dateSlots = document.getElementById('date-slots');
-            dateSlots.innerHTML = `<li class="date-slot-item">${date}</li>`;
+            dateSlots.innerHTML = `<li class="date-slot-item">${formatarData(date)}</li>`;
         }
 
         // Função para exibir os horários
@@ -698,6 +704,13 @@ function nextDate() {
             closeSuccessModal();
         }
     };
+
+    function formatarData(data) {
+    const [ano, mes, dia] = data.split('-'); // Divide a data no formato "ano-mês-dia"
+    return `${dia}-${mes}-${ano}`; // Retorna no formato "dia-mês-ano"
+    }
+
+
 
     </script>
 
