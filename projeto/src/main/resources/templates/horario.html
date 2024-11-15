@@ -66,6 +66,21 @@ background-image: url(../static/images/layered-waves-haikei\ \(2\)_upscayl_4x_re
 background-repeat: no-repeat; /* Impede a repetição da imagem */
 background-size: cover;
     }
+    button{
+    padding: 10px;
+    background-color: #00690A;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
 
     </style>
 </head>
@@ -124,13 +139,7 @@ background-size: cover;
                         </a>
                     </li>
                    
-                    <li class="side-item">
-                        <a href="#">
-                            <i class="fa-solid fa-gear"></i>
-                            <span class="item-description">Configurações</span>
-                        </a>
-                    </li>
-                </ul>
+                  
                 
         
                 <button id="open_btn">
@@ -202,19 +211,13 @@ background-size: cover;
                 <label for="dia">Dia:</label>
                 <input type="date" id="dia" name="dia" required><br>
             
-                <label for="horaInicio">Hora Início:</label>
-                <input type="time" id="horaInicio" name="horaInicio" required><br>
+                <label for="hora">Adicionar um horário:</label>
+                <input type="time" id="hora" name="hora" required>
             
-                <label for="horaFim">Hora Fim:</label>
-                <input type="time" id="horaFim" name="horaFim"><br> <!-- Removido o atributo 'required' -->
             
-                <label for="status">Status Agendamento:</label>
-                <select id="status" name="status">
-                    <option value="true">Disponível</option>
-                    <option value="false">Reservado</option>
-                </select>
             
-                <button type="submit" id="adicionarHorarios">Adicionar Horários</button>
+                <button type="submit" id="adicionarHorarioIndividual">Adicionar Horário</button>
+                <button type="button" id="preencherHorarios">Adicionar horários de 08:00 às 00:00</button>
             </form>
             
             <script>
@@ -312,6 +315,100 @@ background-size: cover;
             document.getElementById('confirmExitPopup').style.display = 'none'; // Fecha o popup
         });
 
+   
+        // Função para adicionar horários automaticamente de 08:00 às 00:00
+        document.getElementById('preencherHorarios').addEventListener('click', function () {
+            const diaAtual = new Date().toISOString().split('T')[0];
+
+            const horariosAdicionados = [];
+            const inicio = new Date('1970-01-01T08:00:00');
+            const fim = new Date('1970-01-01T23:59:59');
+
+            for (let horaAtual = new Date(inicio); horaAtual <= fim; horaAtual.setHours(horaAtual.getHours() + 1)) {
+                const horaFormatada = horaAtual.toTimeString().substring(0, 5);
+                const horarioCompleto = `${diaAtual} ${horaFormatada}`;
+
+                if (horariosAdicionados.includes(horarioCompleto)) {
+                    console.log(`Horário já adicionado: ${horarioCompleto}`);
+                    continue;
+                }
+
+                horariosAdicionados.push(horarioCompleto);
+
+                const data = {
+                    dia: diaAtual,
+                    hora: horaFormatada,
+                    statusAgendamento: true, // Definido automaticamente como "Disponível"
+                };
+
+                console.log('Dados enviados:', JSON.stringify(data));
+
+                fetch('http://localhost:8080/api/agenda', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Erro ao adicionar horário');
+                    }
+                })
+                .then(result => {
+                    console.log('Horário adicionado:', result);
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });
+            }
+
+            alert(`Horários de 08:00 às 00:00 para o dia ${diaAtual} adicionados com sucesso!`);
+        });
+
+        // Função para adicionar horários personalizados
+        document.getElementById('adicionarHorarioIndividual').addEventListener('click', function () {
+            const diaAtual = new Date().toISOString().split('T')[0];
+            const hora = document.getElementById('hora').value;
+
+            if (!hora) {
+                alert('Por favor, insira um horário válido.');
+                return;
+            }
+
+            const data = {
+                dia: diaAtual,
+                hora: hora,
+                statusAgendamento: true, // Definido automaticamente como "Disponível"
+            };
+
+            console.log('Dados enviados:', JSON.stringify(data));
+
+            fetch('http://localhost:8080/api/agenda', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Erro ao adicionar horário');
+                }
+            })
+            .then(result => {
+                console.log('Horário adicionado:', result);
+                alert(`Horário ${hora} adicionado com sucesso!`);
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert(`Erro ao adicionar o horário ${hora}.`);
+            });
+        });
             </script>
     
     <script src="../static/js/scriptpages.js"></script>
