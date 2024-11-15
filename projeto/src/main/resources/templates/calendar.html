@@ -207,11 +207,6 @@
             </div>
         </div>
 
-        <div class="row">
-            <ul class="time-slot" id="time-slots">
-                <!-- Os horários serão gerados dinamicamente aqui -->
-            </ul>
-        </div>
         </div>
     </main>
     <div id="confirmation-modal" class="modal">
@@ -289,61 +284,13 @@
         document.getElementById('open_btn').addEventListener('click', function () {
             document.getElementById('sidebar').classList.toggle('open-sidebar');
         });
+        
         document.addEventListener('DOMContentLoaded', function () {
             const apiUrl = 'http://localhost:8080/api/agenda'; // URL da API para buscar os horários
 
             // Função para carregar os horários
-            function loadAgenda() {
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            // Ordena os dados por dia e hora antes de renderizá-los
-            data.sort((a, b) => {
-                const dataA = new Date(a.dia + ' ' + a.hora);
-                const dataB = new Date(b.dia + ' ' + b.hora);
-                return dataA - dataB;
-            });
 
-            const timeSlots = document.getElementById('time-slots');
-            timeSlots.innerHTML = ''; // Limpar a lista de horários
 
-            // Agrupa os horários por data
-            const horariosPorData = data.reduce((acc, item) => {
-                if (!acc[item.dia]) {
-                    acc[item.dia] = [];
-                }
-                acc[item.dia].push(item);
-                return acc;
-            }, {});
-
-            // Exibe as datas e horários agrupados
-            for (const dia in horariosPorData) {
-                const dataHeader = document.createElement('li');
-                dataHeader.className = 'data-header';
-                dataHeader.textContent = dia;
-                timeSlots.appendChild(dataHeader);
-
-                horariosPorData[dia].forEach(item => {
-                    const li = document.createElement('li');
-                    const button = document.createElement('button');
-                    button.className = item.statusAgendamento ? 'disponivel' : 'reservado';
-                    button.textContent = item.hora;
-
-                    if (!item.statusAgendamento) {
-                        button.disabled = true;
-                    }
-
-                    button.addEventListener('click', function () {
-                        showConfirmationModal(item.dia, item.hora);
-                    });
-
-                    li.appendChild(button);
-                    timeSlots.appendChild(li);
-                });
-            }
-        })
-        .catch(error => console.error('Erro ao carregar horários:', error));
-}
 document.addEventListener('DOMContentLoaded', function () {
     const apiUrl = 'http://localhost:8080/api/agenda'; // URL to fetch the schedule data
     const dateSlots = document.getElementById('date-slots'); // Slot container
@@ -418,6 +365,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('confirmation-form').addEventListener('submit', function (event) {
                 event.preventDefault(); // Evitar o comportamento padrão do formulário
 
+                console.log("Formulário de confirmação submetido.");
                 // Captura os valores dos campos
                 const cpfUser = document.getElementById('cpf').value.trim();
                 const dataPartida = document.getElementById('selected-date').value; // Data da agenda selecionada
@@ -428,6 +376,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     dataPartida: dataPartida,
                     horario: horario
                 };
+                console.log('Dados de agendamento:', dadosAgendamento);
 
                 // Faz a requisição para criar a nova Partida
                 fetch('http://localhost:8080/partidas', {
@@ -544,7 +493,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Carregar os horários ao iniciar a página
-            loadAgenda();
+            
         });
         document.getElementById('logout_btn').addEventListener('click', function (event) {
             event.preventDefault(); // Impede o redirecionamento imediato
@@ -569,10 +518,189 @@ document.addEventListener('DOMContentLoaded', function () {
             const modal = document.getElementById('error-modal');
             modal.style.display = 'block';
         }
+    document.addEventListener('DOMContentLoaded', function () {
+        const apiUrl = 'http://localhost:8080/api/agenda'; // URL para buscar os dados da agenda
+        let currentDateIndex = 0;
+        let datesList = [];
+
+        // Função para carregar as datas da API e definir o índice inicial para a data atual
+        function loadDates() {
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    datesList = data.map(item => item.dia).sort(); // Ordena as datas
+                    currentDateIndex = datesList.indexOf(new Date().toISOString().split('T')[0]); // Define o índice inicial
+                    loadAgenda(datesList[currentDateIndex]); // Carrega a agenda da data inicial
+                })
+                .catch(error => console.error('Erro ao carregar datas:', error));
+        }
+
+        // Função para carregar os horários de uma data específica
+        function loadAgenda(date) {
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const filteredData = data.filter(item => item.dia === date);
+                    renderDate(date);
+                    renderTimeSlots(filteredData);
+                })
+                .catch(error => console.error('Erro ao carregar horários:', error));
+        }
+
+
+        // Função para exibir a data selecionada
+        function renderDate(date) {
+            const dateSlots = document.getElementById('date-slots');
+            dateSlots.innerHTML = `<li class="date-slot-item">${date}</li>`;
+        }
+
+        // Função para exibir os horários
+        function renderTimeSlots(data) {
+    const timeSlots = document.getElementById('time-slots');
+    timeSlots.innerHTML = '';
+
+    // Ordena os horários em ordem crescente
+    data.sort((a, b) => a.hora.localeCompare(b.hora));
+
+    data.forEach(item => {
+        const li = document.createElement('li');
+        const button = document.createElement('button');
+
+        // Define a classe e o estado do botão com base no status de agendamento
+        button.className = item.statusAgendamento ? 'disponivel' : 'reservado';
+        button.textContent = item.hora;
+        button.disabled = !item.statusAgendamento;
+
+        // Adiciona o evento de clique para abrir o modal de confirmação
+        button.addEventListener('click', () => {
+            showConfirmationModal(item.dia, item.hora); // Função para exibir o modal com o horário selecionado
+        });
+
+        li.appendChild(button);
+        timeSlots.appendChild(li);
+    });
+}
+
+
+
+function prevDate() {
+    while (currentDateIndex > 0) {
+        currentDateIndex--;
+        if (datesList[currentDateIndex] !== datesList[currentDateIndex + 1]) {
+            loadAgenda(datesList[currentDateIndex]);
+            break;
+        }
+    }
+}
+
+function nextDate() {
+    while (currentDateIndex < datesList.length - 1) {
+        currentDateIndex++;
+        if (datesList[currentDateIndex] !== datesList[currentDateIndex - 1]) {
+            loadAgenda(datesList[currentDateIndex]);
+            break;
+        }
+    }
+}
+
+
+        // Event listeners para as setas de navegação
+        document.querySelector('.arrow.left').addEventListener('click', prevDate);
+        document.querySelector('.arrow.right').addEventListener('click', nextDate);
+
+        // Carrega as datas e a agenda da data atual no carregamento da página
+        loadDates();
+    });
+    
+    function loadDates() {
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                datesList = data.map(item => item.dia).sort(); // Ordena as datas
+                currentDateIndex = datesList.indexOf(new Date().toISOString().split('T')[0]); // Define o índice inicial
+                loadAgenda(datesList[currentDateIndex]); // Carrega a agenda da data inicial
+            })
+            .catch(error => console.error('Erro ao carregar datas:', error));
+    }
+
+    // Função para carregar os horários de uma data específica
+    function loadAgenda(date) {
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const filteredData = data.filter(item => item.dia === date);
+                renderDate(date);
+                renderTimeSlots(filteredData);
+            })
+            .catch(error => console.error('Erro ao carregar horários:', error));
+    }
+
+    // Função para exibir a data selecionada
+    function renderDate(date) {
+        const dateSlots = document.getElementById('date-slots');
+        dateSlots.innerHTML = `<li class="date-slot-item">${date}</li>`;
+    }
+
+    // Função para exibir os horários
+    function renderTimeSlots(data) {
+        const timeSlots = document.getElementById('time-slots');
+        timeSlots.innerHTML = '';
+
+        // Ordena os horários em ordem crescente
+        data.sort((a, b) => a.hora.localeCompare(b.hora));
+
+        data.forEach(item => {
+            const li = document.createElement('li');
+            const button = document.createElement('button');
+
+            // Define a classe e o estado do botão com base no status de agendamento
+            button.className = item.statusAgendamento ? 'disponivel' : 'reservado';
+            button.textContent = item.hora;
+            button.disabled = !item.statusAgendamento;
+
+            // Adiciona o evento de clique para abrir o modal de confirmação
+            button.addEventListener('click', () => {
+                showConfirmationModal(item.dia, item.hora);
+            });
+
+            li.appendChild(button);
+            timeSlots.appendChild(li);
+        });
+    }
+
+    // Função para exibir o modal de confirmação
+    function showConfirmationModal(dia, hora) {
+        const modal = document.getElementById('confirmation-modal');
+        const selectedDate = document.getElementById('selected-date');
+        const selectedTime = document.getElementById('selected-time');
+
+        selectedDate.value = dia;
+        selectedTime.value = hora;
+
+        modal.style.display = 'block';
+    }
+
+    // Inicializa a agenda na data atual
+    loadDates();
+
+    // Listeners de navegação
+    document.querySelector('.arrow.left').addEventListener('click', prevDate);
+    document.querySelector('.arrow.right').addEventListener('click', nextDate);
+
+    // Event listeners para fechar os modais
+    window.onclick = function (event) {
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const successModal = document.getElementById('success-modal');
+        if (event.target === confirmationModal) {
+            closeConfirmationModal();
+        }
+        if (event.target === successModal) {
+            closeSuccessModal();
+        }
+    };
 
     </script>
 
 </body>
 
 </html>
-
