@@ -18,6 +18,30 @@
     <link rel="icon" href="../static/images/WhatsApp_Image_2024-07-20_at_15.43.02-removebg-preview.png">
     <title>Nossa Arena</title>
 </head>
+<style>
+    #searchCPF {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px 40px 10px 40px; /* Espaço para o ícone à esquerda */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+   justify-content: center;
+}
+
+#searchInput::placeholder {
+    color: #aaa;
+}
+
+.search-container i {
+    position: absolute;
+   right: 91.5%;
+   top: 30.5%;
+    transform: translateY(30%); /* Ajuste para centralização vertical */
+    font-size: 1.4rem;
+    color: #00690A;
+}
+</style>
 
 <body>
 
@@ -77,14 +101,7 @@
                         </a>
                     </li>
 
-                    <li class="side-item">
-                        <a href="#">
-                            <i class="fa-solid fa-gear"></i>
-                            <span class="item-description">Configurações</span>
-                        </a>
-                    </li>
-                </ul>
-
+                 
 
                 <button id="open_btn">
                     <i id="open_btn_icon" class="fa-solid fa-chevron-right"></i>
@@ -168,7 +185,10 @@
                         </button>
 
                     </div>
-
+                    <div class="search-container">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="searchCPF" placeholder="Pesquisar por CPF">
+                    </div>
                     <div class="history_lists">
 
                         <script>
@@ -177,7 +197,7 @@
 
                         <div class="table-container">
                             <h4>Histórico de Partidas</h4>
-
+                            
                             <table id="partidas-table">
                                 <div class="filters">
                                     <button id="filter-day" onclick="filterByDay()">Dia</button>
@@ -480,7 +500,25 @@
             document.getElementById('cancelExit').addEventListener('click', function () {
                 document.getElementById('confirmExitPopup').style.display = 'none'; // Fecha o popup
             });
+            document.getElementById('searchCPF').addEventListener('input', function () {
+        const searchTerm = this.value.trim().toLowerCase();
+        filterTableByCPF(searchTerm);
+    });
 
+    // Função para filtrar a tabela com base no CPF
+    function filterTableByCPF(searchTerm) {
+        const rows = document.querySelectorAll('#partidas-table tbody tr');
+        rows.forEach(row => {
+            const cpfCell = row.cells[1].textContent.toLowerCase(); // Coluna de CPF
+            if (cpfCell.includes(searchTerm)) {
+                row.style.display = ''; // Mostra a linha
+            } else {
+                row.style.display = 'none'; // Esconde a linha
+            }
+        });
+    }
+
+            
         </script>
     </body>
 
