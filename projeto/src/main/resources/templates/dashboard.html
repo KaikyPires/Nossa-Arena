@@ -20,27 +20,29 @@
 </head>
 <style>
     #searchCPF {
-    width: 100%;
-    max-width: 300px;
-    padding: 10px 40px 10px 40px; /* Espaço para o ícone à esquerda */
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-   justify-content: center;
-}
+        width: 100%;
+        max-width: 300px;
+        padding: 10px 40px 10px 40px;
+        /* Espaço para o ícone à esquerda */
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        justify-content: center;
+    }
 
-#searchInput::placeholder {
-    color: #aaa;
-}
+    #searchInput::placeholder {
+        color: #aaa;
+    }
 
-.search-container i {
-    position: absolute;
-   right: 91.5%;
-   top: 30.5%;
-    transform: translateY(30%); /* Ajuste para centralização vertical */
-    font-size: 1.4rem;
-    color: #00690A;
-}
+    .search-container i {
+        position: absolute;
+        right: 91.5%;
+        top: 30.5%;
+        transform: translateY(30%);
+        /* Ajuste para centralização vertical */
+        font-size: 1.4rem;
+        color: #00690A;
+    }
 </style>
 
 <body>
@@ -101,11 +103,11 @@
                         </a>
                     </li>
 
-                 
 
-                <button id="open_btn">
-                    <i id="open_btn_icon" class="fa-solid fa-chevron-right"></i>
-                </button>
+
+                    <button id="open_btn">
+                        <i id="open_btn_icon" class="fa-solid fa-chevron-right"></i>
+                    </button>
             </div>
 
             <div id="logout">
@@ -197,7 +199,7 @@
 
                         <div class="table-container">
                             <h4>Histórico de Partidas</h4>
-                            
+
                             <table id="partidas-table">
                                 <div class="filters">
                                     <button id="filter-day" onclick="filterByDay()">Dia</button>
@@ -290,7 +292,10 @@
                 const tableBody = document.querySelector('#partidas-table tbody');
                 tableBody.innerHTML = ''; // Limpa o conteúdo atual do corpo da tabela
 
-                data.forEach(partida => {
+                // Ordena os dados em ordem decrescente com base no ID
+                const sortedData = data.sort((a, b) => b.id - a.id);
+
+                sortedData.forEach(partida => {
                     const statusPagamento = partida.statusPagamento ? 'Pago' : 'Pendente';
                     const statusClass = statusPagamento === 'Pendente' ? 'status-pendente' : 'status-pago';
 
@@ -462,8 +467,9 @@
         <script>
             // Função para marcar como pago
             function marcarComoPago(id) {
+                // Atualiza o status de pagamento no backend
                 fetch(`http://localhost:8080/partidas/${id}/marcar-pago`, {
-                    method: 'PUT', // Mudou para PUT para coincidir com o seu endpoint
+                    method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -472,17 +478,13 @@
                         if (!response.ok) {
                             throw new Error('Erro ao atualizar o status de pagamento.');
                         }
-                        return response.json(); // Opcional: se você quiser usar a resposta
-                    })
-                    .then(data => {
-                        alert(`Partida com ID ${id} foi marcada como paga!`);
-                        // Recarregue os dados da tabela
-                        return fetch('http://localhost:8080/partidas');
+                        // Após a atualização, refaça o fetch de todas as partidas com nomes
+                        return fetch('http://localhost:8080/partidas/com-nomes');
                     })
                     .then(response => response.json())
                     .then(data => {
-                        allData = data; // Atualiza os dados
-                        populateTable(allData); // Repopula a tabela
+                        allData = data; // Atualiza os dados globais
+                        populateTable(allData); // Repopula a tabela com os dados completos
                     })
                     .catch(error => {
                         console.error('Erro ao marcar como pago:', error);
@@ -501,24 +503,24 @@
                 document.getElementById('confirmExitPopup').style.display = 'none'; // Fecha o popup
             });
             document.getElementById('searchCPF').addEventListener('input', function () {
-        const searchTerm = this.value.trim().toLowerCase();
-        filterTableByCPF(searchTerm);
-    });
+                const searchTerm = this.value.trim().toLowerCase();
+                filterTableByCPF(searchTerm);
+            });
 
-    // Função para filtrar a tabela com base no CPF
-    function filterTableByCPF(searchTerm) {
-        const rows = document.querySelectorAll('#partidas-table tbody tr');
-        rows.forEach(row => {
-            const cpfCell = row.cells[1].textContent.toLowerCase(); // Coluna de CPF
-            if (cpfCell.includes(searchTerm)) {
-                row.style.display = ''; // Mostra a linha
-            } else {
-                row.style.display = 'none'; // Esconde a linha
+            // Função para filtrar a tabela com base no CPF
+            function filterTableByCPF(searchTerm) {
+                const rows = document.querySelectorAll('#partidas-table tbody tr');
+                rows.forEach(row => {
+                    const cpfCell = row.cells[1].textContent.toLowerCase(); // Coluna de CPF
+                    if (cpfCell.includes(searchTerm)) {
+                        row.style.display = ''; // Mostra a linha
+                    } else {
+                        row.style.display = 'none'; // Esconde a linha
+                    }
+                });
             }
-        });
-    }
 
-            
+
         </script>
     </body>
 
