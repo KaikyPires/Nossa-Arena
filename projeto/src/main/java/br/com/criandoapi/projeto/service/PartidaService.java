@@ -7,6 +7,7 @@ import br.com.criandoapi.projeto.repository.InterfacePartida;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PartidaService {
@@ -75,6 +76,10 @@ public class PartidaService {
             partida.setStatusPagamento(true); // Define como "Pago"
             return partidaRepository.save(partida);
         }).orElse(null);
+    }
+
+    public List<Map<String, Object>> listarPartidasComNomes() {
+        return partidaRepository.findAllPartidasComNomes();
     }
 
 }

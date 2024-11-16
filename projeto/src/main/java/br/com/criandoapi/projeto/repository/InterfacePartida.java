@@ -9,6 +9,7 @@ import br.com.criandoapi.projeto.model.Partida;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface InterfacePartida extends JpaRepository<Partida, Long> {
@@ -31,4 +32,10 @@ public interface InterfacePartida extends JpaRepository<Partida, Long> {
     // Filtrar partidas por um ano específico
     @Query("SELECT p FROM Partida p WHERE YEAR(p.dataPartida) = :ano")
     List<Partida> findByAno(@Param("ano") int ano);
+
+    @Query(value = "SELECT p.id, p.cpf AS cpfUser, p.dia AS dataPartida, p.hora AS horario, p.status_pagamento AS statusPagamento, u.nome AS nomeUsuario "
+            +
+            "FROM partida p LEFT JOIN usuario u ON p.cpf = u.cpf ORDER BY p.dia ASC", nativeQuery = true)
+    List<Map<String, Object>> findAllPartidasComNomes();
+
 }

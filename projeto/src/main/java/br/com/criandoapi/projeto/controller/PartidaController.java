@@ -10,6 +10,7 @@ import br.com.criandoapi.projeto.model.Partida;
 import br.com.criandoapi.projeto.service.PartidaService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/partidas")
@@ -22,6 +23,11 @@ public class PartidaController {
     @GetMapping
     public List<Partida> listarPartidas() {
         return partidaService.listarPartida();
+    }
+
+    @GetMapping("/com-nomes")
+    public List<Map<String, Object>> listarPartidasComNomes() {
+        return partidaService.listarPartidasComNomes();
     }
 
     // Criar uma nova partida

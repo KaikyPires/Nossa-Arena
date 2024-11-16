@@ -218,7 +218,7 @@
                                         <th>CPF Usuário</th>
                                         <th>Data da Partida</th>
                                         <th>Horário</th>
-                                        <th>Nome</th> 
+                                        <th>Nome</th>
                                         <th>Status do Pagamento</th>
 
                                     </tr>
@@ -270,16 +270,17 @@
 
 
             document.addEventListener('DOMContentLoaded', function () {
-                fetch('http://localhost:8080/partidas')
+                fetch('http://localhost:8080/partidas/com-nomes')
                     .then(response => response.json())
                     .then(data => {
-                        allData = data; // Armazena os dados
-                        populateTable(allData); // Popula a tabela com os dados iniciais
+                        allData = data; // Dados agora incluem o nome do usuário
+                        populateTable(allData);
                     })
                     .catch(error => {
                         console.error('Erro ao carregar os dados:', error);
                     });
             });
+
             function formatarData(dataString) {
                 const partes = dataString.split('-'); // Supondo que a data está no formato "YYYY-MM-DD"
                 return `${partes[2]}/${partes[1]}/${partes[0]}`; // Retorna no formato "DD/MM/YYYY"
@@ -298,9 +299,9 @@
                     row.innerHTML = `
             <td>${partida.id}</td>
             <td>${partida.cpfUser || 'Não definido'}</td>
-            <td>${formatarData(partida.dataPartida)}</td> <!-- Data formatada -->
+            <td>${formatarData(partida.dataPartida)}</td>
             <td>${partida.horario}</td>
-            <td>${partida.nameUser || 'Nome não disponível'}</td> <!-- Nome do usuário -->
+            <td>${partida.nomeUsuario || 'Nome não disponível'}</td> <!-- Nome do usuário -->
             <td class="${statusClass}">
                 ${statusPagamento}
                 ${statusPagamento === 'Pendente' ? createPaymentButton(partida.id) : ''}
@@ -309,6 +310,7 @@
                     tableBody.appendChild(row);
                 });
             }
+
 
             // Função para criar o botão de pagamento
             function createPaymentButton(id) {
