@@ -18,12 +18,15 @@ public class Agenda {
     @Column(name = "hora", nullable = false)
     private LocalTime hora;
 
-    @Column(name = "status_agendamento", nullable = false)  // Corrigido para o nome da coluna e tipo booleano
-    private Boolean statusAgendamento = true;  // TRUE = Disponível, FALSE = Reservado
+    @Column(name = "status_agendamento", nullable = false) // Corrigido para o nome da coluna e tipo booleano
+    private Boolean statusAgendamento = true; // TRUE = Disponível, FALSE = Reservado
 
     @ManyToOne
-    @JoinColumn(name = "partida_id", nullable = true)  // Chave estrangeira que pode ser nula
+    @JoinColumn(name = "partida_id", nullable = true) // Chave estrangeira que pode ser nula
     private Partida partida;
+
+    @Column(name = "escolinha", nullable = false)
+    private Boolean escolinha = false; // Por padrão, o horário não é da escolinha
 
     // Getters e Setters
     public Long getId() {
@@ -65,4 +68,13 @@ public class Agenda {
     public void setPartida(Partida partida) {
         this.partida = partida;
     }
+
+    public Boolean getEscolinha() {
+        return escolinha;
+    }
+
+    public void setEscolinha(Boolean escolinha) {
+        this.escolinha = escolinha;
+    }
+
 }

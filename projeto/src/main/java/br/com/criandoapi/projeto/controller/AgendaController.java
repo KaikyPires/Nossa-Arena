@@ -5,6 +5,7 @@ import br.com.criandoapi.projeto.model.AgendaUpdateRequest;
 import br.com.criandoapi.projeto.model.Partida;
 import br.com.criandoapi.projeto.service.AgendaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class AgendaController {
         return ResponseEntity.ok(agendas);
     }
 
+    
     @GetMapping("/{dia}")
     public ResponseEntity<List<Agenda>> getHorariosDoDia(@PathVariable String dia) {
         LocalDate localDate = LocalDate.parse(dia);
@@ -62,6 +64,16 @@ public class AgendaController {
     public ResponseEntity<Void> deletarHorario(@PathVariable Long id) {
         agendaService.deletarHorario(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/escolinha")
+    public ResponseEntity<Agenda> marcarComoEscolinha(@PathVariable Long id) {
+        Agenda agenda = agendaService.marcarComoEscolinha(id);
+        if (agenda != null) {
+            return ResponseEntity.ok(agenda);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
 }
