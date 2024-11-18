@@ -44,7 +44,7 @@ public class AgendaService {
                 .filter(a -> a.getHora().equals(hora))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Agenda não encontrada para a data e hora fornecidas"));
-                
+
         // Salvar a partida primeiro se for uma nova (id == null)
         if (partida.getId() == null) {
             partida = partidaService.salvarPartida(partida);
@@ -56,6 +56,15 @@ public class AgendaService {
 
         // Salve as mudanças no banco de dados
         return agendaRepository.save(agenda);
+    }
+
+    public Agenda marcarComoEscolinha(Long id) {
+        Agenda agenda = agendaRepository.findById(id).orElse(null);
+        if (agenda != null) {
+            agenda.setEscolinha(true); // Marca como escolinha
+            return agendaRepository.save(agenda); // Salva a alteração
+        }
+        return null; // Retorna null se o ID não foi encontrado
     }
 
 }
