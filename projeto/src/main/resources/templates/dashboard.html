@@ -110,6 +110,16 @@
                     </button>
             </div>
 
+            <div id="confirmPaymentPopup" class="popup" style="display: none;">
+                <h2>Confirmar Pagamento</h2>
+                <p>Tem certeza que deseja marcar este pagamento como concluído?</p>
+                <div class="popup-buttons">
+                    <button id="confirmPaymentButton">Sim</button>
+                    <button id="cancelPaymentButton">Cancelar</button>
+                </div>
+            </div>
+
+
             <div id="logout">
                 <a href="index.html">
                     <button id="logout_btn">
@@ -465,46 +475,48 @@
         <script src="../static/js/script.js"></script>
         <script src="../static/js/scriptpages.js"></script>
         <script>
-            // Função para marcar como pago
+            let selectedPaymentId = null;
+
+            // Função para exibir o pop-up de confirmação de pagamento
             function marcarComoPago(id) {
-                // Atualiza o status de pagamento no backend
-                fetch(`http://localhost:8080/partidas/${id}/marcar-pago`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Erro ao atualizar o status de pagamento.');
-                        }
-                        // Após a atualização, refaça o fetch de todas as partidas com nomes
-                        return fetch('http://localhost:8080/partidas/com-nomes');
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        allData = data; // Atualiza os dados globais
-                        populateTable(allData); // Repopula a tabela com os dados completos
-                    })
-                    .catch(error => {
-                        console.error('Erro ao marcar como pago:', error);
-                    });
+                selectedPaymentId = id; // Armazena o ID do pagamento selecionado
+                document.getElementById('confirmPaymentPopup').style.display = 'block'; // Mostra o pop-up de confirmação
             }
-            document.getElementById('logout_btn').addEventListener('click', function (event) {
-                event.preventDefault(); // Impede o redirecionamento imediato
-                document.getElementById('confirmExitPopup').style.display = 'block'; // Mostra o popup
+
+            // Evento para confirmar o pagamento
+            document.getElementById('confirmPaymentButton').addEventListener('click', function () {
+                if (selectedPaymentId) {
+                    // Atualiza o status de pagamento no backend
+                    fetch(`http://localhost:8080/partidas/${selectedPaymentId}/marcar-pago`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erro ao atualizar o status de pagamento.');
+                            }
+                            // Atualiza os dados e repopula a tabela
+                            return fetch('http://localhost:8080/partidas/com-nomes');
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            allData = data; // Atualiza os dados globais
+                            populateTable(allData); // Repopula a tabela
+                            document.getElementById('confirmPaymentPopup').style.display = 'none'; // Esconde o pop-up
+                            selectedPaymentId = null; // Limpa o ID selecionado
+                        })
+                        .catch(error => {
+                            console.error('Erro ao marcar como pago:', error);
+                        });
+                }
             });
 
-            document.getElementById('confirmExit').addEventListener('click', function () {
-                window.location.href = 'index.html'; // Redireciona para a página de logout
-            });
-
-            document.getElementById('cancelExit').addEventListener('click', function () {
-                document.getElementById('confirmExitPopup').style.display = 'none'; // Fecha o popup
-            });
-            document.getElementById('searchCPF').addEventListener('input', function () {
-                const searchTerm = this.value.trim().toLowerCase();
-                filterTableByCPF(searchTerm);
+            // Evento para cancelar a confirmação
+            document.getElementById('cancelPaymentButton').addEventListener('click', function () {
+                document.getElementById('confirmPaymentPopup').style.display = 'none'; // Esconde o pop-up
+                selectedPaymentId = null; // Limpa o ID selecionado
             });
 
             // Função para filtrar a tabela com base no CPF
