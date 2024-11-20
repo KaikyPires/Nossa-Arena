@@ -261,7 +261,15 @@
             </div>
         </div>
     </div>
-
+    <div id="confirmPaymentPopup" class="popup" style="display: none;">
+        <img src="../static/images/Imagem1.png">
+        <h2>Tem certeza que deseja marcar este pagamento como concluído?</h2>
+        <div class="popup-buttons">
+            <button id="confirmPaymentButton">Sim</button>
+            <button id="cancelPaymentButton">Cancelar</button>
+        </div>
+    </div>
+    
     <div id="success-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeSuccessModal()">&times;</span>
@@ -416,111 +424,95 @@
             });
 
 
-            document.getElementById('school-time').addEventListener('click', function () {
-                const selectedDate = document.getElementById('selected-date').value; // Data selecionada
-                const selectedTime = document.getElementById('selected-time').value; // Horário selecionado
+           
+            // Elementos do DOM 
+const deleteTimeButton = document.getElementById('delete-time');
+const confirmPaymentPopup = document.getElementById('confirmPaymentPopup');
+const confirmPaymentButton = document.getElementById('confirmPaymentButton');
+const cancelPaymentButton = document.getElementById('cancelPaymentButton');
+const popupTitle = confirmPaymentPopup.querySelector('h2');
+let selectedDate, selectedTime; // Variáveis para armazenar data e hora selecionadas
 
-                // Buscar o ID do horário correspondente no banco de dados
-                fetch(`http://localhost:8080/api/agenda?dia=${selectedDate}`)
-                    .then(response => response.json())
-                    .then(agendas => {
-                        const horario = agendas.find(item =>
-                            item.hora === selectedTime && item.dia === selectedDate // Verifica dia e hora
-                        );
-                        if (!horario) {
-                            console.error("Horário não encontrado para o dia e hora selecionados:", selectedDate, selectedTime);
-                            alert("Erro: Não foi possível encontrar o horário no banco de dados.");
-                            return;
-                        }
+// Função para exibir o pop-up
+function showConfirmationPopup() {
+    popupTitle.textContent = 'Tem certeza que deseja excluir este horário?';
+    confirmPaymentPopup.style.display = 'block'; // Exibe o pop-up
+    document.body.insertAdjacentHTML(
+        'beforeend',
+        '<div class="popup-backdrop"></div>' // Adiciona o fundo escuro
+    );
+    document.querySelector('.popup-backdrop').style.display = 'block';
+}
 
-                        if (horario) {
-                            // Chamar o endpoint para marcar como escolinha
-                            fetch(`http://localhost:8080/api/agenda/${horario.id}/escolinha`, {
-                                method: 'PUT',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                                .then(response => {
-                                    if (response.ok) {
-                                        alert('Horário marcado como Escolinha!');
-                                        // Atualiza o botão no front-end
-                                        const buttons = document.querySelectorAll('#time-slots button');
-                                        buttons.forEach(button => {
-                                            if (button.textContent === selectedTime) {
-                                                button.disabled = true; // Desativa o botão
-                                                button.classList.add('escolinha'); // Aplica a classe escolinha
-                                                button.textContent += ' (Escolinha)'; // Adiciona o texto
-                                            }
-                                        });
-                                        closeConfirmationModal(); // Fecha o modal
-                                    } else {
-                                        alert('Erro ao marcar horário como Escolinha.');
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Erro ao marcar horário como Escolinha:', error);
-                                });
-                        } else {
-                            alert('Horário não encontrado no banco de dados.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Erro ao buscar horários:', error);
-                    });
-            });
+// Função para fechar o pop-up
+function closePopup() {
+    confirmPaymentPopup.style.display = 'none'; // Oculta o pop-up
+    const backdrop = document.querySelector('.popup-backdrop');
+    if (backdrop) {
+        backdrop.remove(); // Remove o fundo escuro
+    }
+}
 
+// Evento para exibir o pop-up ao clicar no botão "Excluir Horário"
+deleteTimeButton.addEventListener('click', (e) => {
+    e.preventDefault(); // Previne a execução direta
+    selectedDate = document.getElementById('selected-date').value; // Captura a data selecionada
+    selectedTime = document.getElementById('selected-time').value; // Captura o horário selecionado
+    showConfirmationPopup(); // Exibe o pop-up de confirmação
+});
 
+// Evento para confirmar a exclusão
+confirmPaymentButton.addEventListener('click', () => {
+    // Verifica no banco de dados o horário correspondente
+    fetch(`http://localhost:8080/api/agenda?dia=${selectedDate}`)
+        .then(response => response.json())
+        .then(agendas => {
+            const horario = agendas.find(item =>
+                item.hora === selectedTime && item.dia === selectedDate // Verifica dia e hora
+            );
 
-            document.getElementById('delete-time').addEventListener('click', function () {
-                const selectedDate = document.getElementById('selected-date').value; // Data selecionada
-                const selectedTime = document.getElementById('selected-time').value; // Horário selecionado
+            if (!horario) {
+               
+                closePopup(); // Fecha o pop-up
+                return;
+            }
 
-                // Verifica no banco de dados o horário correspondente
-                fetch(`http://localhost:8080/api/agenda?dia=${selectedDate}`)
-                    .then(response => response.json())
-                    .then(agendas => {
-                        const horario = agendas.find(item =>
-                            item.hora === selectedTime && item.dia === selectedDate // Verifica dia e hora
-                        );
+            // Chamada para excluir o horário pelo ID
+            fetch(`http://localhost:8080/api/agenda/${horario.id}`, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Horário excluído com sucesso!');
+                        // Remove o botão correspondente na interface
+                        const buttons = document.querySelectorAll('#time-slots button');
+                        buttons.forEach(button => {
+                            if (button.textContent === selectedTime) {
+                                button.parentElement.remove(); // Remove o botão do DOM
+                            }
+                        });
+                        closeConfirmationModal()
+                    } else {
+                        alert("Erro: Não foi possível excluir o horário.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao realizar requisição de exclusão:", error);
+                    alert("Erro: Não foi possível conectar ao servidor.");
+                })
+                .finally(() => {
+                    closePopup(); // Garante que o pop-up seja fechado
+                });
+        })
+        .catch(error => {
+            console.error("Erro ao buscar horários no backend:", error);
+            alert("Erro: Não foi possível buscar os horários no banco de dados.");
+            closePopup(); // Garante que o pop-up seja fechado em caso de erro
+        });
+});
 
-                        if (!horario) {
-                            console.error("Horário não encontrado para exclusão:", selectedDate, selectedTime);
-                            alert("Erro: Não foi possível encontrar o horário no banco de dados.");
-                            return;
-                        }
-
-                        // Chamada para excluir o horário pelo ID
-                        fetch(`http://localhost:8080/api/agenda/${horario.id}`, {
-                            method: 'DELETE',
-                        })
-                            .then(response => {
-                                if (response.ok) {
-                                    alert('Horário excluído com sucesso!');
-                                    // Remove o botão correspondente na interface
-                                    const buttons = document.querySelectorAll('#time-slots button');
-                                    buttons.forEach(button => {
-                                        if (button.textContent === selectedTime) {
-                                            button.parentElement.remove(); // Remove o botão do DOM
-                                        }
-                                    });
-                                    closeConfirmationModal(); // Fecha o modal
-                                } else {
-                                    console.error("Erro ao excluir horário no backend:", response.statusText);
-                                    alert("Erro: Não foi possível excluir o horário.");
-                                }
-                            })
-                            .catch(error => {
-                                console.error("Erro ao realizar requisição de exclusão:", error);
-                                alert("Erro: Não foi possível conectar ao servidor.");
-                            });
-                    })
-                    .catch(error => {
-                        console.error("Erro ao buscar horários no backend:", error);
-                        alert("Erro: Não foi possível buscar os horários no banco de dados.");
-                    });
-            });
-
+// Evento para cancelar a ação
+cancelPaymentButton.addEventListener('click', closePopup);
 
 
 
@@ -788,6 +780,99 @@
             loadDates();
         });
 
+        // Elementos do DOM
+// Elementos do DOM
+const schoolTimeButton = document.getElementById('school-time');
+const confirmPaymentPopup = document.getElementById('confirmPaymentPopup');
+const confirmPaymentButton = document.getElementById('confirmPaymentButton');
+const cancelPaymentButton = document.getElementById('cancelPaymentButton');
+const popupTitle = confirmPaymentPopup.querySelector('h2');
+let selectedDate, selectedTime; // Variáveis para armazenar data e hora selecionadas
+
+// Função para exibir o pop-up
+function showConfirmationPopup(message, actionCallback) {
+    popupTitle.textContent = message; // Define a mensagem do pop-up
+    confirmPaymentPopup.style.display = 'block'; // Exibe o pop-up
+    document.body.insertAdjacentHTML(
+        'beforeend',
+        '<div class="popup-backdrop"></div>' // Adiciona o fundo escuro
+    );
+    document.querySelector('.popup-backdrop').style.display = 'block';
+
+    // Define o evento de confirmação no botão "Sim"
+    confirmPaymentButton.onclick = () => {
+        actionCallback(); // Executa a ação específica
+        closePopup(); // Fecha o modal
+    };
+
+    // Cancela a ação ao clicar em "Cancelar"
+    cancelPaymentButton.onclick = closePopup;
+}
+
+// Função para fechar o pop-up
+function closePopup() {
+    confirmPaymentPopup.style.display = 'none'; // Oculta o pop-up
+    const backdrop = document.querySelector('.popup-backdrop');
+    if (backdrop) {
+        backdrop.remove(); // Remove o fundo escuro
+    }
+}
+
+// Evento para "Horário Escolinha"
+schoolTimeButton.addEventListener('click', (e) => {
+    e.preventDefault(); // Previne a execução direta
+    selectedDate = document.getElementById('selected-date').value; // Captura a data selecionada
+    selectedTime = document.getElementById('selected-time').value; // Captura o horário selecionado
+    showConfirmationPopup('Tem certeza que deseja configurar este horário como Escolinha?', markAsSchoolTime); // Exibe o pop-up com Escolinha
+});
+
+// Função para marcar o horário como Escolinha
+function markAsSchoolTime() {
+    fetch(`http://localhost:8080/api/agenda?dia=${selectedDate}`)
+        .then(response => response.json())
+        .then(agendas => {
+            const horario = agendas.find(item =>
+                item.hora === selectedTime && item.dia === selectedDate // Verifica dia e hora
+            );
+
+            if (!horario) {
+                alert("Erro: Não foi possível encontrar o horário no banco de dados.");
+                return;
+            }
+
+            // Chamar o endpoint para marcar como Escolinha
+            fetch(`http://localhost:8080/api/agenda/${horario.id}/escolinha`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Horário marcado como Escolinha!');
+                        // Atualiza o botão no front-end
+                        const buttons = document.querySelectorAll('#time-slots button');
+                        buttons.forEach(button => {
+                            if (button.textContent === selectedTime) {
+                                button.disabled = true; // Desativa o botão
+                                button.classList.add('escolinha'); // Aplica a classe escolinha
+                                button.textContent += ' (Escolinha)'; // Adiciona o texto
+                            }
+                            closeConfirmationModal();
+                        });
+                    } else {
+                        
+                    }
+                })
+                .catch(error => {
+                    ;
+                });
+        })
+        .catch(error => {
+       
+        });
+}
+
         function loadDates() {
             fetch(apiUrl)
                 .then(response => response.json())
@@ -879,6 +964,7 @@
             const [ano, mes, dia] = data.split('-'); // Divide a data no formato "ano-mês-dia"
             return `${dia}/${mes}/${ano}`; // Retorna no formato "dia-mês-ano"
         }
+
 
     </script>
 

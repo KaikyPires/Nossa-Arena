@@ -35,9 +35,9 @@
     }
 
     .search-container i {
-        position: absolute;
+        position: fixed;
         right: 91.5%;
-        top: 30.5%;
+        top: 31.1%;
         transform: translateY(30%);
         /* Ajuste para centralização vertical */
         font-size: 1.4rem;
@@ -111,8 +111,9 @@
             </div>
 
             <div id="confirmPaymentPopup" class="popup" style="display: none;">
-                <h2>Confirmar Pagamento</h2>
-                <p>Tem certeza que deseja marcar este pagamento como concluído?</p>
+                <img src="../static/images/Imagem1.png">
+    
+                <h2>Tem certeza que deseja marcar este pagamento como concluído?</h2>
                 <div class="popup-buttons">
                     <button id="confirmPaymentButton">Sim</button>
                     <button id="cancelPaymentButton">Cancelar</button>
@@ -207,41 +208,40 @@
 
                         </script>
 
-                        <div class="table-container">
-                            <h4>Histórico de Partidas</h4>
+<div class="table-container">
+    <h4>Histórico de Partidas</h4>
 
-                            <table id="partidas-table">
-                                <div class="filters">
-                                    <button id="filter-day" onclick="filterByDay()">Dia</button>
-                                    <button id="filter-week" onclick="filterByWeek()">Semana</button>
-                                    <button id="filter-month" onclick="filterByMonth()">Mês</button>
-                                    <button id="filter-year" onclick="filterByYear()">Ano</button>
-                                </div>
+    <div class="filters">
+        <button id="filter-day" onclick="filterByDay()">Dia</button>
+        <button id="filter-week" onclick="filterByWeek()">Semana</button>
+        <button id="filter-month" onclick="filterByMonth()">Mês</button>
+        <button id="filter-year" onclick="filterByYear()">Ano</button>
+    </div>
 
-                                <div class="button-container">
-                                    <!-- Botão de Refresh -->
-                                    <button id="refresh-button" class="btn-refresh">
-                                        <i class="fa-solid fa-arrows-rotate"></i>
+    <div class="button-container">
+        <button id="refresh-button" class="btn-refresh">
+            <i class="fa-solid fa-arrows-rotate"></i>
+        </button>
+    </div>
 
-                                </div>
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>CPF Usuário</th>
-                                        <th>Data da Partida</th>
-                                        <th>Horário</th>
-                                        <th>Nome</th>
-                                        <th>Status do Pagamento</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Linhas da tabela serão inseridas aqui via JavaScript -->
-
-                                </tbody>
-                            </table>
-
-                        </div>
+    <div class="scrollable-table">
+        <table id="partidas-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>CPF Usuário</th>
+                    <th>Data da Partida</th>
+                    <th>Horário</th>
+                    <th>Nome</th>
+                    <th>Status do Pagamento</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dados da tabela -->
+            </tbody>
+        </table>
+    </div>
+</div>
 
                         <div class="sidebar">
                             <h2>Receita:</h2>
