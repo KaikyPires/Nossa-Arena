@@ -1,6 +1,8 @@
 package br.com.criandoapi.projeto.model;
 
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -27,6 +29,9 @@ public class Agenda {
 
     @Column(name = "escolinha", nullable = false)
     private Boolean escolinha = false; // Por padrão, o horário não é da escolinha
+
+    @Column(name = "preco", nullable = false)
+    private BigDecimal preco = BigDecimal.valueOf(120.00);
 
     // Getters e Setters
     public Long getId() {
@@ -77,4 +82,11 @@ public class Agenda {
         this.escolinha = escolinha;
     }
 
+    public BigDecimal getPreco() {
+        return preco;
+    }
+
+    public void setPreco(BigDecimal preco) {
+        this.preco = preco;
+    }
 }
