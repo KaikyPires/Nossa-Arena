@@ -29,6 +29,9 @@ public class PartidaService {
     }
 
     public Partida novaPartida(Partida partida) {
+        if (partida.getPrecoCobrado() == null) {
+            throw new IllegalArgumentException("O preço cobrado é obrigatório.");
+        }
         return partidaRepository.save(partida);
     }
 

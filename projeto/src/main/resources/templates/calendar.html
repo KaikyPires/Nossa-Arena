@@ -533,12 +533,13 @@
                 const dataPartida = document.getElementById('selected-date').value; // Data da agenda selecionada
                 const horario = document.getElementById('selected-time').value; // Hora da agenda selecionada
                 const errorPopup = document.getElementById('error-popup');
-
+                const preco = parseFloat(document.getElementById('preco').value);
 
                 const dadosAgendamento = {
                     cpfUser: cpfUser,
                     dataPartida: dataPartida,
-                    horario: horario
+                    horario: horario,
+                    precoCobrado: preco
                 };
                 console.log('Dados de agendamento:', dadosAgendamento);
 
@@ -584,6 +585,7 @@
                                     cpfUser: data.cpfUser,     // CPF do usuário, se necessário
                                     dataPartida: data.dataPartida, // Data da partida
                                     horario: data.horario,     // Horário da partida
+                                    precoCobrado: preco // Atualiza a agenda com o preço correto
                                 }
                             };
 
