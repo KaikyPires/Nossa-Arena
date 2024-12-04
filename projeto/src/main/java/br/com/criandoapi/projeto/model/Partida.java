@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -28,6 +30,9 @@ public class Partida {
 
     @Column(name = "status_pagamento") // Mapeamento para a coluna "status_pagamento"
     private Boolean statusPagamento = false; // Valor padrão como false
+
+    @Column(name = "preco_cobrado", nullable = true)
+    private BigDecimal precoCobrado;
 
     // Getters e Setters
     public Long getId() {
@@ -69,4 +74,13 @@ public class Partida {
     public void setStatusPagamento(Boolean statusPagamento) {
         this.statusPagamento = statusPagamento;
     }
+
+    public void setPrecoCobrado(BigDecimal precoCobrado) {
+        this.precoCobrado = precoCobrado;
+    }
+
+    public BigDecimal getPrecoCobrado() {
+        return precoCobrado;
+    }
+
 }
