@@ -11,6 +11,7 @@
     <link rel="stylesheet"
         href="./../static/images/assets/fontawesome-free-6.5.2-web/fontawesome-free-6.5.2-web/css/all.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.0.0-rc.7/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 
 
@@ -41,38 +42,6 @@
             /* Tamanho do ícone */
             color: #00690A;
             /* Cor do ícone */
-        }
-
-        @media print {
-            body {
-                visibility: hidden;
-                /* Oculta todo o conteúdo da página */
-                background-image: none !important;
-            }
-
-            #success-modal,
-            #success-modal * {
-                visibility: visible;
-                /* Apenas o modal de sucesso será visível */
-            }
-
-            #success-modal {
-                position: absolute;
-                left: 15%;
-                top: -30%;
-
-                width: 100%;
-                height: auto;
-                /* Preenche a altura total da página */
-                background-color: white;
-                /* Defina um fundo branco para o modal */
-                padding: 40px;
-                margin: 0;
-                font-size: 2rem;
-                /* Ajusta o tamanho da fonte para caber bem no modal */
-                transform: scale(3.5);
-                /* Aplica zoom de 120% */
-            }
         }
 
         #error-popup {
@@ -301,8 +270,8 @@
 
 
                 </p>
-                <p>Ansiosos para sua visita</p>
-                <p> <button onclick="window.print()">Imprimir / Salvar PDF</button></p>
+                <p>Ansiosos para sua visita!</p>
+                <p> <button onclick="gerarPDF()">Salvar como PDF</button></p>
             </div>
             <p class="regards">Atenciosamente, Equipe Nossa Arena.</p>
 
@@ -316,6 +285,59 @@
     </div>
 
     <script>
+
+
+        function gerarPDF() {
+            // Seleciona o modal de sucesso pelo ID
+            const successModal = document.querySelector('#success-modal .modal-content');
+
+            if (!successModal) {
+                alert('Modal de sucesso não encontrado!');
+                return;
+            }
+
+            // Aplica estilos temporários para o PDF
+            const originalStyles = {
+                width: successModal.style.width,
+                height: successModal.style.height,
+                margin: successModal.style.margin,
+                transform: successModal.style.transform,
+            };
+
+            // Estilos temporários para ocupar a página
+            successModal.style.width = '100%'; // Faz o modal preencher a largura do PDF
+            successModal.style.height = 'auto';
+            successModal.style.margin = '0 auto';
+            successModal.style.transform = 'none';
+
+            // Configurações do PDF
+            const options = {
+                margin: 0, // Sem margens
+                filename: 'comprovante_agendamento.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'cm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Gera o PDF e restaura os estilos originais
+            html2pdf()
+                .set(options)
+                .from(successModal)
+                .save()
+                .then(() => {
+                    // Restaura os estilos originais
+                    Object.assign(successModal.style, originalStyles);
+                })
+                .catch((error) => {
+                    console.error('Erro ao gerar o PDF:', error);
+                    Object.assign(successModal.style, originalStyles);
+                });
+        }
+
+
+
+
+
 
         // Função para fechar o modal de confirmação
         function closeConfirmationModal() {
