@@ -18,9 +18,80 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Função para manipular a edição
   function handleEdit(event) {
-    const cpf = event.target.getAttribute('data-cpf');
-    window.location.href = `/edit_usuario.html?cpf=${cpf}`;
+    event.preventDefault(); // Impede o comportamento padrão do link
+
+    const cpf = this.dataset.cpf; // Obtém o CPF do botão "Editar"
+
+    // Busca os dados do jogador através da API
+    fetch(`http://127.0.0.1:8080/usuarios/${cpf}`)
+      .then(response => {
+        if (!response.ok) throw new Error('Erro ao buscar jogador');
+        return response.json();
+      })
+      .then(data => {
+        // Preenche os campos do formulário com os dados do jogador
+        document.getElementById('editNome').value = data.nome;
+        document.getElementById('editTelefone').value = data.telefone || '';
+        document.getElementById('editNascimento').value = data.nascimento;
+        document.getElementById('editQuantidadePartidas').value = data.quantidadePartidas;
+        document.getElementById('editForm').dataset.cpf = cpf;
+        document.getElementById('editModal').style.display = 'block'; // Exibe o modal
+      })
+      .catch(error => console.error('Erro ao carregar jogador:', error));
   }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // Verificar se o modal de edição e o botão de fechamento existem antes de adicionar event listener
+    const editModal = document.getElementById('editModal');
+    const closeModal = document.getElementById('closeModal');
+    const editForm = document.getElementById('editForm');
+
+    if (editModal && closeModal) {
+      // Fechar o modal de edição
+      closeModal.addEventListener('click', function () {
+        editModal.style.display = 'none'; // Fecha o modal
+      });
+    }
+
+    if (editForm) {
+      // Enviar o formulário de edição
+      editForm.addEventListener('submit', function (event) {
+        event.preventDefault(); // Impede comportamento padrão do formulário
+
+        const cpf = this.dataset.cpf; // CPF armazenado no modal
+        const formData = {
+          nome: document.getElementById('editNome').value,
+          telefone: document.getElementById('editTelefone').value,
+          nascimento: document.getElementById('editNascimento').value,
+          quantidadePartidas: parseInt(document.getElementById('editQuantidadePartidas').value, 10)
+        };
+
+        // Envia os dados do formulário para a API
+        fetch(`http://127.0.0.1:8080/usuarios/${cpf}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        })
+          .then(response => {
+            if (!response.ok) throw new Error('Erro ao salvar jogador');
+            return response.json();
+          })
+          .then(data => {
+            alert('Jogador atualizado com sucesso!');
+            editModal.style.display = 'none'; // Fecha o modal
+            location.reload(); // Atualiza a tabela
+          })
+          .catch(error => console.error('Erro ao salvar jogador:', error));
+      });
+    }
+
+    // A função de edição que preenche os campos do formulário
+    document.querySelectorAll('.edit-btn').forEach(button => {
+      button.addEventListener('click', handleEdit); // Garante que o evento esteja associado corretamente
+    });
+  });
+
+
 
   // Função para manipular a exclusão
   function handleDelete(event) {

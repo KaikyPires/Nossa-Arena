@@ -35,10 +35,12 @@ public class UsuarioController {
         return ResponseEntity.status(201).body(usuarioService.criaUsuario(usuario));
     }
 
-    @PutMapping
-    public ResponseEntity<Usuario> editarUsuario(@RequestBody Usuario usuario) {
-        return ResponseEntity.status(200).body(usuarioService.criaUsuario(usuario));
-    }
+    @PutMapping("/{cpf}")
+    public ResponseEntity<Usuario> editarUsuario(@PathVariable String cpf, @RequestBody Usuario usuario) {
+        usuario.setCpf(cpf); // Certifique-se de que o CPF seja definido corretamente
+        Usuario usuarioAtualizado = usuarioRepository.save(usuario);
+        return ResponseEntity.ok(usuarioAtualizado);
+    }    
 
     @DeleteMapping("/{cpf}")
     public ResponseEntity<Void> excluirUsuario(@PathVariable String cpf) {
@@ -74,6 +76,16 @@ public class UsuarioController {
             usuario.setQuantidadePartidas(usuario.getQuantidadePartidas() + 1); // Incrementa a quantidade de partidas
             usuarioRepository.save(usuario);
             return ResponseEntity.ok(usuario);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping("/{cpf}")
+    public ResponseEntity<Usuario> buscarUsuarioPorCpf(@PathVariable String cpf) {
+        Optional<Usuario> usuario = usuarioRepository.findById(cpf);
+        if (usuario.isPresent()) {
+            return ResponseEntity.ok(usuario.get());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
