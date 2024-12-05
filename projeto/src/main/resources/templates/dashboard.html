@@ -112,7 +112,7 @@
 
             <div id="confirmPaymentPopup" class="popup" style="display: none;">
                 <img src="../static/images/Imagem1.png">
-    
+
                 <h2>Tem certeza que deseja marcar este pagamento como concluído?</h2>
                 <div class="popup-buttons">
                     <button id="confirmPaymentButton">Sim</button>
@@ -208,41 +208,41 @@
 
                         </script>
 
-<div class="table-container">
-    <h4>Histórico de Partidas</h4>
+                        <div class="table-container">
+                            <h4>Histórico de Partidas</h4>
 
-    <div class="filters">
-        <button id="filter-day" onclick="filterByDay()">Dia</button>
-        <button id="filter-week" onclick="filterByWeek()">Semana</button>
-        <button id="filter-month" onclick="filterByMonth()">Mês</button>
-        <button id="filter-year" onclick="filterByYear()">Ano</button>
-    </div>
+                            <div class="filters">
+                                <button id="filter-day" onclick="filterByDay()">Dia</button>
+                                <button id="filter-week" onclick="filterByWeek()">Semana</button>
+                                <button id="filter-month" onclick="filterByMonth()">Mês</button>
+                                <button id="filter-year" onclick="filterByYear()">Ano</button>
+                            </div>
 
-    <div class="button-container">
-        <button id="refresh-button" class="btn-refresh">
-            <i class="fa-solid fa-arrows-rotate"></i>
-        </button>
-    </div>
+                            <div class="button-container">
+                                <button id="refresh-button" class="btn-refresh">
+                                    <i class="fa-solid fa-arrows-rotate"></i>
+                                </button>
+                            </div>
 
-    <div class="scrollable-table">
-        <table id="partidas-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>CPF Usuário</th>
-                    <th>Data da Partida</th>
-                    <th>Horário</th>
-                    <th>Nome</th>
-                     <th>Preço Cobrado</th>
-                    <th>Status do Pagamento</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Dados da tabela -->
-            </tbody>
-        </table>
-    </div>
-</div>
+                            <div class="scrollable-table">
+                                <table id="partidas-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>CPF Usuário</th>
+                                            <th>Data da Partida</th>
+                                            <th>Horário</th>
+                                            <th>Nome</th>
+                                            <th>Preço Cobrado</th>
+                                            <th>Status do Pagamento</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dados da tabela -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
                         <div class="sidebar">
                             <h2>Receita:</h2>
@@ -333,7 +333,7 @@
             function createPaymentButton(id) {
                 return `
         <button class="btn-pagar" onclick="marcarComoPago(${id})">
-            Marcar como pagar
+            Marcar como pago
         </button>
     `;
             }
@@ -347,50 +347,84 @@
                 .then(response => response.json())
                 .then(partidas => {
                     const hoje = new Date();
-                    hoje.setHours(0, 0, 0, 0); // Define a hora do dia para 00:00:00
+                    hoje.setHours(0, 0, 0, 0); // Zera a hora para garantir comparação correta
 
                     const diaAtual = hoje.getDate();
                     const mesAtual = hoje.getMonth();
                     const anoAtual = hoje.getFullYear();
                     const diaSemana = hoje.getDay(); // 0 para Domingo, 6 para Sábado
 
-                    // Funções auxiliares
+                    // Função de filtro para o dia
                     const filtrarPorDia = (partida) => {
-                        const dataPartida = new Date(partida.dataPartida);
-                        dataPartida.setHours(0, 0, 0, 0); // Define a hora para 00:00:00
-                        return dataPartida.getTime() === hoje.getTime();
+                        const hoje = new Date().toISOString().split('T')[0]; // Obtém a data de hoje no formato 'YYYY-MM-DD'
+                        const dataPartida = partida.dataPartida.split('T')[0]; // Obtém a data da partida no mesmo formato
+
+                        return dataPartida === hoje; // Compara a data (ano, mês, dia)
                     };
 
+                    // Função de filtro para a semana
                     const filtrarPorSemana = (partida) => {
-                        const dataPartida = new Date(partida.dataPartida);
-                        const primeiroDiaDaSemana = new Date(hoje);
-                        primeiroDiaDaSemana.setDate(diaAtual - diaSemana);
-                        primeiroDiaDaSemana.setHours(0, 0, 0, 0);
+                        const hoje = new Date();
+                        const diaSemana = hoje.getDay(); // 0 para Domingo, 6 para Sábado
 
-                        const ultimoDiaDaSemana = new Date(hoje);
-                        ultimoDiaDaSemana.setDate(diaAtual + (6 - diaSemana));
-                        ultimoDiaDaSemana.setHours(23, 59, 59, 999);
+                        // Calcula o primeiro dia da semana (Domingo)
+                        const startOfWeek = new Date(hoje);
+                        startOfWeek.setDate(hoje.getDate() - diaSemana);
+                        startOfWeek.setHours(0, 0, 0, 0); // Zera a hora, minuto, segundo e milissegundo
 
-                        return dataPartida >= primeiroDiaDaSemana && dataPartida <= ultimoDiaDaSemana;
+                        // Calcula o último dia da semana (Sábado)
+                        const endOfWeek = new Date(hoje);
+                        endOfWeek.setDate(hoje.getDate() + (6 - diaSemana));
+                        endOfWeek.setHours(23, 59, 59, 999); // Define o final do dia (último segundo)
+
+                        // Compara a data da partida com o intervalo da semana
+                        const dataPartida = partida.dataPartida.split('T')[0]; // Extrai a data sem a hora (ano-mês-dia)
+                        const startOfWeekStr = startOfWeek.toISOString().split('T')[0];
+                        const endOfWeekStr = endOfWeek.toISOString().split('T')[0];
+
+                        return dataPartida >= startOfWeekStr && dataPartida <= endOfWeekStr; // Verifica se a partida está dentro da semana
                     };
+
+
 
                     const filtrarPorMes = (partida) => {
-                        const dataPartida = new Date(partida.dataPartida);
-                        return dataPartida.getMonth() === mesAtual && dataPartida.getFullYear() === anoAtual;
+                        const hoje = new Date();
+                        const startOfMonth = new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().split('T')[0]; // Primeiro dia do mês
+                        const endOfMonth = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).toISOString().split('T')[0]; // Último dia do mês
+
+                        // Compara as datas no formato YYYY-MM-DD
+                        const dataPartida = partida.dataPartida.split('T')[0]; // Extrai a data da partida no formato YYYY-MM-DD
+                        return dataPartida >= startOfMonth && dataPartida <= endOfMonth; // Verifica se a partida está dentro do mês
                     };
+
 
                     const filtrarPorAno = (partida) => {
-                        const dataPartida = new Date(partida.dataPartida);
-                        return dataPartida.getFullYear() === anoAtual;
+                        const hoje = new Date();
+                        const startOfYear = new Date(hoje.getFullYear(), 0, 1).toISOString().split('T')[0]; // Primeiro dia do ano
+                        const endOfYear = new Date(hoje.getFullYear(), 11, 31).toISOString().split('T')[0]; // Último dia do ano
+
+                        // Compara as datas no formato YYYY-MM-DD
+                        const dataPartida = partida.dataPartida.split('T')[0]; // Extrai a data da partida no formato YYYY-MM-DD
+                        return dataPartida >= startOfYear && dataPartida <= endOfYear; // Verifica se a partida está dentro do ano
                     };
 
-                    // Cálculos
-                    const ganhosDiarios = partidas.filter(filtrarPorDia).length * 200;
-                    const ganhosSemanais = partidas.filter(filtrarPorSemana).length * 200;
-                    const ganhosMensais = partidas.filter(filtrarPorMes).length * 200;
-                    const ganhosAnuais = partidas.filter(filtrarPorAno).length * 200;
 
-                    // Logs para depuração
+                    // Função para calcular os ganhos (considerando apenas partidas pagas)
+                    const calcularGanhos = (filtro) => {
+                        return partidas.filter(partida => partida.statusPagamento === true) // Só as partidas pagas
+                            .filter(filtro) // Aplica o filtro diário, semanal, mensal ou anual
+                            .reduce((total, partida) => {
+                                return total + (partida.precoCobrado || 0); // Soma o preço cobrado de cada partida
+                            }, 0);
+                    };
+
+                    // Cálculos baseados nos filtros
+                    const ganhosDiarios = calcularGanhos(filtrarPorDia);
+                    const ganhosSemanais = calcularGanhos(filtrarPorSemana);
+                    const ganhosMensais = calcularGanhos(filtrarPorMes);
+                    const ganhosAnuais = calcularGanhos(filtrarPorAno);
+
+                    // Exibindo os resultados
                     console.log('Ganhos Diários:', ganhosDiarios);
                     console.log('Ganhos Semanais:', ganhosSemanais);
                     console.log('Ganhos Mensais:', ganhosMensais);
@@ -401,15 +435,16 @@
                     document.querySelector('.weekly').textContent = ganhosSemanais.toFixed(2);
                     document.querySelector('.monthly').textContent = ganhosMensais.toFixed(2);
                     document.querySelector('.annual').textContent = ganhosAnuais.toFixed(2);
+
                 })
                 .catch(error => console.error('Erro ao buscar os dados:', error));
-            document.addEventListener('DOMContentLoaded', () => {
-                carregarPartidas();
-            });
+
 
             document.addEventListener('DOMContentLoaded', () => {
                 carregarPartidas();
             });
+
+
             function filterByDay() {
                 applyFilter(() => {
                     const today = new Date().toISOString().split('T')[0];
