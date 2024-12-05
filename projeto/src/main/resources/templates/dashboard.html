@@ -233,6 +233,7 @@
                     <th>Data da Partida</th>
                     <th>Horário</th>
                     <th>Nome</th>
+                     <th>Preço Cobrado</th>
                     <th>Status do Pagamento</th>
                 </tr>
             </thead>
@@ -317,6 +318,7 @@
             <td>${formatarData(partida.dataPartida)}</td>
             <td>${partida.horario}</td>
             <td>${partida.nomeUsuario || 'Nome não disponível'}</td> <!-- Nome do usuário -->
+            <td>R$ ${partida.precoCobrado ? partida.precoCobrado.toFixed(2) : '0.00'}</td>
             <td class="${statusClass}">
                 ${statusPagamento}
                 ${statusPagamento === 'Pendente' ? createPaymentButton(partida.id) : ''}

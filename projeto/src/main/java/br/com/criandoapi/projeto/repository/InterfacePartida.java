@@ -33,9 +33,10 @@ public interface InterfacePartida extends JpaRepository<Partida, Long> {
     @Query("SELECT p FROM Partida p WHERE YEAR(p.dataPartida) = :ano")
     List<Partida> findByAno(@Param("ano") int ano);
 
-    @Query(value = "SELECT p.id, p.cpf AS cpfUser, p.dia AS dataPartida, p.hora AS horario, p.status_pagamento AS statusPagamento, u.nome AS nomeUsuario "
-            +
-            "FROM partida p LEFT JOIN usuario u ON p.cpf = u.cpf ORDER BY p.dia ASC", nativeQuery = true)
+    @Query("SELECT new map(p.id as id, p.cpfUser as cpfUser, p.dataPartida as dataPartida, "
+            + "p.horario as horario, p.statusPagamento as statusPagamento, "
+            + "u.nome as nomeUsuario, p.precoCobrado as precoCobrado) "
+            + "FROM Partida p LEFT JOIN Usuario u ON p.cpfUser = u.cpf")
     List<Map<String, Object>> findAllPartidasComNomes();
 
 }
