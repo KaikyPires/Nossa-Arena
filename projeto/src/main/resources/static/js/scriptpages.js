@@ -16,10 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Adicione aqui as funcionalidades específicas da home...
 
-        // Função para abrir/fechar sidebar
-        document.getElementById('open_btn').addEventListener('click', function () {
-            document.getElementById('sidebar').classList.toggle('open-sidebar');
-        });
 
         // Tela de carregamento
         const loadingScreen = document.getElementById('loading-screen');
@@ -37,11 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Adicione aqui as funcionalidades específicas de cadastro...
 
-        // Função para abrir/fechar sidebar
-        document.getElementById('open_btn').addEventListener('click', function () {
-            document.getElementById('sidebar').classList.toggle('open-sidebar');
-        });
-
         // Tela de carregamento
         const loadingScreen = document.getElementById('loading-screen');
         const content = document.getElementById('content');
@@ -50,12 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
             loadingScreen.style.display = 'none';
             content.style.display = 'block';
         });
-
-        // Função para formatar a data para o formato yyyy-MM-dd
-        function formatDateForBackend(dateString) {
-            const [day, month, year] = dateString.split('/');
-            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-        }
 
         //Formata o CPF (123.456.789-10)
         function formatarCPF(cpf) {
@@ -115,11 +100,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Adicione aqui as funcionalidades específicas do dashboard...
 
-        // Função para abrir/fechar sidebar
-        document.getElementById('open_btn').addEventListener('click', function () {
-            document.getElementById('sidebar').classList.toggle('open-sidebar');
-        });
-
         // Tela de carregamento
         const loadingScreen = document.getElementById('loading-screen');
         const content = document.getElementById('content');
@@ -128,23 +108,6 @@ document.addEventListener('DOMContentLoaded', function () {
             loadingScreen.style.display = 'none';
             content.style.display = 'block';
         });
-
-        // Função para calcular e atualizar o resultado
-        function calcularEAtualizarResultado(data) {
-            function calcularValorPartidas(quantidadePartidas) {
-                return quantidadePartidas * 200;
-            }
-
-            let resultadoTotal = 0;
-
-            data.forEach(usuario => {
-                const valorMultiplicado = calcularValorPartidas(usuario.quantidadePartidas);
-                resultadoTotal += valorMultiplicado;
-            });
-
-            const resultadoFormatado = resultadoTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-            document.querySelector('.balance .info span').textContent = resultadoFormatado;
-        }
 
     }
 
@@ -154,11 +117,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Adicione aqui as funcionalidades específicas do horário...
 
-        // Função para abrir/fechar sidebar
-        document.getElementById('open_btn').addEventListener('click', function () {
-            document.getElementById('sidebar').classList.toggle('open-sidebar');
-        });
-
         // Tela de carregamento
         const loadingScreen = document.getElementById('loading-screen');
         const content = document.getElementById('content');
@@ -168,27 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
             content.style.display = 'block';
         });
 
-        // Função para abrir o modal com dados
-        function openConfirmationModal(date, time, cpf) {
-            document.getElementById('selected-date').value = date;
-            document.getElementById('selected-time').value = time;
-            document.getElementById('cpf').value = cpf;
-            document.getElementById('confirmation-modal').style.display = 'block';
-        }
-
-        // Função para fechar o modal
-        function closeConfirmationModal() {
-            document.getElementById('confirmation-modal').style.display = 'none';
-        }
-
-        // Função para formatar a data para o formato yyyy-MM-dd
-        function formatDateForBackend(dateString) {
-            const [day, month, year] = dateString.split('/');
-            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-        }
-
         //Formata a data de (yyyy-MM-dd) para (dd-MM-yyyy)
-
         function formatarData(data) {
             if (!data) return '';
 
@@ -204,101 +142,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             return data; // Retorna a data original se nenhum formato conhecido for detectado
-        }
-
-        // Função para submeter o formulário de confirmação
-        function submitConfirmation() {
-            const cpf = document.getElementById('cpf').value.trim() || null;
-            const dateInput = document.getElementById('selected-date').value;
-            const formattedDate = formatDateForBackend(dateInput);
-            const horario = document.getElementById('selected-time').value;
-
-            if (!formattedDate || !horario) {
-                console.error('Data e horário são obrigatórios.');
-                return;
-            }
-
-            const partidaData = {
-                cpfUser: cpf,
-                dataPartida: formattedDate,
-                horario: horario,
-                statusPagamento: 'Pendente'
-            };
-
-            // Enviar dados da nova partida
-            fetch("http://localhost:8080/partidas", {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                method: "POST",
-                body: JSON.stringify(partidaData)
-            })
-                .then(function (res) {
-                    if (!res.ok) {
-                        return res.text().then(text => {
-                            throw new Error('Erro ao enviar os dados: ' + text);
-                        });
-                    }
-                    return res.json();
-                })
-                .then(function (data) {
-                    // Limpar campos do formulário
-                    document.getElementById('cpf').value = "";
-                    document.getElementById('selected-date').value = "";
-                    document.getElementById('selected-time').value = "";
-
-                    // Fechar o modal de confirmação
-                    closeConfirmationModal();
-
-                    // Atualizar a exibição do modal de sucesso
-                    document.getElementById('success-date').textContent = dateInput;
-                    document.getElementById('success-time').textContent = horario;
-
-                    // Exibir o modal de sucesso
-                    document.getElementById('success-modal').style.display = 'flex'; // Use 'flex' para centralizar o modal
-
-                    // Verificar e incrementar a quantidade de partidas do usuário
-                    if (cpf) {
-                        fetch(`http://localhost:8080/usuarios/${cpf}/incrementar-partidas`, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Erro ao incrementar partidas');
-                                }
-                                return response.json();
-                            })
-                            .then(usuario => {
-                                console.log('Quantidade de partidas do usuário incrementada:', usuario);
-                                // Aqui você pode atualizar a tabela ou exibir uma mensagem ao usuário
-                            })
-                            .catch(error => {
-                                console.error('Erro ao incrementar partidas:', error);
-                            });
-                    }
-                })
-                .catch(function (error) {
-                    console.error('Erro ao enviar os dados:', error);
-                });
-        }
-
-        function selectDay(day) {
-            currentDay = day;
-            updateCalendar();
-        }
-
-        function prevWeek() {
-            startDayIndex -= 7;
-            updateCalendar();
-        }
-
-        function nextWeek() {
-            startDayIndex += 7;
-            updateCalendar();
         }
 
         function loadTimeSlots() {
@@ -317,38 +160,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        function selectTimeSlot(time) {
-            if (selectedTimeSlot === time) {
-                selectedTimeSlot = null;
-                document.querySelectorAll('.time-slot-item').forEach(item => item.classList.remove('selected'));
-            } else {
-                selectedTimeSlot = time;
-                document.querySelectorAll('.time-slot-item').forEach(item => item.classList.remove('selected'));
-                event.target.classList.add('selected');
-                document.getElementById('confirm-button').style.display = 'block';
-            }
-        }
-
-        function showConfirmationModal() {
-            document.getElementById('selected-date').value = `${currentDay}/${currentMonth + 1}/${currentYear}`;
-            document.getElementById('selected-time').value = selectedTimeSlot;
-            document.getElementById('confirmation-modal').style.display = 'flex'; // Use 'flex' para centralizar
-        }
-
-        function closeSuccessModal() {
-            document.getElementById('success-modal').style.display = 'none';
-            // Reset the calendar and selection
-            selectedTimeSlot = null;
-            loadTimeSlots();
-            document.getElementById('confirm-button').style.display = 'none';
-        }
-
         const today = new Date();
         let currentDay = today.getDate();
         let currentMonth = today.getMonth();
         let currentYear = today.getFullYear();
         let startDayIndex = 0; // Índice inicial da semana
-        let selectedTimeSlot = null;
 
         const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
             "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
@@ -427,10 +243,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (bodyClass.includes('page-jogadores')) {
         console.log('Página Jogadores carregada.');
 
-        // Função para abrir/fechar sidebar
-        document.getElementById('open_btn').addEventListener('click', function () {
-            document.getElementById('sidebar').classList.toggle('open-sidebar');
-        });
 
         // Tela de carregamento
         const loadingScreen = document.getElementById('loading-screen');
@@ -440,6 +252,51 @@ document.addEventListener('DOMContentLoaded', function () {
             loadingScreen.style.display = 'none';
             content.style.display = 'block';
         });
+
+
+        // Modal de confirmação de exclusão
+        const confirmDeletePopup = document.getElementById('confirmDeletePopup');
+        const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+        const cancelDeleteButton = document.getElementById('cancelDeleteButton');
+
+        let jogadorParaExcluir = null; // Armazena o CPF do jogador a ser excluído
+
+        // Função para abrir o modal de exclusão
+        function openDeleteModal(cpf) {
+            jogadorParaExcluir = cpf; // Armazena o CPF do jogador
+            confirmDeletePopup.style.display = 'block'; // Exibe o modal
+        }
+
+        // Função para fechar o modal de exclusão
+        function closeDeleteModal() {
+            jogadorParaExcluir = null; // Limpa o CPF armazenado
+            confirmDeletePopup.style.display = 'none'; // Oculta o modal
+        }
+
+        // Adiciona evento ao botão "Sim" do modal
+        confirmDeleteButton.addEventListener('click', function () {
+            if (jogadorParaExcluir) {
+                // Faz a exclusão do jogador
+                fetch(`http://127.0.0.1:8080/usuarios/${jogadorParaExcluir}`, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Jogador excluído com sucesso!');
+                            document.querySelector(`button[data-cpf="${jogadorParaExcluir}"]`).closest('tr').remove();
+                            closeDeleteModal(); // Fecha o modal após excluir
+                        } else {
+                            throw new Error('Erro ao excluir jogador');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao excluir jogador:', error);
+                        alert('Erro ao excluir jogador. Tente novamente.');
+                        closeDeleteModal(); // Fecha o modal mesmo em caso de erro
+                    });
+            }
+        });
+
+        // Adiciona evento ao botão "Cancelar" do modal
+        cancelDeleteButton.addEventListener('click', closeDeleteModal);
 
         //Formata o CPF (123.456.789-10)
         function formatarCPF(cpf) {
@@ -546,20 +403,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 .catch(error => console.error('Erro ao buscar jogador:', error));
         }
 
-        // Função para excluir jogador
+        // Função para manipular o clique no botão "Excluir"
         function handleDelete(event) {
-            const cpf = this.dataset.cpf;
-            fetch(`http://127.0.0.1:8080/usuarios/${cpf}`, { method: 'DELETE' })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Usuário excluído com sucesso!');
-                        event.target.closest('tr').remove();
-                    } else {
-                        throw new Error('Erro ao excluir usuário');
-                    }
-                })
-                .catch(error => console.error('Erro ao excluir jogador:', error));
+            const cpf = this.dataset.cpf; // Obtém o CPF do botão
+            openDeleteModal(cpf); // Abre o modal de exclusão
         }
+
+        // Carrega os jogadores ao abrir a página
+        fetch('http://127.0.0.1:8080/usuarios')
+            .then(response => response.json())
+            .then(data => populateTable(data))
+            .catch(error => console.error('Erro ao carregar jogadores:', error));
 
         // Fechar modal de edição
         safelyAddEventListener('#closeModal', 'click', function () {
