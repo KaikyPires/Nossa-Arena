@@ -1779,12 +1779,12 @@ li.data-header {
 
 .additional-options .btn {
   cursor: pointer;
-  
+
   color: white;
   padding: 10px;
   border-radius: 5px;
   text-align: center;
- 
+
   display: block;
   /* Inicialmente oculto */
   width: 100%;
@@ -1844,7 +1844,7 @@ li.data-header {
 .popup-buttons {
   display: flex;
   justify-content: space-around;
-  
+
 }
 
 .popup-buttons button {
@@ -1865,41 +1865,126 @@ li.data-header {
   background: #dc3545;
   color: white;
 }
+
 .scrollable-table {
-  max-height: 300px; /* Define a altura máxima para a área de rolagem */
-  overflow-y: auto; /* Permite rolagem vertical */
-  overflow-x: hidden; /* Desabilita rolagem horizontal, se não for necessária */
-  border: 1px solid #ddd; /* Adiciona uma borda ao redor da área de rolagem */
+  max-height: 300px;
+  /* Define a altura máxima para a área de rolagem */
+  overflow-y: auto;
+  /* Permite rolagem vertical */
+  overflow-x: hidden;
+  /* Desabilita rolagem horizontal, se não for necessária */
+  border: 1px solid #ddd;
+  /* Adiciona uma borda ao redor da área de rolagem */
 }
-.popup img{
+
+.popup img {
   margin-top: -5%;
-  border-radius: 50%; 
-  box-shadow: none; 
+  border-radius: 50%;
+  box-shadow: none;
   background: transparent;
   width: 17%;
 }
 
 
 #confirmPaymentPopup h2 {
-  
+
   margin-top: 8px;
-  color: black; /* Cor inicial */
+  color: black;
+  /* Cor inicial */
   text-align: center;
   margin-bottom: 20px;
-  transition: color 0.3s ease, transform 0.3s ease; /* Transição suave */
+  transition: color 0.3s ease, transform 0.3s ease;
+  /* Transição suave */
 }
+
 #confirmPaymentPopup #confirmPaymentButton:hover {
-  background-color: #00690A; /* Verde escuro ao passar o mouse */
-  transform: scale(1.01); /* Aumenta levemente o botão */
+  background-color: #00690A;
+  /* Verde escuro ao passar o mouse */
+  transform: scale(1.01);
+  /* Aumenta levemente o botão */
 }
+
 #confirmPaymentPopup #cancelPaymentButton:hover {
-  background-color: #a71d2a; /* Vermelho mais escuro ao passar o mouse */
-  transform: scale(1.01); /* Aumenta levemente o botão */
+  background-color: #a71d2a;
+  /* Vermelho mais escuro ao passar o mouse */
+  transform: scale(1.01);
+  /* Aumenta levemente o botão */
 }
+
 #confirmation-modal #confirmation-form i {
-  
-  margin-right: 8px; /* Espaçamento à direita */
-  vertical-align: middle; /* Alinha com os campos de entrada */
-  transition: color 0.3s ease; /* Transição suave para hover */
+
+  margin-right: 8px;
+  /* Espaçamento à direita */
+  vertical-align: middle;
+  /* Alinha com os campos de entrada */
+  transition: color 0.3s ease;
+  /* Transição suave para hover */
   transform: translateY(-50%);
+}
+
+.pdf-layout {
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 18cm;
+  /* Largura máxima de uma folha A4 no formato retrato */
+  margin: auto;
+  box-shadow: none;
+  /* Remove sombras */
+  transform: none;
+  /* Remove qualquer transformação */
+  position: static;
+  /* Garante que não será deslocado no espaço */
+  page-break-inside: avoid;
+  /* Evita quebra no meio do conteúdo */
+}
+
+.pdf-layout h1 {
+  font-size: 20px;
+  color: #00690A;
+  /* Verde escuro */
+  margin-bottom: 10px;
+}
+
+.pdf-layout p {
+  font-size: 14px;
+  color: #333;
+  margin: 5px 0;
+}
+
+.pdf-layout .success-details span {
+  font-weight: bold;
+  color: #00690A;
+}
+
+.pdf-layout button {
+  display: none;
+  /* Oculta o botão no PDF */
+}
+
+.pdf-layout .done {
+  margin: 20px auto;
+  width: 100px;
+  /* Tamanho do ícone */
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pdf-layout .done svg {
+  width: 100%;
+  /* Garante que o SVG preencha o espaço */
+  height: auto;
+  display: block;
+  /* Garante a visibilidade */
+}
+
+.pdf-layout .close {
+  display: none;
+  /* Oculta o botão de fechar */
 }
