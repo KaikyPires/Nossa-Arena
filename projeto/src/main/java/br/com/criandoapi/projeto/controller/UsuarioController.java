@@ -37,10 +37,23 @@ public class UsuarioController {
 
     @PutMapping("/{cpf}")
     public ResponseEntity<Usuario> editarUsuario(@PathVariable String cpf, @RequestBody Usuario usuario) {
-        usuario.setCpf(cpf); // Certifique-se de que o CPF seja definido corretamente
-        Usuario usuarioAtualizado = usuarioRepository.save(usuario);
-        return ResponseEntity.ok(usuarioAtualizado);
-    }    
+        Optional<Usuario> usuarioExistente = usuarioRepository.findById(cpf);
+        if (usuarioExistente.isPresent()) {
+            Usuario existente = usuarioExistente.get();
+
+            // Atualiza os campos recebidos
+            existente.setNome(usuario.getNome());
+            existente.setTelefone(usuario.getTelefone());
+            existente.setNascimento(usuario.getNascimento());
+            existente.setQuantidadePartidas(usuario.getQuantidadePartidas());
+
+            // Salva as mudanças
+            Usuario usuarioAtualizado = usuarioRepository.save(existente);
+            return ResponseEntity.ok(usuarioAtualizado);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 
     @DeleteMapping("/{cpf}")
     public ResponseEntity<Void> excluirUsuario(@PathVariable String cpf) {
