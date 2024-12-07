@@ -62,7 +62,7 @@
     }
 </style>
 
-<body class = "page-jogadores" id="jog-body">
+<body class="page-jogadores" id="jog-body">
     <nav id="sidebar">
         <div id="sidebar_content">
             <div id="user">
@@ -200,6 +200,16 @@
             </div>
         </div>
 
+        <div id="confirmDeletePopup" class="popup" style="display: none;">
+            <img src="../static/images/Imagem1.png" alt="Confirmação">
+            <h2>Tem certeza que deseja excluir este jogador?</h2>
+            <div class="popup-buttons">
+                <button id="confirmDeleteButton">Sim</button>
+                <button id="cancelDeleteButton">Cancelar</button>
+            </div>
+        </div>
+
+
         <div class="table-jogador">
 
 
@@ -237,7 +247,7 @@
                             <input type="date" id="editNascimento" name="nascimento" required>
 
                             <label for="editQuantidadePartidas">Quantidade de Partidas:</label>
-                            <input type="number" id="editQuantidadePartidas" name="quantidadePartidas" required>
+                            <input type="number" id="editQuantidadePartidas" name="quantidadePartidas" readonly>
 
                             <button type="submit" id="saveEditBtn">Salvar</button>
                         </form>
