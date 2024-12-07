@@ -16,10 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Adicione aqui as funcionalidades específicas da home...
 
-        // Função para abrir/fechar sidebar
-        document.getElementById('open_btn').addEventListener('click', function () {
-            document.getElementById('sidebar').classList.toggle('open-sidebar');
-        });
 
         // Tela de carregamento
         const loadingScreen = document.getElementById('loading-screen');
@@ -36,11 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Página Cadastro carregada.');
 
         // Adicione aqui as funcionalidades específicas de cadastro...
-
-        // Função para abrir/fechar sidebar
-        document.getElementById('open_btn').addEventListener('click', function () {
-            document.getElementById('sidebar').classList.toggle('open-sidebar');
-        });
 
         // Tela de carregamento
         const loadingScreen = document.getElementById('loading-screen');
@@ -115,11 +106,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Adicione aqui as funcionalidades específicas do dashboard...
 
-        // Função para abrir/fechar sidebar
-        document.getElementById('open_btn').addEventListener('click', function () {
-            document.getElementById('sidebar').classList.toggle('open-sidebar');
-        });
-
         // Tela de carregamento
         const loadingScreen = document.getElementById('loading-screen');
         const content = document.getElementById('content');
@@ -153,11 +139,6 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Página Horário carregada.');
 
         // Adicione aqui as funcionalidades específicas do horário...
-
-        // Função para abrir/fechar sidebar
-        document.getElementById('open_btn').addEventListener('click', function () {
-            document.getElementById('sidebar').classList.toggle('open-sidebar');
-        });
 
         // Tela de carregamento
         const loadingScreen = document.getElementById('loading-screen');
@@ -427,10 +408,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (bodyClass.includes('page-jogadores')) {
         console.log('Página Jogadores carregada.');
 
-        // Função para abrir/fechar sidebar
-        document.getElementById('open_btn').addEventListener('click', function () {
-            document.getElementById('sidebar').classList.toggle('open-sidebar');
-        });
 
         // Tela de carregamento
         const loadingScreen = document.getElementById('loading-screen');
