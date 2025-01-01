@@ -184,11 +184,11 @@
         <div class="time-picker">
             <h1>Calendario <span> <i class="fa-solid fa-calendar-days"></i></span></h1>
             <div class="time-picker-header">
-                <button class="arrow left" onclick="prevMonth()"></button>
+                <button class="arrow left"></button>
                 <ul class="date-slot" id="date-slots">
                     <!-- Dinamically generated date slots -->
                 </ul>
-                <button class="arrow right" onclick="nextMonth()"></button>
+                <button class="arrow right"></button>
             </div>
             <div class="time-picker-body">
                 <ul class="time-slot" id="time-slots">
@@ -922,28 +922,7 @@
                 });
         }
 
-        function loadDates() {
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    datesList = data.map(item => item.dia).sort(); // Ordena as datas
-                    currentDateIndex = datesList.indexOf(new Date().toISOString().split('T')[0]); // Define o índice inicial
-                    loadAgenda(datesList[currentDateIndex]); // Carrega a agenda da data inicial
-                })
-                .catch(error => console.error('Erro ao carregar datas:', error));
-        }
-
-        // Função para carregar os horários de uma data específica
-        function loadAgenda(date) {
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    const filteredData = data.filter(item => item.dia === date);
-                    renderDate(date);
-                    renderTimeSlots(filteredData);
-                })
-                .catch(error => console.error('Erro ao carregar horários:', error));
-        }
+ 
 
         // Função para exibir a data selecionada
         function renderDate(date) {
@@ -989,13 +968,6 @@
 
             modal.style.display = 'block';
         }
-
-        // Inicializa a agenda na data atual
-        loadDates();
-
-        // Listeners de navegação
-        document.querySelector('.arrow.left').addEventListener('click', prevDate);
-        document.querySelector('.arrow.right').addEventListener('click', nextDate);
 
         // Event listeners para fechar os modais
         window.onclick = function (event) {
