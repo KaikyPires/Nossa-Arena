@@ -28,6 +28,12 @@ public class AgendaService {
     }
 
     public Agenda adicionarHorario(Agenda agenda) {
+        // Verifica se o horário já existe
+        if (horarioJaExiste(agenda.getDia(), agenda.getHora())) {
+            throw new RuntimeException("Horário já existe para " + agenda.getDia() + " às " + agenda.getHora() + ".");
+        }
+
+        // Salva o novo horário
         return agendaRepository.save(agenda);
     }
 
@@ -65,6 +71,11 @@ public class AgendaService {
             return agendaRepository.save(agenda); // Salva a alteração
         }
         return null; // Retorna null se o ID não foi encontrado
+    }
+
+    public boolean horarioJaExiste(LocalDate dia, LocalTime hora) {
+        List<Agenda> horariosDoDia = agendaRepository.findByDia(dia);
+        return horariosDoDia.stream().anyMatch(agenda -> agenda.getHora().equals(hora));
     }
 
 }

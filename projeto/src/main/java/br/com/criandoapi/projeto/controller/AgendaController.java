@@ -26,7 +26,6 @@ public class AgendaController {
         return ResponseEntity.ok(agendas);
     }
 
-    
     @GetMapping("/{dia}")
     public ResponseEntity<List<Agenda>> getHorariosDoDia(@PathVariable String dia) {
         LocalDate localDate = LocalDate.parse(dia);
@@ -55,9 +54,18 @@ public class AgendaController {
     }
 
     @PostMapping
-    public ResponseEntity<Agenda> adicionarHorario(@RequestBody Agenda agenda) {
-        Agenda savedAgenda = agendaService.adicionarHorario(agenda);
-        return ResponseEntity.status(201).body(savedAgenda);
+    public ResponseEntity<?> adicionarHorario(@RequestBody Agenda agenda) {
+        try {
+            Agenda savedAgenda = agendaService.adicionarHorario(agenda);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedAgenda);
+        } catch (RuntimeException e) {
+            // Retorna um status 409 com uma mensagem clara
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Horário já existe para o dia " + agenda.getDia() + " às " + agenda.getHora() + ".");
+        } catch (Exception e) {
+            // Retorna um status 500 para erros genéricos
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao adicionar horário.");
+        }
     }
 
     @DeleteMapping("/{id}")

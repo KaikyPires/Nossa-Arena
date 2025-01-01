@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         window.addEventListener('load', function () {
             loadingScreen.style.display = 'none';
-            content.style.display = 'block';
         });
     }
 
@@ -39,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         window.addEventListener('load', function () {
             loadingScreen.style.display = 'none';
-            content.style.display = 'block';
         });
 
         //Formata o CPF (123.456.789-10)
@@ -106,7 +104,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         window.addEventListener('load', function () {
             loadingScreen.style.display = 'none';
-            content.style.display = 'block';
         });
 
     }
@@ -123,7 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         window.addEventListener('load', function () {
             loadingScreen.style.display = 'none';
-            content.style.display = 'block';
         });
 
         //Formata a data de (yyyy-MM-dd) para (dd-MM-yyyy)
@@ -143,100 +139,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             return data; // Retorna a data original se nenhum formato conhecido for detectado
         }
-
-        function loadTimeSlots() {
-            const timeSlots = document.getElementById('time-slots');
-            timeSlots.innerHTML = '';
-
-            const times = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
-            times.forEach(time => {
-                const isDisabled = appointments[`${currentYear}-${currentMonth + 1}-${currentDay}`]?.includes(time);
-                const slotClass = isDisabled ? 'time-slot-item disabled' : 'time-slot-item';
-
-                timeSlots.innerHTML += `
-              <li class="${slotClass}" onclick="${isDisabled ? 'return false;' : `selectTimeSlot('${time}')`}">
-                ${time}
-              </li>`;
-            });
-        }
-
-        const today = new Date();
-        let currentDay = today.getDate();
-        let currentMonth = today.getMonth();
-        let currentYear = today.getFullYear();
-        let startDayIndex = 0; // Índice inicial da semana
-
-        const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-
-        const dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-
-        let appointments = {};
-
-        // Função para calcular o índice de início da semana
-        function calculateStartDayIndex() {
-            const firstDayOfWeek = new Date(currentYear, currentMonth, currentDay).getDay();
-            const startDate = new Date(currentYear, currentMonth, currentDay);
-            const startOfWeek = new Date(startDate.setDate(startDate.getDate() - firstDayOfWeek));
-            return startOfWeek.getDate() - 1; // Ajuste para o índice de início
-        }
-
-        // Função para atualizar o calendário para a semana atual
-        function updateCalendar() {
-            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-            const dateSlot = document.querySelector('.date-slot');
-            dateSlot.innerHTML = '';
-
-            // Calcula o início e o fim da semana
-            const startOfWeek = new Date(currentYear, currentMonth, startDayIndex + 1);
-            const endOfWeek = new Date(startOfWeek);
-            endOfWeek.setDate(startOfWeek.getDate() + 6); // 7 dias por semana
-
-            // Adiciona espaços em branco se houver dias antes do início da semana
-            for (let i = 0; i < startOfWeek.getDay(); i++) {
-                dateSlot.innerHTML += '<li class="date-slot-wrapper empty"></li>';
-            }
-
-            // Adiciona os dias da semana
-            for (let d = startOfWeek; d <= endOfWeek; d.setDate(d.getDate() + 1)) {
-                const day = d.getDate();
-                const dayName = dayNames[d.getDay()];
-                const isActive = (day === currentDay && currentMonth === today.getMonth() && currentYear === today.getFullYear());
-                if (day > 0 && day <= daysInMonth) {
-                    dateSlot.innerHTML += `
-        <li class="date-slot-wrapper">
-          <div class="date-slot-item ${isActive ? 'active' : ''}" onclick="selectDay(${day})">
-            ${day}
-          </div>
-          <div class="day-name">${dayName}</div>
-        </li>`;
-                } else {
-                    // Adiciona dias em branco para completar a semana
-                    dateSlot.innerHTML += '<li class="date-slot-wrapper empty"></li>';
-                }
-            }
-
-            // Atualiza o texto do mês e ano
-            document.getElementById('month-year').textContent = `${monthNames[currentMonth]} ${currentYear}`;
-            loadTimeSlots();
-        }
-
-        // Inicializar o calendário na semana que inclui o dia atual
-        startDayIndex = calculateStartDayIndex();
-        updateCalendar();
-        document.getElementById('logout_btn').addEventListener('click', function (event) {
-            event.preventDefault(); // Impede o redirecionamento imediato
-            document.getElementById('confirmExitPopup').style.display = 'block'; // Mostra o popup
-        });
-
-        document.getElementById('confirmExit').addEventListener('click', function () {
-            window.location.href = 'index.html'; // Redireciona para a página de logout
-        });
-
-        document.getElementById('cancelExit').addEventListener('click', function () {
-            document.getElementById('confirmExitPopup').style.display = 'none'; // Fecha o popup
-        });
-
     }
 
     // Funções para a página "jogadores"
@@ -250,7 +152,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         window.addEventListener('load', function () {
             loadingScreen.style.display = 'none';
-            content.style.display = 'block';
         });
 
 

@@ -424,12 +424,6 @@
                     const ganhosMensais = calcularGanhos(filtrarPorMes);
                     const ganhosAnuais = calcularGanhos(filtrarPorAno);
 
-                    // Exibindo os resultados
-                    console.log('Ganhos Diários:', ganhosDiarios);
-                    console.log('Ganhos Semanais:', ganhosSemanais);
-                    console.log('Ganhos Mensais:', ganhosMensais);
-                    console.log('Ganhos Anuais:', ganhosAnuais);
-
                     // Inserir valores no HTML
                     document.querySelector('.daily').textContent = ganhosDiarios.toFixed(2);
                     document.querySelector('.weekly').textContent = ganhosSemanais.toFixed(2);
@@ -438,12 +432,6 @@
 
                 })
                 .catch(error => console.error('Erro ao buscar os dados:', error));
-
-
-            document.addEventListener('DOMContentLoaded', () => {
-                carregarPartidas();
-            });
-
 
             function filterByDay() {
                 applyFilter(() => {
@@ -509,7 +497,6 @@
 
 
         </script>
-        <script src="../static/js/script.js"></script>
         <script src="../static/js/scriptpages.js"></script>
         <script>
             let selectedPaymentId = null;
