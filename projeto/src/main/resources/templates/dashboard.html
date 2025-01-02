@@ -37,7 +37,7 @@
     .search-container i {
         position: fixed;
         right: 91.5%;
-        top: 31.1%;
+        top: 31.6%;
         transform: translateY(30%);
         /* Ajuste para centralização vertical */
         font-size: 1.4rem;
@@ -45,7 +45,7 @@
     }
 </style>
 
-<body class = "page-dashboard">
+<body class="page-dashboard">
 
     <body>
         <nav id="sidebar">
@@ -200,7 +200,7 @@
                     </div>
                     <div class="search-container">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="searchCPF" placeholder="Pesquisar por CPF">
+                        <input type="text" id="searchCPF" placeholder="Pesquisar por CPF ou Nome">
                     </div>
                     <div class="history_lists">
 
@@ -544,12 +544,14 @@
                 selectedPaymentId = null; // Limpa o ID selecionado
             });
 
-            // Função para filtrar a tabela com base no CPF
-            function filterTableByCPF(searchTerm) {
+            // Função para filtrar a tabela com base no CPF ou Nome
+            function filterTableByCPFOrName(searchTerm) {
                 const rows = document.querySelectorAll('#partidas-table tbody tr');
                 rows.forEach(row => {
-                    const cpfCell = row.cells[1].textContent.toLowerCase(); // Coluna de CPF
-                    if (cpfCell.includes(searchTerm)) {
+                    const cpfCell = row.cells[1]?.textContent.trim().toLowerCase(); // Coluna CPF
+                    const nameCell = row.cells[4]?.textContent.trim().toLowerCase(); // Coluna Nome
+
+                    if ((cpfCell && cpfCell.includes(searchTerm)) || (nameCell && nameCell.includes(searchTerm))) {
                         row.style.display = ''; // Mostra a linha
                     } else {
                         row.style.display = 'none'; // Esconde a linha
@@ -557,6 +559,16 @@
                 });
             }
 
+            // Event listener para o campo de busca
+            const searchInput = document.querySelector('#searchCPF'); // ID do campo de busca
+            if (searchInput) {
+                searchInput.addEventListener('input', function () {
+                    const searchTerm = this.value.trim().toLowerCase(); // Remove espaços extras e converte para minúsculas
+                    filterTableByCPFOrName(searchTerm);
+                });
+            } else {
+                console.error('Campo de busca não encontrado.');
+            }
 
         </script>
     </body>

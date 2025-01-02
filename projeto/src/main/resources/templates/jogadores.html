@@ -256,6 +256,34 @@
 
 
     </main>
+    <script>
+        // Função para filtrar a tabela com base no CPF ou Nome
+        function filterTable() {
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput.value.trim().toLowerCase(); // Obtém o valor da busca em minúsculas
+            const rows = document.querySelectorAll('#usuariosTable tbody tr'); // Seleciona as linhas da tabela
+
+            rows.forEach(row => {
+                const cpfCell = row.cells[0]?.textContent.trim().toLowerCase(); // Coluna CPF
+                const nomeCell = row.cells[1]?.textContent.trim().toLowerCase(); // Coluna Nome
+
+                if (cpfCell.includes(searchTerm) || nomeCell.includes(searchTerm)) {
+                    row.style.display = ''; // Mostra a linha
+                } else {
+                    row.style.display = 'none'; // Esconde a linha
+                }
+            });
+        }
+
+        // Adiciona o evento de input ao campo de busca
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', filterTable);
+        } else {
+            console.error('Campo de busca não encontrado.');
+        }
+        
+    </script>
 
     <script src="../static/js/scriptpages.js"></script>
 </body>
