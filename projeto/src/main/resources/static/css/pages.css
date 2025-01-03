@@ -123,10 +123,9 @@ main {
 }
 
 
-
 .side-item {
   border-radius: 8px;
-  padding: 14px;
+  padding: 0; /* Remova o padding aqui */
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
@@ -134,7 +133,7 @@ main {
 
 .side-item.active {
   background-color: #00690A;
-  transform: scale(1.05);
+  transform: scale(1.05); /* Pode ser ajustado */
 }
 
 .side-item:hover:not(.active),
@@ -148,6 +147,10 @@ main {
   align-items: center;
   justify-content: center;
   color: #0a0a0a;
+  width: 100%; /* Faz o 'a' ocupar toda a largura do 'li' */
+  height: 100%; /* Faz o 'a' ocupar toda a altura do 'li' */
+  padding: 14px; /* Adicione o padding no 'a' */
+  box-sizing: border-box; /* Garante que o padding não aumente o tamanho total */
 }
 
 .side-item.active a {
@@ -1900,7 +1903,7 @@ li.data-header {
 }
 
 .scrollable-table {
-  max-height: 327px;
+  max-height: 350px;
   /* Define a altura máxima para a área de rolagem */
   overflow-y: auto;
   /* Permite rolagem vertical */
