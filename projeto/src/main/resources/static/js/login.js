@@ -3,6 +3,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const IcpfLogin = document.querySelector("#cpf");
     const IsenhaLogin = document.querySelector("#senha");
 
+    // Credenciais fixas
+    const CREDENCIAIS_FIXAS = {
+        cpf: "123456",
+        senha: "admin"
+    };
+
     if (formularioLogin) {
         formularioLogin.addEventListener('submit', function (event) {
             event.preventDefault();
@@ -15,29 +21,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            const loginData = {
-                cpf: IcpfLogin.value,
-                senha: IsenhaLogin.value
-            };
+            const cpfInput = IcpfLogin.value.trim();
+            const senhaInput = IsenhaLogin.value.trim();
 
-            fetch("http://localhost:8080/usuarios/login", {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                method: "POST",
-                body: JSON.stringify(loginData)
-            })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = 'loading.html';
-                    } else {
-                        alert("Credenciais inválidas.");
-                    }
-                })
-                .catch(function (error) {
-                    alert("Erro ao realizar login: " + error.message);
-                });
+            if (cpfInput === CREDENCIAIS_FIXAS.cpf && senhaInput === CREDENCIAIS_FIXAS.senha) {
+                // Redireciona para a página desejada após o login
+                window.location.href = 'loading.html';
+            } else {
+                alert("Credenciais inválidas. Tente novamente.");
+            }
         }
     } else {
         console.error("O formulário com ID 'loginForm' não foi encontrado.");

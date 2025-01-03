@@ -37,7 +37,7 @@
     .search-container i {
         position: fixed;
         right: 91.5%;
-        top: 31.1%;
+        top: 31.6%;
         transform: translateY(30%);
         /* Ajuste para centralização vertical */
         font-size: 1.4rem;
@@ -45,7 +45,7 @@
     }
 </style>
 
-<body class = "page-dashboard">
+<body class="page-dashboard">
 
     <body>
         <nav id="sidebar">
@@ -200,7 +200,7 @@
                     </div>
                     <div class="search-container">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="searchCPF" placeholder="Pesquisar por CPF">
+                        <input type="text" id="searchCPF" placeholder="Pesquisar por CPF ou Nome">
                     </div>
                     <div class="history_lists">
 
@@ -338,6 +338,16 @@
     `;
             }
 
+            function obterDataLocal(offsetDias = 0) {
+                const hoje = new Date();
+                hoje.setDate(hoje.getDate() + offsetDias); // Adiciona/subtrai dias
+                const ano = hoje.getFullYear();
+                const mes = String(hoje.getMonth() + 1).padStart(2, '0'); // Meses começam em 0
+                const dia = String(hoje.getDate()).padStart(2, '0');
+                return `${ano}-${mes}-${dia}`; // Retorna no formato 'YYYY-MM-DD'
+            }
+
+
             // Função para marcar como pago (apenas exemplo, precisa integrar com backend)
             function marcarComoPago(id) {
                 alert(`Partida com ID ${id} foi marcada como paga!`);
@@ -356,67 +366,59 @@
 
                     // Função de filtro para o dia
                     const filtrarPorDia = (partida) => {
-                        const hoje = new Date().toISOString().split('T')[0]; // Obtém a data de hoje no formato 'YYYY-MM-DD'
-                        const dataPartida = partida.dataPartida.split('T')[0]; // Obtém a data da partida no mesmo formato
-
-                        return dataPartida === hoje; // Compara a data (ano, mês, dia)
+                        const hoje = obterDataLocal(); // Usa a função para obter a data local
+                        const dataPartida = partida.dataPartida.split('T')[0]; // Extrai apenas a data
+                        return dataPartida === hoje;
                     };
+
 
                     // Função de filtro para a semana
                     const filtrarPorSemana = (partida) => {
                         const hoje = new Date();
                         const diaSemana = hoje.getDay(); // 0 para Domingo, 6 para Sábado
 
-                        // Calcula o primeiro dia da semana (Domingo)
                         const startOfWeek = new Date(hoje);
                         startOfWeek.setDate(hoje.getDate() - diaSemana);
-                        startOfWeek.setHours(0, 0, 0, 0); // Zera a hora, minuto, segundo e milissegundo
+                        startOfWeek.setHours(0, 0, 0, 0);
 
-                        // Calcula o último dia da semana (Sábado)
                         const endOfWeek = new Date(hoje);
                         endOfWeek.setDate(hoje.getDate() + (6 - diaSemana));
-                        endOfWeek.setHours(23, 59, 59, 999); // Define o final do dia (último segundo)
+                        endOfWeek.setHours(23, 59, 59, 999);
 
-                        // Compara a data da partida com o intervalo da semana
-                        const dataPartida = partida.dataPartida.split('T')[0]; // Extrai a data sem a hora (ano-mês-dia)
-                        const startOfWeekStr = startOfWeek.toISOString().split('T')[0];
-                        const endOfWeekStr = endOfWeek.toISOString().split('T')[0];
-
-                        return dataPartida >= startOfWeekStr && dataPartida <= endOfWeekStr; // Verifica se a partida está dentro da semana
+                        const dataPartida = new Date(partida.dataPartida);
+                        return dataPartida >= startOfWeek && dataPartida <= endOfWeek;
                     };
 
 
 
                     const filtrarPorMes = (partida) => {
                         const hoje = new Date();
-                        const startOfMonth = new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().split('T')[0]; // Primeiro dia do mês
-                        const endOfMonth = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).toISOString().split('T')[0]; // Último dia do mês
+                        const startOfMonth = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+                        const endOfMonth = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
 
-                        // Compara as datas no formato YYYY-MM-DD
-                        const dataPartida = partida.dataPartida.split('T')[0]; // Extrai a data da partida no formato YYYY-MM-DD
-                        return dataPartida >= startOfMonth && dataPartida <= endOfMonth; // Verifica se a partida está dentro do mês
+                        const dataPartida = new Date(partida.dataPartida);
+                        return dataPartida >= startOfMonth && dataPartida <= endOfMonth;
                     };
 
 
                     const filtrarPorAno = (partida) => {
                         const hoje = new Date();
-                        const startOfYear = new Date(hoje.getFullYear(), 0, 1).toISOString().split('T')[0]; // Primeiro dia do ano
-                        const endOfYear = new Date(hoje.getFullYear(), 11, 31).toISOString().split('T')[0]; // Último dia do ano
+                        const startOfYear = new Date(hoje.getFullYear(), 0, 1);
+                        const endOfYear = new Date(hoje.getFullYear(), 11, 31);
 
-                        // Compara as datas no formato YYYY-MM-DD
-                        const dataPartida = partida.dataPartida.split('T')[0]; // Extrai a data da partida no formato YYYY-MM-DD
-                        return dataPartida >= startOfYear && dataPartida <= endOfYear; // Verifica se a partida está dentro do ano
+                        const dataPartida = new Date(partida.dataPartida);
+                        return dataPartida >= startOfYear && dataPartida <= endOfYear;
                     };
+
 
 
                     // Função para calcular os ganhos (considerando apenas partidas pagas)
                     const calcularGanhos = (filtro) => {
                         return partidas.filter(partida => partida.statusPagamento === true) // Só as partidas pagas
                             .filter(filtro) // Aplica o filtro diário, semanal, mensal ou anual
-                            .reduce((total, partida) => {
-                                return total + (partida.precoCobrado || 0); // Soma o preço cobrado de cada partida
-                            }, 0);
+                            .reduce((total, partida) => total + (partida.precoCobrado || 0), 0); // Soma o preço cobrado de cada partida
                     };
+
 
                     // Cálculos baseados nos filtros
                     const ganhosDiarios = calcularGanhos(filtrarPorDia);
@@ -435,50 +437,71 @@
 
             function filterByDay() {
                 applyFilter(() => {
-                    const today = new Date().toISOString().split('T')[0];
-                    const filteredData = allData.filter(partida => partida.dataPartida === today);
+                    const today = obterDataLocal(); // Usa a data local no formato 'YYYY-MM-DD'
+                    const filteredData = allData.filter(partida => partida.dataPartida.split('T')[0] === today); // Compara somente a data
                     populateTable(filteredData);
                 }, 'filter-day');
             }
 
+
             function filterByWeek() {
                 applyFilter(() => {
                     const today = new Date();
-                    const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay())).toISOString().split('T')[0];
-                    const endOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 6)).toISOString().split('T')[0];
+                    const startOfWeek = new Date(today);
+                    startOfWeek.setDate(today.getDate() - today.getDay()); // Calcula o início da semana
+                    startOfWeek.setHours(0, 0, 0, 0); // Zera as horas
+
+                    const endOfWeek = new Date(today);
+                    endOfWeek.setDate(today.getDate() + (6 - today.getDay())); // Calcula o final da semana
+                    endOfWeek.setHours(23, 59, 59, 999); // Último segundo do dia
+
                     const filteredData = allData.filter(partida => {
                         const partidaDate = new Date(partida.dataPartida);
-                        return partidaDate >= new Date(startOfWeek) && partidaDate <= new Date(endOfWeek);
+                        return partidaDate >= startOfWeek && partidaDate <= endOfWeek; // Verifica se a data da partida está dentro da semana
                     });
+
                     populateTable(filteredData);
                 }, 'filter-week');
             }
 
+
             function filterByMonth() {
                 applyFilter(() => {
                     const today = new Date();
-                    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
-                    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString().split('T')[0];
+                    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1); // Primeiro dia do mês
+                    startOfMonth.setHours(0, 0, 0, 0);
+
+                    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Último dia do mês
+                    endOfMonth.setHours(23, 59, 59, 999);
+
                     const filteredData = allData.filter(partida => {
                         const partidaDate = new Date(partida.dataPartida);
-                        return partidaDate >= new Date(startOfMonth) && partidaDate <= new Date(endOfMonth);
+                        return partidaDate >= startOfMonth && partidaDate <= endOfMonth; // Verifica se a data está dentro do mês
                     });
+
                     populateTable(filteredData);
                 }, 'filter-month');
             }
 
+
             function filterByYear() {
                 applyFilter(() => {
                     const today = new Date();
-                    const startOfYear = new Date(today.getFullYear(), 0, 1).toISOString().split('T')[0];
-                    const endOfYear = new Date(today.getFullYear(), 11, 31).toISOString().split('T')[0];
+                    const startOfYear = new Date(today.getFullYear(), 0, 1); // Primeiro dia do ano
+                    startOfYear.setHours(0, 0, 0, 0);
+
+                    const endOfYear = new Date(today.getFullYear(), 11, 31); // Último dia do ano
+                    endOfYear.setHours(23, 59, 59, 999);
+
                     const filteredData = allData.filter(partida => {
                         const partidaDate = new Date(partida.dataPartida);
-                        return partidaDate >= new Date(startOfYear) && partidaDate <= new Date(endOfYear);
+                        return partidaDate >= startOfYear && partidaDate <= endOfYear; // Verifica se a data está dentro do ano
                     });
+
                     populateTable(filteredData);
                 }, 'filter-year');
             }
+
 
             // Função para remover a classe 'active' de todos os botões
             function removeActiveClass() {
@@ -544,12 +567,14 @@
                 selectedPaymentId = null; // Limpa o ID selecionado
             });
 
-            // Função para filtrar a tabela com base no CPF
-            function filterTableByCPF(searchTerm) {
+            // Função para filtrar a tabela com base no CPF ou Nome
+            function filterTableByCPFOrName(searchTerm) {
                 const rows = document.querySelectorAll('#partidas-table tbody tr');
                 rows.forEach(row => {
-                    const cpfCell = row.cells[1].textContent.toLowerCase(); // Coluna de CPF
-                    if (cpfCell.includes(searchTerm)) {
+                    const cpfCell = row.cells[1]?.textContent.trim().toLowerCase(); // Coluna CPF
+                    const nameCell = row.cells[4]?.textContent.trim().toLowerCase(); // Coluna Nome
+
+                    if ((cpfCell && cpfCell.includes(searchTerm)) || (nameCell && nameCell.includes(searchTerm))) {
                         row.style.display = ''; // Mostra a linha
                     } else {
                         row.style.display = 'none'; // Esconde a linha
@@ -557,6 +582,16 @@
                 });
             }
 
+            // Event listener para o campo de busca
+            const searchInput = document.querySelector('#searchCPF'); // ID do campo de busca
+            if (searchInput) {
+                searchInput.addEventListener('input', function () {
+                    const searchTerm = this.value.trim().toLowerCase(); // Remove espaços extras e converte para minúsculas
+                    filterTableByCPFOrName(searchTerm);
+                });
+            } else {
+                console.error('Campo de busca não encontrado.');
+            }
 
         </script>
     </body>
