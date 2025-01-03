@@ -224,9 +224,16 @@
 
                         <label for="preco">Selecione o Preço:</label>
                         <select id="preco">
-                            <option value="120" selected>R$ 120,00</option>
+                            <option value="120">R$ 120,00</option>
                             <option value="100">R$ 100,00</option>
+                            <option value="custom">Outro</option>
                         </select>
+
+                        <div id="custom-price-container" style="display: none;">
+                            <label for="custom-price">Preço personalizado:</label>
+                            <input type="number" id="custom-price" min="0" step="0.01" placeholder="Digite o preço">
+                        </div>
+
 
 
                         <button id="submit-confirmation" type="submit">Confirmar Agendamento</button>
@@ -304,8 +311,6 @@
                 img.src = url;
             });
         }
-
-
 
         async function gerarPDF() {
             const successModal = document.querySelector('#success-modal .modal-content');
@@ -568,12 +573,26 @@
                 event.preventDefault(); // Evitar o comportamento padrão do formulário
 
                 console.log("Formulário de confirmação submetido.");
+
                 // Captura os valores dos campos
                 const cpfUser = document.getElementById('cpf').value.trim();
                 const dataPartida = document.getElementById('selected-date').value; // Data da agenda selecionada
                 const horario = document.getElementById('selected-time').value; // Hora da agenda selecionada
                 const errorPopup = document.getElementById('error-popup');
-                const preco = parseFloat(document.getElementById('preco').value);
+
+                const precoSelect = document.getElementById('preco'); // Dropdown do preço
+                const customPriceInput = document.getElementById('custom-price'); // Campo para preço personalizado
+
+                // Captura o preço final (fixo ou personalizado)
+                const preco = precoSelect.value === 'custom'
+                    ? parseFloat(customPriceInput.value)
+                    : parseFloat(precoSelect.value);
+
+                // Valida o preço
+                if (isNaN(preco) || preco < 0) {
+                    alert("Por favor, insira um preço válido.");
+                    return;
+                }
 
                 const dadosAgendamento = {
                     cpfUser: cpfUser,
@@ -619,18 +638,17 @@
                             });
 
                             const agendaUpdate = {
-                                statusAgendamento: false,  // Atualiza status para reservado
+                                statusAgendamento: false, // Atualiza status para reservado
                                 partida: {
-                                    id: data.id,               // ID da partida criada
-                                    cpfUser: data.cpfUser,     // CPF do usuário, se necessário
+                                    id: data.id, // ID da partida criada
+                                    cpfUser: data.cpfUser, // CPF do usuário
                                     dataPartida: data.dataPartida, // Data da partida
-                                    horario: data.horario,     // Horário da partida
+                                    horario: data.horario, // Horário da partida
                                     precoCobrado: preco // Atualiza a agenda com o preço correto
                                 }
                             };
 
                             console.log('Agenda Update Payload:', agendaUpdate); // Verifica o payload enviado
-
 
                             // Faz a requisição para atualizar a AGENDA
                             fetch(`http://localhost:8080/api/agenda/update/${dataPartida}/${horario}`, {
@@ -638,7 +656,7 @@
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },
-                                body: JSON.stringify(agendaUpdate)  // Envia o ID correto da Partida para a Agenda
+                                body: JSON.stringify(agendaUpdate) // Envia o ID correto da Partida para a Agenda
                             })
                                 .then(updateResponse => {
                                     if (!updateResponse.ok) {
@@ -652,7 +670,8 @@
                                 .catch(error => {
                                     console.error('Erro ao atualizar a tabela AGENDA:', error);
                                 });
-                            // IMPLEMENTAÇÃO DO INCREMENTO DE PARTIDAS
+
+                            // Incremento de partidas
                             fetch(`http://localhost:8080/usuarios/${cpfUser}/incrementar-partidas`, {
                                 method: 'PUT'
                             })
@@ -673,7 +692,6 @@
                             console.log(data);
                         }
                     })
-
                     .catch(error => console.error('Erro ao criar a partida:', error));
             });
 
@@ -922,7 +940,7 @@
                 });
         }
 
- 
+
 
         // Função para exibir a data selecionada
         function renderDate(date) {
@@ -985,6 +1003,22 @@
             const [ano, mes, dia] = data.split('-'); // Divide a data no formato "ano-mês-dia"
             return `${dia}/${mes}/${ano}`; // Retorna no formato "dia-mês-ano"
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const precoSelect = document.getElementById('preco');
+            const customPriceContainer = document.getElementById('custom-price-container');
+            const customPriceInput = document.getElementById('custom-price');
+
+            // Atualiza a visibilidade do campo de preço personalizado
+            precoSelect.addEventListener('change', function () {
+                if (precoSelect.value === 'custom') {
+                    customPriceContainer.style.display = 'block';
+                } else {
+                    customPriceContainer.style.display = 'none';
+                    customPriceInput.value = ''; // Limpa o campo de preço personalizado
+                }
+            });
+        });
 
 
     </script>
