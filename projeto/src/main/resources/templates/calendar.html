@@ -10,11 +10,7 @@
     <link rel="stylesheet" href="../static/css/pages.css">
     <link rel="stylesheet"
         href="./../static/images/assets/fontawesome-free-6.5.2-web/fontawesome-free-6.5.2-web/css/all.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.0.0-rc.7/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-
-
 
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
@@ -744,24 +740,49 @@
             const modal = document.getElementById('error-modal');
             modal.style.display = 'block';
         }
+
+        // Função para obter a data atual no horário local
+        function obterDataLocal(offsetDias = 0) {
+            const hoje = new Date();
+            hoje.setDate(hoje.getDate() + offsetDias); // Adiciona/subtrai dias
+            const ano = hoje.getFullYear();
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0'); // Meses começam em 0
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            return `${ano}-${mes}-${dia}`; // Retorna no formato 'YYYY-MM-DD'
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const apiUrl = 'http://localhost:8080/api/agenda'; // URL para buscar os dados da agenda
             let currentDateIndex = 0;
             let datesList = [];
 
-            // Função para carregar as datas da API e definir o índice inicial para a data atual
             function loadDates() {
                 fetch(apiUrl)
                     .then(response => response.json())
                     .then(data => {
-                        datesList = data.map(item => item.dia).sort(); // Ordena as datas
-                        currentDateIndex = datesList.indexOf(new Date().toISOString().split('T')[0]); // Define o índice inicial
-                        loadAgenda(datesList[currentDateIndex]); // Carrega a agenda da data inicial
+                        // Ordena as datas retornadas pela API
+                        datesList = data.map(item => item.dia).sort();
+
+                        // Calcula hoje e ontem com base no horário local
+                        const hojeLocal = obterDataLocal(0); // Hoje no horário local
+                        const ontemLocal = obterDataLocal(-1); // Ontem no horário local
+
+                        // Prioriza hoje se estiver na lista, senão tenta ontem
+                        currentDateIndex = datesList.indexOf(hojeLocal);
+                        if (currentDateIndex === -1) {
+                            currentDateIndex = datesList.indexOf(ontemLocal);
+                        }
+
+                        // Verifica se encontrou uma data válida
+                        if (currentDateIndex !== -1) {
+                            loadAgenda(datesList[currentDateIndex]);
+                        }
                     })
-                    .catch(error => console.error('Erro ao carregar datas:', error));
+                    .catch(error => {
+                        // Opcional: log de erro apenas em ambiente de desenvolvimento
+                    });
             }
 
-            // Função para carregar os horários de uma data específica
             function loadAgenda(date) {
                 fetch(apiUrl)
                     .then(response => response.json())
@@ -770,10 +791,11 @@
                         renderDate(date);
                         renderTimeSlots(filteredData);
                     })
-                    .catch(error => console.error('Erro ao carregar horários:', error));
+                    .catch(error => {
+                        // Opcional: log de erro apenas em ambiente de desenvolvimento
+                    });
             }
-
-
+            
             // Função para exibir a data selecionada
             function renderDate(date) {
                 const dateSlots = document.getElementById('date-slots');
