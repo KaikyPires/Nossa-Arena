@@ -2,6 +2,7 @@ package br.com.criandoapi.projeto.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -102,6 +103,21 @@ public class UsuarioController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+    @GetMapping("/aniversariantes")
+    public ResponseEntity<List<Usuario>> listarAniversariantesDoMes() {
+        List<Usuario> todosUsuarios = usuarioRepository.findAll(); // Busca todos os usuários
+        List<Usuario> aniversariantes = todosUsuarios.stream()
+                .filter(usuario -> {
+                    String[] nascimento = usuario.getNascimento().split("-");
+                    int mesNascimento = Integer.parseInt(nascimento[1]); // Mês do nascimento
+                    int mesAtual = java.time.LocalDate.now().getMonthValue(); // Mês atual
+                    return mesNascimento == mesAtual;
+                })
+                .collect(Collectors.toList()); // Filtra aniversariantes do mês atual
+
+        return ResponseEntity.ok(aniversariantes);
     }
 
 }

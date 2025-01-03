@@ -540,15 +540,48 @@ table {
 }
 
 .table-jogador {
-  padding-left: 30%;
+  display: flex;
   justify-content: center;
-  /* Centraliza horizontalmente */
+  /* Centraliza a tabela horizontalmente */
   overflow: auto;
-  max-height: 1000px;
-  margin-top: 30px;
-
-
+  /* Permite rolagem vertical e horizontal, se necessário */
+  max-height: 415px;
+  /* Define a altura máxima para ativar a rolagem */
+  max-width: 50%;
+  /* Limita a largura máxima da tabela */
+  margin: 30px auto;
+  /* Adiciona margem e centraliza verticalmente */
+  border: 0px solid #ddd;
+  /* Adiciona uma borda para destacar a tabela */
+  padding: 0px;
+  /* Espaçamento interno para maior conforto visual */
 }
+
+.table-jogador table {
+  width: 100%;
+  /* Garante que a tabela ocupe o espaço total disponível */
+  border-collapse: collapse;
+  /* Remove espaços entre as células */
+}
+
+.table-jogador th,
+.table-jogador td {
+  border: 1px solid #d1c1c1;
+  /* Adiciona borda entre as células */
+  padding: 8px;
+  /* Ajusta o espaçamento interno */
+  text-align: left;
+  /* Alinha o conteúdo à esquerda */
+}
+
+.table-jogador th {
+  background-color: #65B307;
+  /* Cor de fundo do cabeçalho */
+  color: #ffffff;
+  /* Cor do texto do cabeçalho */
+}
+
+
 
 th,
 td {
@@ -1867,13 +1900,13 @@ li.data-header {
 }
 
 .scrollable-table {
-  max-height: 300px;
+  max-height: 327px;
   /* Define a altura máxima para a área de rolagem */
   overflow-y: auto;
   /* Permite rolagem vertical */
   overflow-x: hidden;
   /* Desabilita rolagem horizontal, se não for necessária */
-  border: 1px solid #ddd;
+  border: 0px solid #ddd;
   /* Adiciona uma borda ao redor da área de rolagem */
 }
 
