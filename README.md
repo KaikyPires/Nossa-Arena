@@ -1,4 +1,4 @@
-# Nossa Arena (Em Desenvolvimento)
+# Nossa Arena
 
 ## Descrição
 
