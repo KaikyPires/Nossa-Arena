@@ -31,7 +31,7 @@
 ![image](https://github.com/user-attachments/assets/c6f8e672-63bf-482b-8bf8-b04a8eef6725)
 *Tela da central do Dashboard.*
 
-![image](https://github.com/user-attachments/assets/031246c0-cf54-44a8-9bb8-2cc11a72713e)
+(![image](https://github.com/user-attachments/assets/4fbd41f8-dc8d-48a3-b8e1-6e9760e82115)
 *Primeiro protótipo do calendário.*
 
 ![image](https://github.com/user-attachments/assets/4d937c8c-aa0a-4784-bdd7-d7c0bbf865ab)
