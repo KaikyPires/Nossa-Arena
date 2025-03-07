@@ -20,8 +20,6 @@
 - **API**: Comunicação com o banco de dados através de uma API REST, utilizando Spring Boot para operações CRUD nas partidas e agendamentos.
 - **Bibliotecas Adicionais**: 
   - FontAwesome para ícones.
-  - Axios (ou Fetch API) para realizar chamadas HTTP à API.
-  - FullCalendar.js para o calendário de agendamentos. 
 
 ## Imagens do Projeto (Protótipo)
 
@@ -41,4 +39,4 @@
 *Criação de um novo perfil de jogador/cliente.*
 
 ![image](https://github.com/user-attachments/assets/59ef1cac-2212-4077-a611-371dd34f82ea)
-*Primeiro protótipo do histórico de cada perfil dos clientes.*
+*Histórico de cada perfil dos clientes.*
