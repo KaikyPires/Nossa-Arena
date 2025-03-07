@@ -21,7 +21,7 @@
 - **Bibliotecas Adicionais**: 
   - FontAwesome para ícones.
  
-  ## Este projeto foi desenvolvido como um trabalho freelancer e entregue ao cliente, atendendo às especificações solicitadas e garantindo a funcionalidade completa conforme o escopo definido.
+## Este projeto foi desenvolvido como um trabalho freelancer e entregue ao cliente, atendendo às especificações solicitadas e garantindo a funcionalidade completa conforme o escopo definido.
 
 ## Imagens do Projeto
 
