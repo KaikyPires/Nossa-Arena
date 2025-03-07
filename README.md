@@ -34,11 +34,11 @@
 ![image](https://github.com/user-attachments/assets/40911841-88f5-4f5a-90ea-582c8963ec1b)
 *Primeiro protótipo do calendário.*
 
-(![image](https://github.com/user-attachments/assets/4fbd41f8-dc8d-48a3-b8e1-6e9760e82115)
+![image](https://github.com/user-attachments/assets/4fbd41f8-dc8d-48a3-b8e1-6e9760e82115)
 *Gestão de pagamentos e receitas da arena.*
 
 ![image](https://github.com/user-attachments/assets/13f28cbf-04a3-4574-b08a-33221a874832)
 *Criação de um novo perfil de jogador/cliente.*
 
-![image](https://github.com/user-attachments/assets/3339b944-6548-4588-bb1b-0e5cff7ad91e)
+![image](https://github.com/user-attachments/assets/59ef1cac-2212-4077-a611-371dd34f82ea)
 *Primeiro protótipo do histórico de cada perfil dos clientes.*
