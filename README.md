@@ -43,4 +43,4 @@
 ![image](https://github.com/user-attachments/assets/59ef1cac-2212-4077-a611-371dd34f82ea)
 *Histórico de cada perfil dos clientes.*
 
-# Este projeto foi desenvolvido como um trabalho freelancer e entregue ao cliente, atendendo às especificações solicitadas e garantindo a funcionalidade completa conforme o escopo definido.
+### Este projeto foi desenvolvido como um trabalho freelancer e entregue ao cliente, atendendo às especificações solicitadas e garantindo a funcionalidade completa conforme o escopo definido.
