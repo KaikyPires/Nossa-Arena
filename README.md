@@ -21,7 +21,7 @@
 - **Bibliotecas Adicionais**: 
   - FontAwesome para ícones.
 
-## Imagens do Projeto (Protótipo)
+## Imagens do Projeto
 
 ![image](https://github.com/user-attachments/assets/37e64dc5-98b5-484b-99c5-6cef828e9be1)
 *Tela inicial do aplicativo.*
