@@ -1412,7 +1412,7 @@ h4 {
 
 /* CSS para o modal */
 #confirmation-modal,
-#success-modal {
+#success-modal, #editModal {
   display: none;
   /* Oculto por padrão */
   position: fixed;
@@ -2024,3 +2024,44 @@ li.data-header {
   display: none;
   /* Oculta o botão de fechar */
 }
+.input-container-select select {
+  width: 100%; /* Mesmo tamanho dos inputs */
+  height: 4.2rem; /* Ajuste para ficar igual aos inputs */
+  padding-left: 3.5rem; /* Mantém espaço para o ícone */
+  padding-right: 2.5rem; /* Espaço para a seta */
+  background-color: white;
+  border: 0.1rem solid rgba(0, 0, 0, 0.15);
+  border-radius: 1.2rem;
+  font-size: 1.4rem;
+  appearance: none; /* Remove o estilo padrão */
+  cursor: pointer;
+  display: flex;
+  align-items: center; /* Centraliza o texto verticalmente */
+}
+.input-container-select i {
+  position: absolute;
+  left: 28px;
+  bottom: 150px;
+  /* Ajuste conforme necessário */
+  font-size: 1.4rem;
+  /* Ajuste conforme necessário */
+  color: #00690A;
+  /* Cor do ícone */
+  pointer-events: none;
+
+}
+
+
+/* 🟣 Adiciona a seta customizada no SELECT */
+.input-container-select::after {
+  content: "\f078"; /* Código do ícone de seta do FontAwesome */
+  font-family: "Font Awesome 5 Free"; 
+  font-weight: 900;
+  position: absolute;
+  right: 3rem;
+  top: 60%;
+  transform: translateY(-90%);
+  pointer-events: none;
+  color: #00690A;
+}
+

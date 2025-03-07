@@ -1,71 +1,75 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const apiUrl = 'http://localhost:8080/api/agenda'; // API para buscar os dados da Agenda
+    const apiUrl = 'http://localhost:8080/api/agenda'; // URL para buscar os dados da agenda
+    let datesList = [];
 
-    // Função para carregar os agendamentos da Agenda
-    function loadAgenda() {
+    function loadDates() {
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                const tbody = document.getElementById('calendar-body');
-                tbody.innerHTML = ''; // Limpa a tabela antes de preenchê-la
-
-                // Loop pelos dados retornados da API
-                data.forEach(item => {
-                    const row = document.createElement('tr');
-
-                    // Coluna da data
-                    const diaCell = document.createElement('td');
-                    diaCell.textContent = item.dia;
-                    row.appendChild(diaCell);
-
-                    // Coluna da hora
-                    const horaCell = document.createElement('td');
-                    horaCell.textContent = item.hora;
-                    row.appendChild(horaCell);
-
-                    // Coluna do status
-                    const statusCell = document.createElement('td');
-                    statusCell.textContent = item.statusAgendamento ? 'Disponível' : 'Reservado';
-                    row.appendChild(statusCell);
-
-                    // Adiciona a linha à tabela
-                    tbody.appendChild(row);
-                });
+                datesList = [...new Set(data.map(item => item.dia))].sort();
+                findNextAvailableDate();
             })
-            .catch(error => console.error('Erro ao carregar agendamentos:', error));
+            .catch(error => console.error('Erro ao carregar as datas:', error));
     }
 
-    // Carrega os agendamentos ao iniciar a página
-    loadAgenda();
-});
+    function findNextAvailableDate() {
+        const hoje = new Date().toISOString().split('T')[0];
+        let index = datesList.indexOf(hoje);
 
-        // Função para ativar o modo tela cheia
-        function ativarTelaCheia() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch((err) => {
-                    console.error(`Erro ao tentar ativar o modo tela cheia: ${err.message}`);
-                });
-            }
+        if (index === -1) {
+            index = datesList.findIndex(date => date > hoje); // Busca a próxima data disponível
         }
 
-        // Verifica se a página foi carregada e o usuário estava em tela cheia
-        document.addEventListener('DOMContentLoaded', (event) => {
-            // Verifica o localStorage se o modo tela cheia estava ativo
-            if (localStorage.getItem('modoTelaCheia') === 'true') {
-                ativarTelaCheia();
-            }
-        });
+        if (index !== -1) {
+            loadAgenda(datesList[index]);
+        } else {
+            console.log('Nenhuma data disponível encontrada.');
+        }
+    }
 
-        // Ativa o modo tela cheia ao clicar em qualquer parte da tela
-        document.addEventListener('click', function () {
-            ativarTelaCheia();
-            // Salva no localStorage que o modo tela cheia foi ativado
-            localStorage.setItem('modoTelaCheia', 'true');
-        });
+    function loadAgenda(date) {
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const filteredData = data.filter(item => item.dia === date);
+                renderDate(date);
+                renderTimeSlots(filteredData);
+            })
+            .catch(error => console.error('Erro ao carregar a agenda:', error));
+    }
 
-        // Sai do modo tela cheia e atualiza o localStorage quando o usuário sai da tela cheia
-        document.addEventListener('fullscreenchange', (event) => {
-            if (!document.fullscreenElement) {
-                localStorage.setItem('modoTelaCheia', 'false');
+    function renderDate(date) {
+        const dateSlots = document.getElementById('date-slots');
+        dateSlots.innerHTML = `<li class="date-slot-item">${formatarData(date)}</li>`;
+    }
+
+    function renderTimeSlots(data) {
+        const timeSlots = document.getElementById('time-slots');
+        timeSlots.innerHTML = '';
+        data.sort((a, b) => a.hora.localeCompare(b.hora));
+
+        data.forEach(item => {
+            const li = document.createElement('li');
+            const button = document.createElement('button');
+            button.textContent = item.hora;
+            button.className = item.statusAgendamento ? 'disponivel' : 'reservado';
+            button.disabled = !item.statusAgendamento;
+
+            if (item.statusAgendamento) {
+                button.addEventListener('click', () => {
+                    showConfirmationModal(item.dia, item.hora);
+                });
             }
+
+            li.appendChild(button);
+            timeSlots.appendChild(li);
         });
+    }
+
+    function formatarData(data) {
+        const [ano, mes, dia] = data.split('-');
+        return `${dia}/${mes}/${ano}`;
+    }
+
+    loadDates();
+});

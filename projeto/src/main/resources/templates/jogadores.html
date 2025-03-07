@@ -58,6 +58,39 @@
             font-size: 1.4rem;
             color: #00690A;
         }
+
+        #saveEditBtn {
+            cursor: pointer;
+            background-color: #65B307;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 20px;
+            display: block;
+            /* Inicialmente oculto */
+            width: 100%;
+            margin-left: 2px;
+            font-size: 15px;
+        }
+
+        #saveEditBtn:hover {
+            background-color: #4b8a2f;
+        }
+
+        .input-container i {
+            position: absolute;
+            left: 1rem;
+            /* Espaçamento da borda esquerda */
+            top: 62%;
+            /* Centraliza verticalmente */
+            transform: translateY(-100%);
+            /* Ajusta para centralização vertical */
+            font-size: 1.6rem;
+            /* Tamanho do ícone */
+            color: #00690A;
+            /* Cor do ícone */
+        }
     }
 </style>
 
@@ -227,24 +260,32 @@
             <div class="table-container">
 
 
-                <div id="editModal" class="edit-modal">
-                    <div class="edit-modal-content">
+                <div id="editModal" class="input-container">
+                    <div class="modal-content">
                         <span id="closeModal" class="close">&times;</span>
                         <h2>Editar Jogador</h2>
                         <form id="editForm">
-                            <label for="editNome">Nome:</label>
-                            <input type="text" id="editNome" name="nome" required>
-
-                            <label for="editTelefone">Telefone:</label>
-                            <input type="text" id="editTelefone" name="telefone">
-
-                            <label for="editNascimento">Nascimento:</label>
-                            <input type="date" id="editNascimento" name="nascimento" required>
-
-                            <label for="editQuantidadePartidas">Quantidade de Partidas:</label>
-                            <input type="number" id="editQuantidadePartidas" name="quantidadePartidas" readonly>
-
-                            <button type="submit" id="saveEditBtn">Salvar</button>
+                            <div class="input-container">
+                                <label for="editNome">Nome:</label>
+                                <i class="fa-solid fa-user"></i>
+                                <input type="text" id="editNome" name="nome" required>
+                            </div>
+                            <div class="input-container">
+                                <label for="editTelefone">Telefone:</label>
+                                <i class="fa-solid fa-phone"></i>
+                                <input type="text" id="editTelefone" name="telefone">
+                            </div>
+                            <div class="input-container">
+                                <label for="editNascimento">Nascimento:</label>
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <input type="date" id="editNascimento" name="nascimento" required>
+                            </div>
+                            <div class="input-container">
+                                <i class="fa-solid fa-futbol"></i>
+                                <label for="editQuantidadePartidas">Quantidade de Partidas:</label>
+                                <input type="number" id="editQuantidadePartidas" name="quantidadePartidas" readonly>
+                            </div>
+                            <button type="submit" class="" id="saveEditBtn">Salvar</button>
                         </form>
                     </div>
                 </div>

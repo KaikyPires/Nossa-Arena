@@ -218,18 +218,25 @@
                             <input type="text" id="cpf" placeholder="000.000.000-00" required>
                         </div>
 
-                        <label for="preco">Selecione o Preço:</label>
-                        <select id="preco">
-                            <option value="120">R$ 120,00</option>
-                            <option value="100">R$ 100,00</option>
-                            <option value="custom">Outro</option>
-                        </select>
-
-                        <div id="custom-price-container" style="display: none;">
-                            <label for="custom-price">Preço personalizado:</label>
+          
+                        <div class="input-container-select">
+                            <i class="fa-solid fa-money-bill-wave"></i>
+                            <select id="preco">
+                                <option value="120">R$ 120,00</option>
+                                <option value="100">R$ 100,00</option>
+                                <option value="custom">Outro</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Campo de preço personalizado -->
+                        <div id="custom-price-container" class="input-container" style="display: none;">
+                            <i class="fa-solid fa-money-bill-wave"></i>
                             <input type="number" id="custom-price" min="0" step="0.01" placeholder="Digite o preço">
                         </div>
+                        
+                        
 
+                        
 
 
                         <button id="submit-confirmation" type="submit">Confirmar Agendamento</button>
@@ -1042,6 +1049,14 @@
             });
         });
 
+        document.getElementById("preco").addEventListener("change", function () {
+    const customPriceContainer = document.getElementById("custom-price-container");
+    if (this.value === "custom") {
+        customPriceContainer.style.display = "block";
+    } else {
+        customPriceContainer.style.display = "none";
+    }
+});
 
     </script>
 

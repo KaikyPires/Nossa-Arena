@@ -220,61 +220,85 @@ p {
 
 
 /* Container para o campo de entrada e o ícone */
+/* 🟢 Container para inputs normais */
 .input-container {
     position: relative;
-    width: 51.2rem; /* Largura do campo de entrada */
+    width: 51.2rem; /* Mesmo tamanho */
     margin-bottom: 1.6rem;
 }
 
-/* Estilo para o ícone dentro do campo de entrada */
-.input-container i {
-    position: absolute;
-    left: 1rem; /* Espaçamento da borda esquerda */
-    top: 50%; /* Centraliza verticalmente */
-    transform: translateY(-100%); /* Ajusta para centralização vertical */
-    font-size: 1.6rem; /* Tamanho do ícone */
-    color: #00690A; /* Cor do ícone */
-}
-
-/* Estilo para o campo de entrada */
-.input-container input[type="text"] {
-    width: 100%; /* Ocupa toda a largura do container */
-    height: 4.2rem; /* Altura do campo de entrada */
-    padding-left: 3.5rem; /* Espaçamento para o ícone */
-    background-color: white;
-    border: 0.1rem solid rgba(0, 0, 0, 0.15);
-    border-radius: 1.2rem;
-    padding: 0.5rem 0.5rem 0.5rem 3rem; /* Ajusta o padding para o ícone */
-    font-size: 1.4rem;
-}
-/* Container para o campo de entrada e o ícone */
-.input-container {
+/* 🟢 Container para SELECT (mantendo mesmo estilo) */
+.input-container-select {
     position: relative;
-    width: 51.2rem; /* Largura do campo de entrada */
+    width: 51.2rem; /* Mesmo tamanho dos inputs */
     margin-bottom: 1.6rem;
 }
 
-/* Estilo para o ícone dentro do campo de entrada */
-.input-container i {
+/* 🔵 Ícone dentro do campo */
+.input-container i,
+.input-container-select i {
     position: absolute;
-    left: 1rem; /* Espaçamento da borda esquerda */
-    top: 50%; /* Centraliza verticalmente */
-    transform: translateY(-100%); /* Ajusta para centralização vertical */
-    font-size: 1.6rem; /* Tamanho do ícone */
-    color: #00690A; /* Cor do ícone */
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.6rem;
+    color: #00690A;
 }
 
-/* Estilo para o campo de entrada */
-.input-container input[type="text"], .input-container input[type="password"] {
-    width: 100%; /* Ocupa toda a largura do container */
-    height: 4.2rem; /* Altura do campo de entrada */
-    padding-left: 3.5rem; /* Espaçamento para o ícone */
+/* 🔵 Estilo para INPUT */
+.input-container input {
+    width: 100%;
+    height: 4.2rem;
+    padding-left: 3.5rem; /* Espaço para o ícone */
     background-color: white;
     border: 0.1rem solid rgba(0, 0, 0, 0.15);
     border-radius: 1.2rem;
-    padding: 0.5rem 0.5rem 0.5rem 3.8rem; /* Ajusta o padding para o ícone */
     font-size: 1.4rem;
 }
+
+/* 🟣 Estilo para SELECT */
+.input-container-select select {
+    width: 100%; /* Mesmo tamanho dos inputs */
+    height: 4.2rem; /* Ajuste para ficar igual aos inputs */
+    padding-left: 3.5rem; /* Mantém espaço para o ícone */
+    padding-right: 2.5rem; /* Espaço para a seta */
+    background-color: white;
+    border: 0.1rem solid rgba(0, 0, 0, 0.15);
+    border-radius: 1.2rem;
+    font-size: 1.4rem;
+    appearance: none; /* Remove o estilo padrão */
+    cursor: pointer;
+    display: flex;
+    align-items: center; /* Centraliza o texto verticalmente */
+}
+.input-container-select i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.6rem;
+    color: #00690A;
+}
+.input-container-select select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* 🟣 Adiciona a seta customizada no SELECT */
+.input-container-select::after {
+    content: "\f078"; /* Código do ícone de seta do FontAwesome */
+    font-family: "Font Awesome 5 Free"; 
+    font-weight: 900;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #00690A;
+}
+
+
 
 .input-container i.fa-eye, 
     .input-container i.fa-eye-slash {
