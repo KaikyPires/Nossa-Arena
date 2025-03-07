@@ -11,7 +11,7 @@
 - **Cálculo de Receitas**: Exibe receitas diárias, semanais, mensais, anuais e das últimas 24 horas.
 - **Status de Pagamento**: Exibe o status de pagamento das partidas (Pago ou Pendente), com distinções visuais (vermelho para pendente, verde para pago).
 - **Filtros por Data**: Permite filtrar as partidas por dia, semana, mês ou ano.
-
+- **Exibição de Aniversariantes do Mês**: Mostra uma lista com os aniversariantes do mês, permitindo que os usuários visualizem quem está comemorando no período atual.
 ## Tecnologias Utilizadas
 
 - **Front-end**: HTML, CSS, JavaScript
