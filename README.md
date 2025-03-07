@@ -31,10 +31,10 @@
 ![image](https://github.com/user-attachments/assets/c6f8e672-63bf-482b-8bf8-b04a8eef6725)
 *Tela da central do Dashboard.*
 
-(![image](https://github.com/user-attachments/assets/4fbd41f8-dc8d-48a3-b8e1-6e9760e82115)
+![image](https://github.com/user-attachments/assets/40911841-88f5-4f5a-90ea-582c8963ec1b)
 *Primeiro protótipo do calendário.*
 
-![image](https://github.com/user-attachments/assets/4d937c8c-aa0a-4784-bdd7-d7c0bbf865ab)
+(![image](https://github.com/user-attachments/assets/4fbd41f8-dc8d-48a3-b8e1-6e9760e82115)
 *Gestão de pagamentos e receitas da arena.*
 
 ![image](https://github.com/user-attachments/assets/13f28cbf-04a3-4574-b08a-33221a874832)
