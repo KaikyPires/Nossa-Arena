@@ -20,6 +20,8 @@
 - **API**: Comunicação com o banco de dados através de uma API REST, utilizando Spring Boot para operações CRUD nas partidas e agendamentos.
 - **Bibliotecas Adicionais**: 
   - FontAwesome para ícones.
+ 
+  ## Este projeto foi desenvolvido como um trabalho freelancer e entregue ao cliente, atendendo às especificações solicitadas e garantindo a funcionalidade completa conforme o escopo definido.
 
 ## Imagens do Projeto
 
