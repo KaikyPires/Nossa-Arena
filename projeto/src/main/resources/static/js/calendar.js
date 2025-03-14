@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const apiUrl = 'http://localhost:8080/api/agenda'; // URL para buscar os dados da agenda
+    const apiUrl = 'https://nossa-arena-production.up.railway.app/api/agenda'; // URL para buscar os dados da agenda
     let datesList = [];
 
     function loadDates() {

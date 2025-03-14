@@ -380,13 +380,13 @@
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-            const apiUrl = 'http://localhost:8080/api/agenda'; // URL da API para buscar os horários
+            const apiUrl = 'https://nossa-arena-production.up.railway.app/api/agenda'; // URL da API para buscar os horários
 
             // Função para carregar os horários
 
 
             document.addEventListener('DOMContentLoaded', function () {
-                const apiUrl = 'http://localhost:8080/api/agenda'; // URL to fetch the schedule data
+                const apiUrl = 'https://nossa-arena-production.up.railway.app/api/agenda'; // URL to fetch the schedule data
                 const dateSlots = document.getElementById('date-slots'); // Slot container
 
                 // Function to load and display only the current date initially
@@ -518,7 +518,7 @@
             // Evento para confirmar a exclusão
             confirmPaymentButton.addEventListener('click', () => {
                 // Verifica no banco de dados o horário correspondente
-                fetch(`http://localhost:8080/api/agenda?dia=${selectedDate}`)
+                fetch(`https://nossa-arena-production.up.railway.app/api/agenda?dia=${selectedDate}`)
                     .then(response => response.json())
                     .then(agendas => {
                         const horario = agendas.find(item =>
@@ -532,7 +532,7 @@
                         }
 
                         // Chamada para excluir o horário pelo ID
-                        fetch(`http://localhost:8080/api/agenda/${horario.id}`, {
+                        fetch(`https://nossa-arena-production.up.railway.app/api/agenda/${horario.id}`, {
                             method: 'DELETE',
                         })
                             .then(response => {
@@ -605,7 +605,7 @@
                 console.log('Dados de agendamento:', dadosAgendamento);
 
                 // Faz a requisição para criar a nova Partida
-                fetch('http://localhost:8080/partidas', {
+                fetch('https://nossa-arena-production.up.railway.app/partidas', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -653,7 +653,7 @@
                             console.log('Agenda Update Payload:', agendaUpdate); // Verifica o payload enviado
 
                             // Faz a requisição para atualizar a AGENDA
-                            fetch(`http://localhost:8080/api/agenda/update/${dataPartida}/${horario}`, {
+                            fetch(`https://nossa-arena-production.up.railway.app/api/agenda/update/${dataPartida}/${horario}`, {
                                 method: 'PUT',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -674,7 +674,7 @@
                                 });
 
                             // Incremento de partidas
-                            fetch(`http://localhost:8080/usuarios/${cpfUser}/incrementar-partidas`, {
+                            fetch(`https://nossa-arena-production.up.railway.app/usuarios/${cpfUser}/incrementar-partidas`, {
                                 method: 'PUT'
                             })
                                 .then(response => {
@@ -758,7 +758,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            const apiUrl = 'http://localhost:8080/api/agenda'; // URL para buscar os dados da agenda
+            const apiUrl = 'https://nossa-arena-production.up.railway.app/api/agenda'; // URL para buscar os dados da agenda
             let currentDateIndex = 0;
             let datesList = [];
 
@@ -923,7 +923,7 @@
 
         // Função para marcar o horário como Escolinha
         function markAsSchoolTime() {
-            fetch(`http://localhost:8080/api/agenda?dia=${selectedDate}`)
+            fetch(`https://nossa-arena-production.up.railway.app/api/agenda?dia=${selectedDate}`)
                 .then(response => response.json())
                 .then(agendas => {
                     const horario = agendas.find(item =>
@@ -936,7 +936,7 @@
                     }
 
                     // Chamar o endpoint para marcar como Escolinha
-                    fetch(`http://localhost:8080/api/agenda/${horario.id}/escolinha`, {
+                    fetch(`https://nossa-arena-production.up.railway.app/api/agenda/${horario.id}/escolinha`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',

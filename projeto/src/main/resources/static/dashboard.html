@@ -282,7 +282,7 @@
 
 
             document.addEventListener('DOMContentLoaded', function () {
-                fetch('http://localhost:8080/partidas/com-nomes')
+                fetch('https://nossa-arena-production.up.railway.app/partidas/com-nomes')
                     .then(response => response.json())
                     .then(data => {
                         allData = data; // Dados agora incluem o nome do usuário
@@ -352,7 +352,7 @@
                 alert(`Partida com ID ${id} foi marcada como paga!`);
                 // Aqui você deve adicionar a lógica para atualizar o status no backend
                 // e recarregar a tabela para refletir a mudança de status.
-            } fetch('http://localhost:8080/partidas')
+            } fetch('https://nossa-arena-production.up.railway.app/partidas')
                 .then(response => response.json())
                 .then(partidas => {
                     const hoje = new Date();
@@ -388,7 +388,7 @@
                         return dataPartida >= startOfWeek && dataPartida <= endOfWeek;
                     };
 
-
+0
 
                     const filtrarPorMes = (partida) => {
                         const hoje = new Date();
@@ -534,7 +534,7 @@
             document.getElementById('confirmPaymentButton').addEventListener('click', function () {
                 if (selectedPaymentId) {
                     // Atualiza o status de pagamento no backend
-                    fetch(`http://localhost:8080/partidas/${selectedPaymentId}/marcar-pago`, {
+                    fetch(`https://nossa-arena-production.up.railway.app/partidas/${selectedPaymentId}/marcar-pago`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -545,7 +545,7 @@
                                 throw new Error('Erro ao atualizar o status de pagamento.');
                             }
                             // Atualiza os dados e repopula a tabela
-                            return fetch('http://localhost:8080/partidas/com-nomes');
+                            return fetch('https://nossa-arena-production.up.railway.app/partidas/com-nomes');
                         })
                         .then(response => response.json())
                         .then(data => {

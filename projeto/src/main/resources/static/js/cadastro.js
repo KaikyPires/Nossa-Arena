@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
             quantidadePartidas: "0"
         };
 
-        fetch("http://localhost:8080/usuarios", {
+        fetch("https://nossa-arena-production.up.railway.app/usuarios", {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

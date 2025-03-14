@@ -16,7 +16,7 @@ import br.com.criandoapi.projeto.repository.UsuarioRepository;
 import br.com.criandoapi.projeto.service.UsuarioService;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5502")
+@CrossOrigin(origins = "https://nossa-arena-production.up.railway.app")
 @RequestMapping("/usuarios")
 public class UsuarioController {
 

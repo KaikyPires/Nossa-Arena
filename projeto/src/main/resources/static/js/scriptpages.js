@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
         confirmDeleteButton.addEventListener('click', function () {
             if (jogadorParaExcluir) {
                 // Faz a exclusão do jogador
-                fetch(`http://127.0.0.1:8080/usuarios/${jogadorParaExcluir}`, { method: 'DELETE' })
+                fetch(`https://nossa-arena-production.up.railway.app/usuarios/${jogadorParaExcluir}`, { method: 'DELETE' })
                     .then(response => {
                         if (response.ok) {
                             alert('Jogador excluído com sucesso!');
@@ -283,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Carrega os jogadores ao abrir a página
-        fetch('http://127.0.0.1:8080/usuarios')
+        fetch('https://nossa-arena-production.up.railway.app/usuarios')
             .then(response => response.json())
             .then(data => populateTable(data))
             .catch(error => console.error('Erro ao carregar jogadores:', error));
@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Função para editar jogador
         function handleEdit(event) {
             const cpf = this.dataset.cpf;
-            fetch(`http://127.0.0.1:8080/usuarios/${cpf}`)
+            fetch(`https://nossa-arena-production.up.railway.app/usuarios/${cpf}`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('editNome').value = data.nome;
@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Carrega os jogadores ao abrir a página
-        fetch('http://127.0.0.1:8080/usuarios')
+        fetch('https://nossa-arena-production.up.railway.app/usuarios')
             .then(response => response.json())
             .then(data => populateTable(data))
             .catch(error => console.error('Erro ao carregar jogadores:', error));
@@ -333,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 quantidadePartidas: parseInt(document.getElementById('editQuantidadePartidas').value, 10),
             };
 
-            fetch(`http://127.0.0.1:8080/usuarios/${cpf}`, {
+            fetch(`https://nossa-arena-production.up.railway.app/usuarios/${cpf}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (!response.ok) throw new Error('Erro ao salvar jogador');
                     alert('Jogador atualizado com sucesso!');
                     document.getElementById('editModal').style.display = 'none';
-                    return fetch('http://127.0.0.1:8080/usuarios');
+                    return fetch('https://nossa-arena-production.up.railway.app/usuarios');
                 })
                 .then(response => response.json())
                 .then(data => populateTable(data))
